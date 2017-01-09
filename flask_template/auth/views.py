@@ -14,18 +14,13 @@ def login():
         return redirect(url_for('main.index'))
 
     form = LoginForm()
-
     if form.validate_on_submit() \
             and form.username.data == current_app.config['USERNAME'] \
             and form.password.data == current_app.config['PASSWORD']:
-
         user = User(id_=form.username.data)
-
         login_user(user, remember=True) if form.remember else login_user(user)
-
         next_url = request.args.get('next')
         return redirect(next_url or url_for('main.index'))
-
     return render_template('login.html', form=form)
 
 
