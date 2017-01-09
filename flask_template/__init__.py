@@ -19,6 +19,8 @@ def create_app(config):
         global bootstrap
         bootstrap = Bootstrap()
         bootstrap.init_app(app)
+    else:
+        bootstrap = None
 
     # config for database
     if config.ENABLE_DATABASE:
@@ -26,6 +28,8 @@ def create_app(config):
         global db
         db = SQLAlchemy()
         db.init_app(app)
+    else:
+        db = None
 
     # config for login view
     if config.ENABLE_LOGIN:
@@ -36,5 +40,7 @@ def create_app(config):
 
         from flask_template.views.login import login as login_blueprint
         app.register_blueprint(login_blueprint)
+    else:
+        login_manager = None
 
     return app
