@@ -1,13 +1,14 @@
-from . import auth
-from .form import LoginForm
-from ..model import User
-from .. import login_manager
-from flask_login import login_user, current_user
-from flask import (render_template, request, redirect, url_for)
 from flask import current_app
+from flask import (render_template, request, redirect, url_for)
+from flask_login import login_user, current_user
+
+from flask_template.models.models import User
+from flask_template import login_manager
+from . import login
+from .form import LoginForm
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@login.route('/login', methods=['GET', 'POST'])
 def login():
     """Log in and redirect to index page."""
     if current_user.is_authenticated:

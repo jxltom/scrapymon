@@ -1,9 +1,9 @@
-from run import app
+from wsgi import app
 import unittest
 
 
-class TestIndex(unittest.TestCase):
-
+class TestViewIndex(unittest.TestCase):
+    """This is for test the index module of views."""
     def setUp(self):
         app.config['TESTING'] = True
         self.app = app.test_client()
