@@ -1,37 +1,11 @@
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    outline: none;
-}
-
 body {
-    background: url(bg.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background-color: #bdc3c7;
 }
 
 .login-form {
-    font: 16px/2em Lato, serif;
     margin: 100px auto;
     max-width: 400px;
-}
-
-form {
-    color: #5d5d5d;
-    background: #f2f2f2;
-    padding: 26px;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-}
-
-form input,
-form button {
-    font-size: 18px;
-    margin: 16px 0;
+    padding-top: 28px;
 }
 
 .control-label,

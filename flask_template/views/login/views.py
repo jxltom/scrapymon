@@ -14,11 +14,11 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        email = form.email.data
+        username = form.username.data
         password = form.password.data
 
-        if _auth(email, password):
-            user = User(id_=email)
+        if _auth(username, password):
+            user = User(id_=username)
             login_user(user, remember=True) if form.remember else login_user(user)
             next_url = request.args.get('next')
             return redirect(next_url or url_for('index.index'))
@@ -31,9 +31,9 @@ def user_loader(id_):
     return User(id_=id_)
 
 
-def _auth(email, password):
+def _auth(username, password):
     """Authentication for logging."""
-    if current_app.config['LOGIN_EMAIL'] == email \
+    if current_app.config['LOGIN_USERNAME'] == username \
             and current_app.config['LOGIN_PASSWORD'] == password:
         return True
     return False

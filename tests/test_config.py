@@ -77,7 +77,7 @@ class TestConfig(unittest.TestCase):
         app = create_app(config)
         self.assertEqual(app.config['ENABLE_BOOTSTRAP'], True)
         self.assertEqual(app.config['ENABLE_LOGIN'], True)
-        self.assertTrue(app.config['LOGIN_EMAIL'])
+        self.assertTrue(app.config['LOGIN_USERNAME'])
         self.assertTrue(app.config['LOGIN_PASSWORD'])
         from flask_template import login_manager, bootstrap
         self.assertTrue(login_manager)
