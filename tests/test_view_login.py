@@ -14,6 +14,7 @@ class TestViewLogin(unittest.TestCase):
         self.app.config['LOGIN_PASSWORD'] = 'admin'
 
     def test_login(self):
+        """It is hard to test since the CSRF check."""
         app = self.app.test_client()
         app.post(
             '/login',

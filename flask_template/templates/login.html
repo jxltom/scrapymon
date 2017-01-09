@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 
 {% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}">
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}"
+          type="text/css">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='lato2_font.css') }}"
+          type="text/css">
+
 {% endblock %}
 
 {% block content %}
 
-<div class="container">
-
-{{ wtf.quick_form(form, button_map={'submit': 'md btn-default btn-block'}) }}
-
-</form>
-</div>
+    <div class="container">
+        <section class="login-form">
+            <form class="form" method="post" role="form">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_errors(form, hiddens="only") }}
+                {{ wtf.form_field(form.email, placeholder="Email", class="form-control input-lg")}}
+                {{ wtf.form_field(form.password, placeholder="Password", class="form-control input-lg") }}
+                {{ wtf.form_field(form.remember) }}
+                {{ wtf.form_field(form.submit, class='btn btn-lg btn-primary btn-block') }}
+            </form>
+        </section>
+    </div>
 
 {% endblock %}

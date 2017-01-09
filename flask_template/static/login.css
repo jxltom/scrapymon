@@ -1,23 +1,40 @@
-body {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #eee;
-}
-
-.form {
-    max-width: 330px;
-    margin: 0 auto;
-}
-
-.form .form-group {
-    margin-bottom: 0px;
-    margin-top: -10px;
-}
-
-.form .form-control {
-    height: auto;
+* {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    font-size: 16px;
+    outline: none;
+}
+
+body {
+    background: url(bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.login-form {
+    font: 16px/2em Lato, serif;
+    margin: 100px auto;
+    max-width: 400px;
+}
+
+form {
+    color: #5d5d5d;
+    background: #f2f2f2;
+    padding: 26px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+form input,
+form button {
+    font-size: 18px;
+    margin: 16px 0;
+}
+
+.control-label,
+.checkbox {
+    display: None;
 }
