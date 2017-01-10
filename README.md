@@ -6,5 +6,14 @@ FlaskTemplate
 
 # TODO
 
-- Appropriate name of wsgi entry file
-- Add database module
+- Basic
+
+    - Appropriate name of wsgi entry file
+    
+- Database
+
+    - Add database module
+    
+- Login Module
+
+    - Better handling of login_test view
