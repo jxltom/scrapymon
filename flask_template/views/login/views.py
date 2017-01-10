@@ -40,6 +40,7 @@ def _auth(username, password):
 
 
 @login.route('/login_test')
+@login_required
 def login_test():
     return 'logged in'
 
