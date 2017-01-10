@@ -87,6 +87,8 @@ class TestLoginBlueprintConfig(unittest.TestCase):
             app.config['LOGIN_VIEW_URL']
             app.config['LOGIN_USERNAME']
             app.config['LOGIN_PASSWORD']
+            app.config['LOGIN_BLUEPRINT_PREFIX']
+            app.config['LOGIN_VIEW_ROUTE']
 
         config = Config()
         config.enable_login_view()
@@ -95,8 +97,11 @@ class TestLoginBlueprintConfig(unittest.TestCase):
         self.assertEqual(app.config['ENABLE_LOGIN'], True)
         self.assertTrue(app.config['LOGIN_USERNAME'])
         self.assertTrue(app.config['LOGIN_PASSWORD'])
+        self.assertTrue(app.config['LOGIN_BLUEPRINT_PREFIX'])
+        self.assertTrue(app.config['LOGIN_VIEW_ROUTE'])
         from flask_template import login_manager, bootstrap
         self.assertTrue(login_manager)
+        self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
         self.assertTrue(bootstrap)
 
 

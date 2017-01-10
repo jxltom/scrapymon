@@ -6,9 +6,12 @@ from flask_template.models.login_model import User
 from flask import render_template, request, redirect, url_for, current_app
 
 
-@login.route('/login', methods=['GET', 'POST'])
+@login.route(login_manager.LOGIN_VIEW_ROUTE, methods=['GET', 'POST'])
 def log_in():
-    """Log in and redirect to index page."""
+    """
+    Log in and redirect to index page. If the function name is changed, make
+    sure also changing the endpoint of login_view of login_manager.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
 

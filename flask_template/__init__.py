@@ -37,9 +37,12 @@ def create_app(config):
         global login_manager
         login_manager = LoginManager()
         login_manager.init_app(app)
+        login_manager.login_view = 'login.log_in'
+        login_manager.LOGIN_VIEW_ROUTE = config.LOGIN_VIEW_ROUTE
 
         from flask_template.views.login import login as login_blueprint
-        app.register_blueprint(login_blueprint)
+        app.register_blueprint(
+            login_blueprint, url_prefix=config.LOGIN_BLUEPRINT_PREFIX)
     else:
         login_manager = None
 
