@@ -5,7 +5,7 @@ from flask import render_template
 
 
 class TestConfig(unittest.TestCase):
-    """Test the config.py."""
+    """Test the basic parts of config.py."""
 
     def test_basic_config(self):
         """Test the basic configuration of flask."""
@@ -20,6 +20,10 @@ class TestConfig(unittest.TestCase):
         config = Config(debug=False)
         app = create_app(config)
         self.assertFalse(app.config['DEBUG'])
+
+
+class TestBootstrapConfig(unittest.TestCase):
+    """Test bootstrap in config.py."""
 
     def test_bootstrap_config(self):
         """Test the Config class."""
@@ -61,6 +65,18 @@ class TestConfig(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 render_template('base.html')
 
+
+class TestDatabaseConfig(unittest.TestCase):
+    """Test database in config.py."""
+
+    def test_database(self):
+        'mysql+mysqlconnector://username:password@ip:port/database'
+        pass
+
+
+class TestLoginBlueprintConfig(unittest.TestCase):
+    """Test login blueprint in config.py."""
+
     def test_login_view_config(self):
         """Test the login route configuration."""
         app = create_app(Config())
@@ -83,6 +99,10 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(login_manager)
         self.assertTrue(bootstrap)
 
+
+class TestIndexBlueprintConfig(unittest.TestCase):
+    """Test index blueprint in config.py."""
+
     def test_index_view_config(self):
         """Test index view module."""
         app = create_app(Config())
@@ -92,9 +112,3 @@ class TestConfig(unittest.TestCase):
         config.enable_index_view()
         app = create_app(config)
         self.assertTrue(app.config['ENABLE_INDEX'])
-
-    def test_database(self):
-        'mysql+mysqlconnector://username:password@ip:port/database'
-        pass
-
-

@@ -3,7 +3,7 @@ from config import Config
 from flask_template import create_app
 
 
-class TestViewLogin(unittest.TestCase):
+class TestLoginBlueprint(unittest.TestCase):
     """Test the login view module."""
 
     def setUp(self):
@@ -26,3 +26,8 @@ class TestViewLogin(unittest.TestCase):
             '/login',
             data=dict(username='admin', password='wrong'),
             follow_redirects=False)
+
+    def test_login_required(self):
+        app = self.app.test_client()
+        rv = app.get('/login_required')
+        self.assertTrue('Unauthorized' in rv.get_data(as_text=True))

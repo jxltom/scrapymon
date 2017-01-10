@@ -39,8 +39,8 @@ def _auth(username, password):
     return False
 
 
-@login.route('/login_test')
+@login.route('/login_required')
 @login_required
-def login_test():
+def login_required():
     return 'logged in'
 
