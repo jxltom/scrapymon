@@ -8,4 +8,6 @@ from . import views
 """
 This modules depends on bootstrap. You need to set the correct dependence
 in the config.py.
+
+For using this, just add flask_login.login_required to your views.
 """
