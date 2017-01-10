@@ -1,13 +1,13 @@
 from . import login
 from .form import LoginForm
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from flask_template import login_manager
 from flask_template.models.login_model import User
 from flask import render_template, request, redirect, url_for, current_app
 
 
 @login.route('/login', methods=['GET', 'POST'])
-def login():
+def log_in():
     """Log in and redirect to index page."""
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
@@ -37,4 +37,9 @@ def _auth(username, password):
             and current_app.config['LOGIN_PASSWORD'] == password:
         return True
     return False
+
+
+@login.route('/login_test')
+def login_test():
+    return 'logged in'
 
