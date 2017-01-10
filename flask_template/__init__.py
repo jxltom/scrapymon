@@ -9,10 +9,6 @@ def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
 
-    # register index view
-    from flask_template.views.index import index as index_blueprint
-    app.register_blueprint(index_blueprint)
-
     # config for bootstrap
     if config.ENABLE_BOOTSTRAP:
         from flask_bootstrap import Bootstrap
@@ -30,6 +26,12 @@ def create_app(config):
         db.init_app(app)
     else:
         db = None
+
+    # register index view
+    if config.ENABLE_INDEX:
+        from flask_template.views.index import index as index_blueprint
+        app.register_blueprint(
+            index_blueprint, url_prefix=config.INDEX_BLUEPRINT_PREFIX)
 
     # config for login view
     if config.ENABLE_LOGIN:
