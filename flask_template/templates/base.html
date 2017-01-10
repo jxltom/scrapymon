@@ -6,9 +6,23 @@
     {% block styles %}
 
         {{ super() }}
-        <link rel="stylesheet"
-              href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}"
-              type="text/css">
+        <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}"
+              rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+        <!--[if lt IE 9]>
+        <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
+        <script src="{{ url_for('static', filename='flat-ui/js/respond.min.js') }}"></script>
+        <![endif]-->
+
+    {% endblock %}
+
+    {% block scripts %}
+
+        {{ super() }}
+        <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
+        <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
 
     {% endblock %}
 

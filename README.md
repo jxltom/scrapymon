@@ -17,3 +17,4 @@ FlaskTemplate
 - Login Module
 
     - Better handling of login_test view
+    - Reset login form username after failure
