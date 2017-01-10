@@ -77,8 +77,8 @@ class TestDatabaseConfig(unittest.TestCase):
 class TestLoginBlueprintConfig(unittest.TestCase):
     """Test login blueprint in config.py."""
 
-    def test_login_view_config(self):
-        """Test the login route configuration."""
+    def test_login_blueprint_config(self):
+        """Test the login blueprint configuration."""
         app = create_app(Config())
         from flask_template import login_manager
         self.assertTrue(login_manager is None)
@@ -104,11 +104,18 @@ class TestLoginBlueprintConfig(unittest.TestCase):
         self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
         self.assertTrue(bootstrap)
 
+    def test_login_blueprint_enable(self):
+        """Test enable and disable login blueprint."""
+        app = create_app(Config())
+        app = app.test_client()
+        rv = app.get('/login')
+        self.assertEqual(rv.status_code, 404)
+
 
 class TestIndexBlueprintConfig(unittest.TestCase):
     """Test index blueprint in config.py."""
 
-    def test_index_view_config(self):
+    def test_index_blueprint_config(self):
         """Test index view module."""
         app = create_app(Config())
         self.assertFalse(app.config['ENABLE_INDEX'])
