@@ -122,7 +122,7 @@ class TestIndexBlueprintConfig(unittest.TestCase):
             app.config['INDEX_BLUEPRINT_PREFIX']
 
         config = Config()
-        config.enable_index_view()
+        config.enable_index_blueprint()
         app = create_app(config)
         self.assertTrue(app.config['ENABLE_INDEX'])
         self.assertTrue(app.config['INDEX_BLUEPRINT_PREFIX'])
@@ -133,11 +133,3 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         app = app.test_client()
         rv = app.get('/')
         self.assertEqual(rv.status_code, 404)
-
-        config = Config()
-        config.enable_index_view()
-        app = create_app(config)
-        app = app.test_client()
-        rv = app.get('/')
-        self.assertEqual(rv.status_code, 200)
-
