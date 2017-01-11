@@ -1,11 +1,13 @@
 body {
-    background-color: #bdc3c7;
+    background-color: #F2F2F2;
 }
 
 .login-form {
     margin: 100px auto;
     max-width: 400px;
     padding-top: 28px;
+    background-color: #E3E3E3;
+    border: 1px solid #CBCBCB;
 }
 
 .control-label,
