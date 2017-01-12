@@ -1,5 +1,5 @@
 from config import Config
-from web_scheduler import create_app
+from flask_template import create_app
 
 
 config = Config(debug=False)
