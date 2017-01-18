@@ -90,7 +90,7 @@ class TestLoginBlueprintConfig(unittest.TestCase):
             app.config['LOGIN_VIEW_ROUTE']
 
         config = Config()
-        config.enable_login_view()
+        config.enable_login_blueprint()
         app = create_app(config)
         self.assertEqual(app.config['ENABLE_BOOTSTRAP'], True)
         self.assertEqual(app.config['ENABLE_LOGIN'], True)
@@ -133,3 +133,24 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         app = app.test_client()
         rv = app.get('/')
         self.assertEqual(rv.status_code, 404)
+
+
+class TestWechatBlueprintConfig(unittest.TestCase):
+    """Test wechat blueprint in config.py."""
+
+    def test_index_blueprint_config(self):
+        """Test index blueprint module."""
+        app = create_app(Config())
+        self.assertFalse(app.config['ENABLE_WECHAT'])
+        with self.assertRaises(KeyError):
+            app.config['WECHAT_TOKEN']
+            app.config['WECHAT_BLUEPRINT_PREFIX']
+            app.config['WECHAT_VIEW_ROUTE']
+
+        config = Config()
+        config.enable_wechat_blueprint()
+        app = create_app(config)
+        self.assertTrue(app.config['ENABLE_WECHAT'])
+        self.assertTrue(app.config['WECHAT_TOKEN'])
+        self.assertTrue(app.config['WECHAT_BLUEPRINT_PREFIX'])
+        self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])

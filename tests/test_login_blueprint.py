@@ -8,7 +8,7 @@ class TestLoginBlueprint(unittest.TestCase):
 
     def setUp(self):
         config = Config()
-        config.enable_login_view()
+        config.enable_login_blueprint()
         self.login_url = config.LOGIN_BLUEPRINT_PREFIX + config.LOGIN_VIEW_ROUTE
         self.login_required_url = config.LOGIN_BLUEPRINT_PREFIX + '/login_required'
         self.app = create_app(config)
