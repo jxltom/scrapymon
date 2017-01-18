@@ -138,7 +138,7 @@ class TestIndexBlueprintConfig(unittest.TestCase):
 class TestWechatBlueprintConfig(unittest.TestCase):
     """Test wechat blueprint in config.py."""
 
-    def test_index_blueprint_config(self):
+    def test_wechat_blueprint_config(self):
         """Test index blueprint module."""
         app = create_app(Config())
         self.assertFalse(app.config['ENABLE_WECHAT'])
@@ -146,6 +146,8 @@ class TestWechatBlueprintConfig(unittest.TestCase):
             app.config['WECHAT_TOKEN']
             app.config['WECHAT_BLUEPRINT_PREFIX']
             app.config['WECHAT_VIEW_ROUTE']
+        from flask_template import wechat_robot
+        self.assertFalse(wechat_robot)
 
         config = Config()
         config.enable_wechat_blueprint()
@@ -154,3 +156,6 @@ class TestWechatBlueprintConfig(unittest.TestCase):
         self.assertTrue(app.config['WECHAT_TOKEN'])
         self.assertTrue(app.config['WECHAT_BLUEPRINT_PREFIX'])
         self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])
+
+        from flask_template import wechat_robot
+        self.assertTrue(wechat_robot)

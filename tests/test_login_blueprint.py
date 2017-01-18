@@ -4,7 +4,7 @@ from flask_template import create_app
 
 
 class TestLoginBlueprint(unittest.TestCase):
-    """Test the login view module."""
+    """Test the login blueprint."""
 
     def setUp(self):
         config = Config()

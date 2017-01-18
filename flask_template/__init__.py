@@ -1,6 +1,6 @@
 from flask import Flask
 
-bootstrap, db, login_manager = None, None, None
+bootstrap, db, login_manager, wechat_robot = None, None, None, None
 
 
 def create_app(config):
@@ -27,13 +27,13 @@ def create_app(config):
     else:
         db = None
 
-    # register index view
+    # register index blueprint
     if config.ENABLE_INDEX:
         from flask_template.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=config.INDEX_BLUEPRINT_PREFIX)
 
-    # config for login view
+    # config for login blueprint
     if config.ENABLE_LOGIN:
         from flask_login import LoginManager
         global login_manager
@@ -47,5 +47,18 @@ def create_app(config):
             login_blueprint, url_prefix=config.LOGIN_BLUEPRINT_PREFIX)
     else:
         login_manager = None
+
+    # register index blueprint
+    if config.ENABLE_WECHAT:
+        from werobot import WeRoBot
+        from werobot.contrib.flask import make_view
+        global wechat_robot
+        wechat_robot = WeRoBot(token=config.WECHAT_TOKEN)
+        app.add_url_rule(rule=config.WECHAT_VIEW_ROUTE,
+                         endpoint=config.WECHAT_BLUEPRINT_PREFIX,
+                         view_func=make_view(wechat_robot),
+                         methods=['GET', 'POST'])
+    else:
+        wechat_robot = None
 
     return app

@@ -3,7 +3,7 @@ import unittest
 
 
 class TestIndexBlueprint(unittest.TestCase):
-    """This is for test the index module of views."""
+    """Test the index blueprint."""
     def setUp(self):
         app.config['TESTING'] = True
         self.app = app.test_client()
