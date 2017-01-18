@@ -1,6 +1,6 @@
-from flask_template import robot
+from flask_template import wechat_robot
 
 
-@robot.handler
+@wechat_robot.handler
 def hello(message):
     return 'Hello World!'
