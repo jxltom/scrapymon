@@ -139,23 +139,26 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     """Test wechat blueprint in config.py."""
 
     def test_wechat_blueprint_config(self):
-        """Test index blueprint module."""
+        """Test wechat blueprint."""
         app = create_app(Config())
         self.assertFalse(app.config['ENABLE_WECHAT'])
         with self.assertRaises(KeyError):
             app.config['WECHAT_TOKEN']
+            app.config['WECHAT_SESSION_STORAGE']
             app.config['WECHAT_BLUEPRINT_PREFIX']
             app.config['WECHAT_VIEW_ROUTE']
-        from flask_template import wechat_robot
-        self.assertFalse(wechat_robot)
+        from flask_template.views.wechat.views import robot
+        self.assertFalse(robot.config['TOKEN'])
 
         config = Config()
         config.enable_wechat_blueprint()
         app = create_app(config)
         self.assertTrue(app.config['ENABLE_WECHAT'])
         self.assertTrue(app.config['WECHAT_TOKEN'])
+        self.assertTrue(app.config['WECHAT_SESSION_STORAGE'] is None)
         self.assertTrue(app.config['WECHAT_BLUEPRINT_PREFIX'])
         self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])
 
-        from flask_template import wechat_robot
-        self.assertTrue(wechat_robot)
+        from flask_template.views.wechat.views import robot
+        self.assertTrue(robot.config['TOKEN'])
+        self.assertTrue(robot.config['SESSION_STORAGE'] is None)

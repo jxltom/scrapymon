@@ -1,6 +1,6 @@
 from flask import Flask
 
-bootstrap, db, login_manager, wechat_robot = None, None, None, None
+bootstrap, db, login_manager = None, None, None
 
 
 def create_app(config):
@@ -48,17 +48,15 @@ def create_app(config):
     else:
         login_manager = None
 
-    # register index blueprint
+    # register wechat blueprint
     if config.ENABLE_WECHAT:
-        from werobot import WeRoBot
         from werobot.contrib.flask import make_view
-        global wechat_robot
-        wechat_robot = WeRoBot(token=config.WECHAT_TOKEN)
+        from flask_template.views.wechat.views import robot
+        robot.config['TOKEN'] = config.WECHAT_TOKEN
+        robot.config['SESSION_STORAGE'] = config.WECHAT_SESSION_STORAGE
         app.add_url_rule(rule=config.WECHAT_VIEW_ROUTE,
                          endpoint=config.WECHAT_BLUEPRINT_PREFIX,
-                         view_func=make_view(wechat_robot),
+                         view_func=make_view(robot),
                          methods=['GET', 'POST'])
-    else:
-        wechat_robot = None
 
     return app
