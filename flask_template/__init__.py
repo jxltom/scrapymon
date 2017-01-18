@@ -58,5 +58,9 @@ def create_app(config):
                          endpoint=config.WECHAT_BLUEPRINT_PREFIX,
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
+    else:
+        from flask_template.views.wechat.views import robot
+        robot.config['TOKEN'] = None
+        robot.config['SESSION_STORAGE']
 
     return app
