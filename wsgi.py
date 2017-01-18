@@ -9,5 +9,5 @@ app = create_app(config)
 
 
 if __name__ == '__main__':
-    app.config['DBBUG'] = True
+    app.config['DEBUG'] = True
     app.run()
