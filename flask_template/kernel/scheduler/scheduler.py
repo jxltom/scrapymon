@@ -14,7 +14,8 @@ class Scheduler:
 
     def _update_result(self, event):
         """Update result when the job is finished."""
-        self._results[event.job_id].append(event.retval)
+        result = {arrow.utcnow().to('Asia/Hong_Kong').format(): event.retval}
+        self._results[event.job_id].append(result)
 
     def start(self):
         self._scheduler.start()
@@ -43,11 +44,11 @@ class Scheduler:
     def remove_job(self, job_id):
         self._scheduler.remove_job(job_id)
 
-    def check_job_all_results(self, job_id):
+    def get_job_all_results(self, job_id):
         return self._results[job_id]
 
-    def check_job_latest_result(self):
-        pass
+    def get_job_latest_result(self, job_id):
+        return self._results[job_id][0] if self._results[job_id] else None
 
     def print_jobs(self):
         return self._scheduler.print_jobs()
