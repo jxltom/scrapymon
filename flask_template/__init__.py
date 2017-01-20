@@ -29,13 +29,13 @@ def create_app(config):
 
     # config for apscheduler
     if config.ENABLE_APSCHEDULER:
-        from apscheduler.schedulers.background import BackgroundScheduler
+        from flask_template.kernel.scheduler.scheduler import Scheduler
         global scheduler
-        scheduler = BackgroundScheduler()
+        scheduler = Scheduler()
         scheduler.start()
     else:
         if scheduler:
-            scheduler.shutdown(wait=False)
+            scheduler.shutdown()
             scheduler = None
 
     # register index blueprint

@@ -21,7 +21,7 @@ class Scheduler:
         self._scheduler.start()
 
     def shutdown(self):
-        self._scheduler.shutdown()
+        self._scheduler.shutdown(wait=False)
 
     def add_daily_job(self, job_id, func, time):
         """Add job at specific time everyday."""
