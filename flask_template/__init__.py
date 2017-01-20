@@ -1,6 +1,6 @@
 from flask import Flask
 
-bootstrap, db, login_manager = None, None, None
+bootstrap, db, login_manager, scheduler = None, None, None, None
 
 
 def create_app(config):
@@ -26,6 +26,17 @@ def create_app(config):
         db.init_app(app)
     else:
         db = None
+
+    # config for apscheduler
+    if config.ENABLE_APSCHEDULER:
+        from apscheduler.schedulers.background import BackgroundScheduler
+        global scheduler
+        scheduler = BackgroundScheduler()
+        scheduler.start()
+    else:
+        if scheduler:
+            scheduler.shutdown(wait=False)
+            scheduler = None
 
     # register index blueprint
     if config.ENABLE_INDEX:
