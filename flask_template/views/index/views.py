@@ -2,5 +2,5 @@ from . import index
 
 
 @index.route('/')
-def index_example():
+def index_():
     return 'Hello World'
