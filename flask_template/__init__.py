@@ -28,7 +28,7 @@ def create_app(config):
         db = None
 
     # config for apscheduler
-    if config.ENABLE_APSCHEDULER:
+    if config.ENABLE_SCHEDULER:
         from flask_template.kernel.scheduler.scheduler import Scheduler
         global scheduler
         scheduler = Scheduler()

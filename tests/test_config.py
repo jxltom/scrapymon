@@ -169,14 +169,14 @@ class TestApschedulerConfig(unittest.TestCase):
     def test_apscheduler_config(self):
         """Test Apscheduler config."""
         app = create_app(Config())
-        self.assertFalse(app.config['ENABLE_APSCHEDULER'])
+        self.assertFalse(app.config['ENABLE_SCHEDULER'])
         from flask_template import scheduler
         self.assertTrue(scheduler is None)
 
         config = Config()
-        config.enable_apscheduler()
+        config.enable_scheduler()
         app = create_app(config)
-        self.assertTrue(app.config['ENABLE_APSCHEDULER'])
+        self.assertTrue(app.config['ENABLE_SCHEDULER'])
         from flask_template import scheduler
         self.assertTrue(scheduler)
 
