@@ -37,43 +37,42 @@ class Scheduler:
     def shutdown(self):
         self._scheduler.shutdown(wait=False)
 
-    def enable_job(self, job, trigger, **kwargs):
+    def enable_job(self, job_id, func, trigger, **kwargs):
         """
         Enable job which will run everyday at specific time or job which will
         run at specific interval. When trigger is daily, keyword argument should
         be time which has format of HH:mm. When trigger is interval, keyword
         arguments can be hours, minutes, or seconds.
         """
-        self.disable_job(job)
+        self.disable_job(job_id)
 
         if trigger == 'daily':
             time = kwargs.get('time')
             hour, minute = map(int, time.split(':'))
-            self._scheduler.add_job(id=job.job_id, func=job.func,
-                                    trigger='cron',
+            self._scheduler.add_job(id=job_id, func=func, trigger='cron',
                                     hour=hour, minute=minute)
         elif trigger == 'interval':
-            self._scheduler.add_job(id=job.job_id, func=job.func,
+            self._scheduler.add_job(id=job_id, func=func,
                                     trigger='interval', **kwargs)
         else:
             raise Exception('No job type is matched')
 
-    def disable_job(self, job):
+    def disable_job(self, job_id):
         """Disable a job."""
-        if self._status_store.get(job.job_id):
-            self._scheduler.remove_job(job.job_id)
+        if self._status_store.get(job_id):
+            self._scheduler.remove_job(job_id)
 
-    def get_result(self, job, latest=True):
+    def get_result(self, job_id, latest=True):
         """Return results of a job."""
-        results = self._result_store.get(job.job_id, [])
+        results = self._result_store.get(job_id, [])
         return results if not latest else results[0] if results else []
 
-    def get_status(self, job):
+    def get_status(self, job_id):
         """Return status of a job."""
-        if self._status_store.get(job.job_id) is None:
+        if self._status_store.get(job_id) is None:
             return False
         else:
-            return self._status_store[job.job_id]
+            return self._status_store[job_id]
 
     def print_jobs(self):
         self._scheduler.print_jobs()
