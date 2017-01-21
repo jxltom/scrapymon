@@ -125,7 +125,9 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         config.enable_index_blueprint()
         app = create_app(config)
         self.assertTrue(app.config['ENABLE_INDEX'])
-        self.assertTrue(app.config['INDEX_BLUEPRINT_PREFIX'])
+        self.assertTrue(
+            app.config['INDEX_BLUEPRINT_PREFIX'] is '' or
+            app.config['INDEX_BLUEPRINT_PREFIX'])
 
     def test_index_blueprint_enable(self):
         """Test enable and disable login blueprint."""
@@ -164,7 +166,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
         self.assertTrue(robot.config['SESSION_STORAGE'] is None)
 
 
-class TestApschedulerConfig(unittest.TestCase):
+class TestSchedulerConfig(unittest.TestCase):
 
     def test_apscheduler_config(self):
         """Test Apscheduler config."""
