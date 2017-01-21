@@ -1,7 +1,6 @@
 import unittest
 import time
 from flask_template.kernel.scheduler.scheduler import Scheduler
-from flask_template.kernel.scheduler.job import Job
 
 
 class TestScheduler(unittest.TestCase):
