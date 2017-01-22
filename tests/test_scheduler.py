@@ -83,5 +83,11 @@ class TestScheduler(unittest.TestCase):
         self.assertTrue('division by zero'
                         in self.scheduer.get_result('job_exception')[1])
 
+    def test_get_next_run_time(self):
+        self.scheduer.enable_job(
+            'job_normal', self._job_normal, trigger='daily', time='12:00')
+        self.assertEqual(
+            self.scheduer.get_next_run_time('job_normal', fmt='HH:mm'), '12:00')
+
     def tearDown(self):
         self.scheduer.shutdown()
