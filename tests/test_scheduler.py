@@ -84,6 +84,11 @@ class TestScheduler(unittest.TestCase):
                         in self.scheduer.get_result('job_exception')[1])
 
     def test_get_next_run_time(self):
+        # test job doesn't exist
+        self.assertEqual(
+            self.scheduer.get_next_run_time('job_normal', fmt='HH:mm'), '')
+
+        # test job exists
         self.scheduer.enable_job(
             'job_normal', self._job_normal, trigger='daily', time='12:00')
         self.assertEqual(

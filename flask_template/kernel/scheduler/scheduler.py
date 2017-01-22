@@ -76,8 +76,11 @@ class Scheduler:
 
     def get_next_run_time(self, job_id, fmt='YYYY-MM-DD HH:mm:ssZZ'):
         """Return next run time in provided format."""
-        time = self._scheduler.get_job(job_id).next_run_time
-        return arrow.get(time).format(fmt=fmt)
+        if self._status_store.get(job_id):
+            time = self._scheduler.get_job(job_id).next_run_time
+            return arrow.get(time).format(fmt=fmt)
+        else:
+            return ''
 
     def print_jobs(self):
         self._scheduler.print_jobs()
