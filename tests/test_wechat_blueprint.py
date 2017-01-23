@@ -9,7 +9,7 @@ class TestWechatBlueprint(unittest.TestCase):
     def setUp(self):
         config = Config()
         config.enable_wechat_blueprint()
-        self.wechat_url = '/robot/'
+        self.wechat_url = '/wechat'
         self.app = create_app(config)
 
     def test_wechat(self):

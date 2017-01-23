@@ -8,5 +8,6 @@ class TestIndexBlueprint(unittest.TestCase):
         app.config['TESTING'] = True
         self.app = app.test_client()
 
-    def test_index(self):
-        pass
+    def test_index_blueprint(self):
+        rv = self.app.get('/_test')
+        self.assertEqual(rv.status_code, 404)
