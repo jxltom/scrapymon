@@ -1,12 +1,11 @@
----
+
 # flask-template
----
+
+## Features
+
+- Heroku/Dokku supported
 
 ## TODO
-
-- Basic
-
-    - Appropriate name of wsgi entry file
     
 - Database
 
