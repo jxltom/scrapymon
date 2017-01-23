@@ -27,7 +27,7 @@ def log_in():
             # enable remember me
             form.remember.data = True
 
-            login_user(User(id_=username), remember=bool(form.remember.data))
+            login_user(User(id_=username), remember=form.remember.data)
             return redirect(request.args.get('next') or REDIRECT_URL_ON_SUCCESS)
 
     return render_template('login.html', form=form)
