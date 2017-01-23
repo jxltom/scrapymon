@@ -21,10 +21,14 @@ def log_in():
         form.username.data, form.password.data = '', ''
 
         if _auth(username, password):
+
+            # enable remember me
+            form.remember.data = True
+
             user = User(id_=username)
             login_user(user, remember=True) if form.remember else login_user(user)
             next_url = request.args.get('next')
-            return redirect(next_url or url_for('index.index'))
+            return redirect(next_url or '/')
 
     return render_template('login.html', form=form)
 
