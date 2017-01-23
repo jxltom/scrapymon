@@ -17,8 +17,8 @@ def log_in():
 
     form = LoginForm()
     if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
+        username, password = form.username.data, form.password.data
+        form.username.data, form.password.data = '', ''
 
         if _auth(username, password):
             user = User(id_=username)
