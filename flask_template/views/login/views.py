@@ -5,15 +5,18 @@ from flask_template import login_manager
 from flask_template.models.login_model import User
 from flask import render_template, request, redirect, url_for, current_app
 
+REDIRECT_URL_ON_SUCCESS = '/'
+
 
 @login.route(login_manager.LOGIN_VIEW_ROUTE, methods=['GET', 'POST'])
 def log_in():
     """
-    Log in and redirect to index page. If the function name is changed, make
-    sure also changing the endpoint of login_view of login_manager.
+    Log in and redirect to REDIRECT_URL_ON_SUCCESS. If the function name is
+    changed, make sure also changing the endpoint of login_view of
+    login_manager.
     """
     if current_user.is_authenticated:
-        return redirect(url_for('index.index'))
+        return redirect(REDIRECT_URL_ON_SUCCESS)
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -21,14 +24,11 @@ def log_in():
         form.username.data, form.password.data = '', ''
 
         if _auth(username, password):
-
             # enable remember me
             form.remember.data = True
 
-            user = User(id_=username)
-            login_user(user, remember=True) if form.remember else login_user(user)
-            next_url = request.args.get('next')
-            return redirect(next_url or '/')
+            login_user(User(id_=username), remember=bool(form.remember.data))
+            return redirect(request.args.get('next') or REDIRECT_URL_ON_SUCCESS)
 
     return render_template('login.html', form=form)
 
