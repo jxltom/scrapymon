@@ -254,4 +254,9 @@ class TestWechatBlueprintConfig(unittest.TestCase):
             app.config['wechat_session_storage']
             app.config['wechat_blueprint_prefix']
             app.config['wechat_view_route']
-        print(app.url_map)
+
+    def test_wechat_blueprint_route(self):
+        """Test wechat blueprint route."""
+        create_app(Config(wechat=True))
+        from flask_template import robot
+        self.assertTrue(robot._handlers['text'])

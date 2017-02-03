@@ -88,7 +88,7 @@ def create_app(cfg):
             session_storage=cfg.wechat['wechat_session_storage']
         )
 
-        from flask_template.views.wechat import views  # add handlers to robot
+        from flask_template.views.wechat.views import robot  # refresh robot
         app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
                          endpoint='werobot',
                          view_func=make_view(robot),
