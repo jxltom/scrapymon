@@ -1,2 +1,1 @@
-from werobot import WeRoBot
-robot = WeRoBot()
+from flask_template import robot

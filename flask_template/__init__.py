@@ -4,6 +4,7 @@ bootstrap = None
 db = None
 login_manager = None
 scheduler = None
+robot = None
 
 
 def create_app(cfg):
@@ -60,6 +61,7 @@ def create_app(cfg):
         from flask_login import LoginManager
         global login_manager
         login_manager = LoginManager(app)
+
         login_manager.login_view = 'login.log_in'
         login_manager.LOGIN_VIEW_ROUTE = cfg.login['login_view_route']
         login_manager.LOGIN_USERNAME = cfg.login['login_username']
@@ -77,19 +79,22 @@ def create_app(cfg):
     if getattr(cfg, 'wechat', None) is not None:
         app.config.update(_upper(cfg.wechat))
 
+        from werobot import WeRoBot
         from werobot.contrib.flask import make_view
-        from flask_template.views.wechat.views import robot
-        robot.config['TOKEN'] = cfg.wechat['wechat_token']
-        robot.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
+        global robot
+        robot = WeRoBot(
+            token=cfg.wechat['wechat_token'],
+            enable_session=cfg.wechat['wechat_enable_session'],
+            session_storage=cfg.wechat['wechat_session_storage']
+        )
 
+        from flask_template.views.wechat import views  # add handlers to robot
         app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
                          endpoint='werobot',
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
     else:
-        from flask_template.views.wechat.views import robot
-        robot.config['TOKEN'] = None
-        robot.config['SESSION_STORAGE'] = None
+        robot = None
 
     return app
 

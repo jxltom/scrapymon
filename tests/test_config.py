@@ -187,7 +187,7 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
         create_app(Config(login=True))
         from flask_template import login_manager, bootstrap
-        self.assertTrue(login_manager)
+        self.assertTrue(login_manager is not None)
         self.assertTrue(login_manager.login_view)
         self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
         self.assertTrue(login_manager.LOGIN_USERNAME)
@@ -237,11 +237,12 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_robot_instance(self):
         """Test robot instance."""
         create_app(Config())
-        from flask_template.views.wechat.views import robot
-        self.assertTrue(robot.config['TOKEN'] is None)
+        from flask_template import robot
+        self.assertTrue(robot is None)
 
         create_app(Config(wechat=True))
-        from flask_template.views.wechat.views import robot
+        from flask_template import robot
+        self.assertTrue(robot is not None)
         self.assertTrue(robot.config['TOKEN'])
         self.assertTrue(robot.config['SESSION_STORAGE'] is None)
 
@@ -249,7 +250,8 @@ class TestWechatBlueprintConfig(unittest.TestCase):
         """Test wechat blueprint configurationin flask app."""
         app = create_app(Config(wechat=True))
         with self.assertRaises(KeyError):
-            app.config['WECHAT_TOKEN']
-            app.config['WECHAT_SESSION_STORAGE']
-            app.config['WECHAT_BLUEPRINT_NAME']
-            app.config['WECHAT_VIEW_ROUTE']
+            app.config['wechat_token']
+            app.config['wechat_session_storage']
+            app.config['wechat_blueprint_prefix']
+            app.config['wechat_view_route']
+        print(app.url_map)
