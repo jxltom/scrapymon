@@ -1,13 +1,7 @@
-from wsgi import app
 import unittest
+from wsgi import app
 
 
 class TestIndexBlueprint(unittest.TestCase):
-    """Test the index blueprint."""
-    def setUp(self):
-        app.config['TESTING'] = True
-        self.app = app.test_client()
-
-    def test_index_blueprint(self):
-        rv = self.app.get('/_test')
-        self.assertEqual(rv.status_code, 404)
+    """Test index blueprint."""
+    pass

@@ -4,63 +4,78 @@ from flask_template import create_app
 from flask import render_template
 
 
-class TestConfig(unittest.TestCase):
-    """Test the basic parts of config.py."""
+class TestBasicConfig(unittest.TestCase):
+    """Test basic configuration in config.py."""
 
-    def test_basic_config(self):
-        """Test the basic configuration of flask."""
+    def test_secrete_key(self):
+        """Test secrete key of flask."""
         app = create_app(Config())
         self.assertTrue(app.config['SECRET_KEY'])
 
-    def test_debug_config(self):
-        """Test the debug configuration of flask."""
+    def test_debug(self):
+        """Test debug of flask."""
         app = create_app(Config())
-        self.assertTrue(app.config['DEBUG'])
-
-        config = Config(debug=False)
-        app = create_app(config)
         self.assertFalse(app.config['DEBUG'])
+
+        app = create_app(Config())
+        app.config.update(DEBUG=True)
+        self.assertTrue(app.config['DEBUG'])
 
 
 class TestBootstrapConfig(unittest.TestCase):
-    """Test bootstrap in config.py."""
+    """Test bootstrap configuration in config.py."""
 
     def test_bootstrap_config(self):
-        """Test the Config class."""
-        config = Config()
-        self.assertEqual(config.ENABLE_BOOTSTRAP, True)
-        config = Config(bootstrap=True)
-        self.assertEqual(config.ENABLE_BOOTSTRAP, True)
-        config = Config(bootstrap=False)
-        self.assertEqual(config.ENABLE_BOOTSTRAP, False)
+        """Test BootstrapConfig class."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.bootstrap
+
+        cfg = Config(bootstrap=False)
+        with self.assertRaises(AttributeError):
+            cfg.bootstrap
+
+        cfg = Config(bootstrap=True)
+        self.assertTrue(cfg.bootstrap)
+        self.assertEqual(cfg.bootstrap['ENABLE_BOOTSTRAP'], True)
 
     def test_bootstrap_instance(self):
-        """Test the bootstrap instance in flask_template."""
+        """Test bootstrap instance in flask_template."""
         create_app(Config())
         from flask_template import bootstrap
-        self.assertTrue(bootstrap is not None)
+        self.assertTrue(bootstrap is None)
 
         create_app(Config(bootstrap=False))
         from flask_template import bootstrap
         self.assertTrue(bootstrap is None)
 
-    def test_bootstrap_config_in_app(self):
-        """Test the bootstrap configuration in flask app."""
-        app = create_app(Config())
-        self.assertEqual(app.config['ENABLE_BOOTSTRAP'], True)
+        create_app(Config(bootstrap=True))
+        from flask_template import bootstrap
+        self.assertTrue(bootstrap is not None)
 
-        app = create_app(Config(bootstrap=False))
-        self.assertEqual(app.config['ENABLE_BOOTSTRAP'], False)
+    def test_bootstrap_config_in_app(self):
+        """Test bootstrap configuration in flask app."""
+        app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['BOOTSTRAP_SERVE_LOCAL']
+            app.config['ENABLE_BOOTSTRAP']
+
+        app = create_app(Config(bootstrap=False))
+        with self.assertRaises(KeyError):
+            app.config['BOOTSTRAP_SERVE_LOCAL']
+            app.config['ENABLE_BOOTSTRAP']
+
+        app = create_app(Config(bootstrap=True))
+        self.assertTrue(app.config['BOOTSTRAP_SERVE_LOCAL'])
+        self.assertTrue(app.config['ENABLE_BOOTSTRAP'])
 
     def test_bootstrap_template(self):
-        """Test the base.html template when bootstrap not exists."""
-        app = create_app(Config(bootstrap=False))
+        """Test base.html template when bootstrap not exists."""
+        app = create_app(Config())
         with app.app_context():
             self.assertEqual(render_template('base.html'), '')
 
-        app = create_app(Config())
+        app = create_app(Config(bootstrap=True))
         with app.app_context():
             with self.assertRaises(RuntimeError):
                 render_template('base.html')
@@ -70,115 +85,198 @@ class TestDatabaseConfig(unittest.TestCase):
     """Test database in config.py."""
 
     def test_database(self):
-        'mysql+mysqlconnector://username:password@ip:port/database'
         pass
 
 
-class TestLoginBlueprintConfig(unittest.TestCase):
-    """Test login blueprint in config.py."""
+class TestSchedulerConfig(unittest.TestCase):
+    """Test scheduler configuration in config.py."""
 
-    def test_login_blueprint_config(self):
-        """Test login blueprint configuration."""
-        app = create_app(Config())
-        from flask_template import login_manager
-        self.assertTrue(login_manager is None)
-        self.assertFalse(app.config['ENABLE_LOGIN'])
-        with self.assertRaises(KeyError):
-            app.config['LOGIN_USERNAME']
-            app.config['LOGIN_PASSWORD']
-            app.config['LOGIN_BLUEPRINT_PREFIX']
-            app.config['LOGIN_VIEW_ROUTE']
+    def test_scheduler_config(self):
+        """Test SchedulerClass config."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.scheduler
 
-        config = Config()
-        config.enable_login_blueprint()
-        app = create_app(config)
-        self.assertEqual(app.config['ENABLE_BOOTSTRAP'], True)
-        self.assertEqual(app.config['ENABLE_LOGIN'], True)
-        self.assertTrue(app.config['LOGIN_USERNAME'])
-        self.assertTrue(app.config['LOGIN_PASSWORD'])
-        self.assertTrue(app.config['LOGIN_BLUEPRINT_PREFIX'])
-        self.assertTrue(app.config['LOGIN_VIEW_ROUTE'])
-        from flask_template import login_manager, bootstrap
-        self.assertTrue(login_manager)
-        self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
-        self.assertTrue(bootstrap)
+        cfg = Config(scheduler=False)
+        with self.assertRaises(AttributeError):
+            cfg.scheduler
 
-    def test_login_blueprint_enable(self):
-        """Test enable and disable login blueprint."""
-        app = create_app(Config())
-        app = app.test_client()
-        rv = app.get('/login')
-        self.assertEqual(rv.status_code, 404)
+        cfg = Config(scheduler=True)
+        self.assertTrue(type(cfg.scheduler) is dict)
+
+    def test_scheduler_instance(self):
+        """Test scheduelr instance."""
+        create_app(Config())
+        from flask_template import scheduler
+        self.assertTrue(scheduler is None)
+
+        create_app(Config(scheduler=False))
+        from flask_template import scheduler
+        self.assertTrue(scheduler is None)
+
+        create_app(Config(scheduler=True))
+        from flask_template import scheduler
+        self.assertTrue(scheduler)
 
 
 class TestIndexBlueprintConfig(unittest.TestCase):
     """Test index blueprint in config.py."""
 
     def test_index_blueprint_config(self):
-        """Test index blueprint module."""
+        """Test IndexConfig class."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.index
+
+        cfg = Config(index=False)
+        with self.assertRaises(AttributeError):
+            cfg.index
+
+        cfg = Config(index=True)
+        self.assertTrue(cfg.index)
+
+    def test_index_blueprint_config_in_app(self):
+        """Test index blueprint configuration in app."""
         app = create_app(Config())
-        self.assertFalse(app.config['ENABLE_INDEX'])
         with self.assertRaises(KeyError):
             app.config['INDEX_BLUEPRINT_PREFIX']
 
-        config = Config()
-        config.enable_index_blueprint()
-        app = create_app(config)
-        self.assertTrue(app.config['ENABLE_INDEX'])
-        self.assertTrue(
-            app.config['INDEX_BLUEPRINT_PREFIX'] is '' or
-            app.config['INDEX_BLUEPRINT_PREFIX'])
+        app = create_app(Config(index=False))
+        with self.assertRaises(KeyError):
+            app.config['INDEX_BLUEPRINT_PREFIX']
 
-    def test_index_blueprint_enable(self):
-        """Test enable and disable login blueprint."""
+        app = create_app(Config(index=True))
+        self.assertTrue(app.config['INDEX_BLUEPRINT_PREFIX'] is not None)
+
+    def test_index_blueprint_route(self):
+        """Test index blueprint route."""
         app = create_app(Config())
         app = app.test_client()
-        rv = app.get('/')
+        rv = app.get('/_')
         self.assertEqual(rv.status_code, 404)
+
+        app = create_app(Config(index=True))
+        app = app.test_client()
+        rv = app.get('/_')
+        self.assertEqual(rv.get_data(as_text=True), '')
+
+
+class TestLoginBlueprintConfig(unittest.TestCase):
+    """Test login blueprint in config.py."""
+
+    def setUp(self):
+        from config import LoginBlueprintConfig
+        self.login_url = LoginBlueprintConfig.LOGIN_BLUEPRINT_PREFIX + \
+                         LoginBlueprintConfig.LOGIN_VIEW_ROUTE
+
+    def test_login_blueprint_config(self):
+        """Test LoginConfig class."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.login
+
+        cfg = Config(login=False)
+        with self.assertRaises(AttributeError):
+            cfg.login
+
+        cfg = Config(login=True)
+        self.assertTrue(cfg.login)
+
+    def test_login_manager_boostrap_instance(self):
+        """Test login manager instance."""
+        create_app(Config())
+        from flask_template import login_manager
+        self.assertTrue(login_manager is None)
+
+        create_app(Config(login=False))
+        from flask_template import login_manager
+        self.assertTrue(login_manager is None)
+
+        create_app(Config(login=True))
+        from flask_template import login_manager, bootstrap
+        self.assertTrue(login_manager)
+        self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
+        self.assertTrue(bootstrap)
+
+    def test_login_blueprint_config_in_app(self):
+        """Test login blueprint configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['LOGIN_USERNAME']
+            app.config['LOGIN_PASSWORD']
+            app.config['LOGIN_BLUEPRINT_PREFIX']
+            app.config['LOGIN_VIEW_ROUTE']
+
+            app.config['ENABLE_BOOTSTRAP']
+
+        app = create_app(Config(login=False))
+        with self.assertRaises(KeyError):
+            app.config['LOGIN_USERNAME']
+            app.config['LOGIN_PASSWORD']
+            app.config['LOGIN_BLUEPRINT_PREFIX']
+            app.config['LOGIN_VIEW_ROUTE']
+
+            app.config['ENABLE_BOOTSTRAP']
+
+        app = create_app(Config(login=True))
+        self.assertTrue(app.config['LOGIN_USERNAME'])
+        self.assertTrue(app.config['LOGIN_PASSWORD'])
+        self.assertTrue(app.config['LOGIN_BLUEPRINT_PREFIX'])
+        self.assertTrue(app.config['LOGIN_VIEW_ROUTE'])
+
+        self.assertTrue(app.config['ENABLE_BOOTSTRAP'])
+
+    def test_login_blueprint_route(self):
+        """Test login blueprint route."""
+        app = create_app(Config())
+        app = app.test_client()
+        rv = app.get(self.login_url)
+        self.assertEqual(rv.status_code, 404)
+
+        app = create_app(Config(login=True))
+        app = app.test_client()
+        rv = app.get(self.login_url)
+        self.assertEqual(rv.status_code, 200)
 
 
 class TestWechatBlueprintConfig(unittest.TestCase):
     """Test wechat blueprint in config.py."""
 
     def test_wechat_blueprint_config(self):
-        """Test wechat blueprint."""
-        app = create_app(Config())
-        self.assertFalse(app.config['ENABLE_WECHAT'])
-        with self.assertRaises(KeyError):
-            app.config['WECHAT_TOKEN']
-            app.config['WECHAT_SESSION_STORAGE']
-            app.config['WECHAT_BLUEPRINT_PREFIX']
-            app.config['WECHAT_VIEW_ROUTE']
+        """Test WechatConfig class."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.wechat
+
+        cfg = Config(wechat=False)
+        with self.assertRaises(AttributeError):
+            cfg.wechat
+
+        cfg = Config(wechat=True)
+        self.assertTrue(cfg.wechat)
+
+    def test_robot_instance(self):
+        """Test robot instance."""
+        create_app(Config())
         from flask_template.views.wechat.views import robot
-        self.assertFalse(robot.config['TOKEN'])
+        self.assertTrue(robot.config['TOKEN'] is None)
 
-        config = Config()
-        config.enable_wechat_blueprint()
-        app = create_app(config)
-        self.assertTrue(app.config['ENABLE_WECHAT'])
-        self.assertTrue(app.config['WECHAT_TOKEN'])
-        self.assertTrue(app.config['WECHAT_SESSION_STORAGE'] is None)
-        self.assertTrue(app.config['WECHAT_BLUEPRINT_PREFIX'])
-        self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])
-
+        create_app(Config(wechat=True))
         from flask_template.views.wechat.views import robot
         self.assertTrue(robot.config['TOKEN'])
         self.assertTrue(robot.config['SESSION_STORAGE'] is None)
 
-
-class TestSchedulerConfig(unittest.TestCase):
-
-    def test_apscheduler_config(self):
-        """Test Apscheduler config."""
+    def test_wechat_blueprint_config_in_app(self):
+        """Test wechat blueprint configurationin flask app."""
         app = create_app(Config())
-        self.assertFalse(app.config['ENABLE_SCHEDULER'])
-        from flask_template import scheduler
-        self.assertTrue(scheduler is None)
+        with self.assertRaises(KeyError):
+            app.config['WECHAT_TOKEN']
+            app.config['WECHAT_SESSION_STORAGE']
+            app.config['WECHAT_BLUEPRINT_NAME']
+            app.config['WECHAT_VIEW_ROUTE']
 
-        config = Config()
-        config.enable_scheduler()
-        app = create_app(config)
-        self.assertTrue(app.config['ENABLE_SCHEDULER'])
-        from flask_template import scheduler
-        self.assertTrue(scheduler)
-
+        app = create_app(Config(wechat=True))
+        self.assertTrue(app.config['WECHAT_TOKEN'])
+        self.assertTrue(app.config['WECHAT_SESSION_STORAGE'] is None)
+        self.assertTrue(app.config['WECHAT_BLUEPRINT_NAME'])
+        self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])
