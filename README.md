@@ -1,6 +1,6 @@
 # flask-template
 
-Template for flask applications.
+A template for flask applications.
 
 ## Features
 
