@@ -37,7 +37,6 @@ class TestBootstrapConfig(unittest.TestCase):
 
         cfg = Config(bootstrap=True)
         self.assertTrue(cfg.bootstrap)
-        self.assertEqual(cfg.bootstrap['ENABLE_BOOTSTRAP'], True)
 
     def test_bootstrap_instance(self):
         """Test bootstrap instance in flask_template."""
@@ -58,16 +57,16 @@ class TestBootstrapConfig(unittest.TestCase):
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['BOOTSTRAP_SERVE_LOCAL']
-            app.config['ENABLE_BOOTSTRAP']
+            app.config['BOOTSTRAP_USE_MINIFIED']
 
         app = create_app(Config(bootstrap=False))
         with self.assertRaises(KeyError):
             app.config['BOOTSTRAP_SERVE_LOCAL']
-            app.config['ENABLE_BOOTSTRAP']
+            app.config['BOOTSTRAP_USE_MINIFIED']
 
         app = create_app(Config(bootstrap=True))
         self.assertTrue(app.config['BOOTSTRAP_SERVE_LOCAL'])
-        self.assertTrue(app.config['ENABLE_BOOTSTRAP'])
+        self.assertTrue(app.config['BOOTSTRAP_USE_MINIFIED'])
 
     def test_bootstrap_template(self):
         """Test base.html template when bootstrap not exists."""
@@ -137,16 +136,9 @@ class TestIndexBlueprintConfig(unittest.TestCase):
 
     def test_index_blueprint_config_in_app(self):
         """Test index blueprint configuration in app."""
-        app = create_app(Config())
-        with self.assertRaises(KeyError):
-            app.config['INDEX_BLUEPRINT_PREFIX']
-
-        app = create_app(Config(index=False))
-        with self.assertRaises(KeyError):
-            app.config['INDEX_BLUEPRINT_PREFIX']
-
         app = create_app(Config(index=True))
-        self.assertTrue(app.config['INDEX_BLUEPRINT_PREFIX'] is not None)
+        with self.assertRaises(KeyError):
+            app.config['index_blueprint_prefix']
 
     def test_index_blueprint_route(self):
         """Test index blueprint route."""
@@ -166,8 +158,9 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
     def setUp(self):
         from config import LoginBlueprintConfig
-        self.login_url = LoginBlueprintConfig.LOGIN_BLUEPRINT_PREFIX + \
-                         LoginBlueprintConfig.LOGIN_VIEW_ROUTE
+        self.login_url = \
+            LoginBlueprintConfig.login_blueprint_prefix + \
+            LoginBlueprintConfig.login_view_route
 
     def test_login_blueprint_config(self):
         """Test LoginConfig class."""
@@ -195,36 +188,22 @@ class TestLoginBlueprintConfig(unittest.TestCase):
         create_app(Config(login=True))
         from flask_template import login_manager, bootstrap
         self.assertTrue(login_manager)
+        self.assertTrue(login_manager.login_view)
         self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
+        self.assertTrue(login_manager.LOGIN_USERNAME)
+        self.assertTrue(login_manager.LOGIN_PASSWORD)
+        self.assertTrue(login_manager.REDIRECT_URL_ON_SUCCESS)
+
         self.assertTrue(bootstrap)
 
     def test_login_blueprint_config_in_app(self):
         """Test login blueprint configuration in flask app."""
-        app = create_app(Config())
-        with self.assertRaises(KeyError):
-            app.config['LOGIN_USERNAME']
-            app.config['LOGIN_PASSWORD']
-            app.config['LOGIN_BLUEPRINT_PREFIX']
-            app.config['LOGIN_VIEW_ROUTE']
-
-            app.config['ENABLE_BOOTSTRAP']
-
-        app = create_app(Config(login=False))
-        with self.assertRaises(KeyError):
-            app.config['LOGIN_USERNAME']
-            app.config['LOGIN_PASSWORD']
-            app.config['LOGIN_BLUEPRINT_PREFIX']
-            app.config['LOGIN_VIEW_ROUTE']
-
-            app.config['ENABLE_BOOTSTRAP']
-
         app = create_app(Config(login=True))
-        self.assertTrue(app.config['LOGIN_USERNAME'])
-        self.assertTrue(app.config['LOGIN_PASSWORD'])
-        self.assertTrue(app.config['LOGIN_BLUEPRINT_PREFIX'])
-        self.assertTrue(app.config['LOGIN_VIEW_ROUTE'])
-
-        self.assertTrue(app.config['ENABLE_BOOTSTRAP'])
+        with self.assertRaises(KeyError):
+            app.config['login_username']
+            app.config['login_password']
+            app.config['login_blueprint_prefix']
+            app.config['login_view_route']
 
     def test_login_blueprint_route(self):
         """Test login blueprint route."""
@@ -268,15 +247,9 @@ class TestWechatBlueprintConfig(unittest.TestCase):
 
     def test_wechat_blueprint_config_in_app(self):
         """Test wechat blueprint configurationin flask app."""
-        app = create_app(Config())
+        app = create_app(Config(wechat=True))
         with self.assertRaises(KeyError):
             app.config['WECHAT_TOKEN']
             app.config['WECHAT_SESSION_STORAGE']
             app.config['WECHAT_BLUEPRINT_NAME']
             app.config['WECHAT_VIEW_ROUTE']
-
-        app = create_app(Config(wechat=True))
-        self.assertTrue(app.config['WECHAT_TOKEN'])
-        self.assertTrue(app.config['WECHAT_SESSION_STORAGE'] is None)
-        self.assertTrue(app.config['WECHAT_BLUEPRINT_NAME'])
-        self.assertTrue(app.config['WECHAT_VIEW_ROUTE'])

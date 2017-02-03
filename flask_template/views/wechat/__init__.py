@@ -1,3 +1,8 @@
 """
-Set WECHAT_VIEW_ROUTE and wechat is enabled in this route which ends with slash
+Example:
+
+    @robot.handler
+    def hello(message):
+    return 'Hello World'
+
 """

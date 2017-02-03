@@ -8,12 +8,13 @@ scheduler = None
 
 def create_app(cfg):
     """Create flask instance."""
+    # Initialize flask instance.
     app = Flask(__name__)
-    app.config.update(cfg.basic)
+    app.config.update(_upper(cfg.basic))
 
     # Initialize Flask-Bootstrap.
     if getattr(cfg, 'bootstrap', None) is not None:
-        app.config.update(cfg.bootstrap)
+        app.config.update(_upper(cfg.bootstrap))
 
         from flask_bootstrap import Bootstrap
         global bootstrap
@@ -23,7 +24,7 @@ def create_app(cfg):
 
     # Initialize for Flask-SQLAlchemy.
     if getattr(cfg, 'db', None) is not None:
-        app.config.update(cfg.db)
+        app.config.update(_upper(cfg.db))
 
         from flask_sqlalchemy import SQLAlchemy
         global db
@@ -33,7 +34,7 @@ def create_app(cfg):
 
     # Initialize for APScheduler.
     if getattr(cfg, 'scheduler', None) is not None:
-        app.config.update(cfg.scheduler)
+        app.config.update(_upper(cfg.scheduler))
 
         from flask_template.kernel.scheduler.scheduler import Scheduler
         global scheduler
@@ -46,39 +47,43 @@ def create_app(cfg):
 
     # Initialize index blueprint.
     if getattr(cfg, 'index', None) is not None:
-        app.config.update(cfg.index)
+        app.config.update(_upper(cfg.index))
 
         from flask_template.views.index import index as index_blueprint
         app.register_blueprint(
-            index_blueprint, url_prefix=cfg.index['INDEX_BLUEPRINT_PREFIX'])
+            index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
 
     # Initialize login blueprint.
     if getattr(cfg, 'login', None) is not None:
-        app.config.update(cfg.login)
+        app.config.from_object(_upper(cfg.login))
 
         from flask_login import LoginManager
         global login_manager
         login_manager = LoginManager(app)
         login_manager.login_view = 'login.log_in'
-        login_manager.LOGIN_VIEW_ROUTE = cfg.login['LOGIN_VIEW_ROUTE']
+        login_manager.LOGIN_VIEW_ROUTE = cfg.login['login_view_route']
+        login_manager.LOGIN_USERNAME = cfg.login['login_username']
+        login_manager.LOGIN_PASSWORD = cfg.login['login_password']
+        login_manager.REDIRECT_URL_ON_SUCCESS = \
+            cfg.login['redirect_url_on_success']
 
         from flask_template.views.login import login as login_blueprint
         app.register_blueprint(
-            login_blueprint, url_prefix=cfg.login['LOGIN_BLUEPRINT_PREFIX'])
+            login_blueprint, url_prefix=cfg.login['login_blueprint_prefix'])
     else:
         login_manager = None
 
     # Initialize wechat blueprint.
     if getattr(cfg, 'wechat', None) is not None:
-        app.config.update(cfg.wechat)
+        app.config.update(_upper(cfg.wechat))
 
         from werobot.contrib.flask import make_view
         from flask_template.views.wechat.views import robot
-        robot.config['TOKEN'] = cfg.wechat['WECHAT_TOKEN']
-        robot.config['SESSION_STORAGE'] = cfg.wechat['WECHAT_SESSION_STORAGE']
+        robot.config['TOKEN'] = cfg.wechat['wechat_token']
+        robot.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
 
-        app.add_url_rule(rule=cfg.wechat['WECHAT_VIEW_ROUTE'],
-                         endpoint=cfg.wechat['WECHAT_BLUEPRINT_NAME'],
+        app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
+                         endpoint='werobot',
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
     else:
@@ -87,3 +92,8 @@ def create_app(cfg):
         robot.config['SESSION_STORAGE'] = None
 
     return app
+
+
+def _upper(d):
+    """Return non-lower dictionary from dictonary."""
+    return dict(((k, d[k]) for k in d if k.isupper()))

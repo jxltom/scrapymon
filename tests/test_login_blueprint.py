@@ -9,28 +9,36 @@ class TestLoginBlueprint(unittest.TestCase):
     def setUp(self):
         """Initialize flask app."""
         cfg = Config(login=True)
-        self.login_url = cfg.login['LOGIN_BLUEPRINT_PREFIX'] + \
-                         cfg.login['LOGIN_VIEW_ROUTE']
-        self.login_required_url = cfg.login['LOGIN_BLUEPRINT_PREFIX'] + \
-                                  cfg.login['LOGIN_VIEW_ROUTE'] + \
-                                  'login_required'
+
+        self.login_url = \
+            cfg.login['login_blueprint_prefix'] + \
+            cfg.login['login_view_route']
+        self.login_required_url = \
+            cfg.login['login_blueprint_prefix'] + \
+            cfg.login['login_view_route'] + \
+            'login_required'
+        self.username = cfg.login['login_username']
+        self.password = cfg.login['login_password']
+
         self.app = create_app(cfg)
-        self.app.config['LOGIN_USERNAME'] = 'admin'
-        self.app.config['LOGIN_PASSWORD'] = 'admin'
 
     def test_login(self):
         """Test login blueprint."""
         app = self.app.test_client()
-        rv = app.post(self.login_url,
-                      data=dict(username='admin', password='admin',
-                                remember=False, submit=True),
-                      follow_redirects=False)
+        rv = app.post(
+            self.login_url,
+            data=dict(username=self.username, password=self.password,
+                      remember=False, submit=True),
+            follow_redirects=False
+        )
         self.assertTrue(rv.status_code in (200, 302))
 
         app = self.app.test_client()
-        rv = app.post(self.login_url,
-                      data=dict(username='admin', password='wrong'),
-                      follow_redirects=False)
+        rv = app.post(
+            self.login_url,
+            data=dict(username=self.username, password=self.password),
+            follow_redirects=False
+        )
         self.assertTrue(rv.status_code in (200, 302))
 
     def test_login_required(self):
