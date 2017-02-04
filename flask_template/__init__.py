@@ -113,12 +113,6 @@ def create_app(config):
     return app
 
 
-def create_worker(app):
-    """Create Celery instance."""
-
-
-
-
 def _upper(d):
     """Return non-lower dictionary from dictonary."""
     return dict(((k, d[k]) for k in d if k.isupper()))
