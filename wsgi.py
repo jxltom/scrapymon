@@ -9,6 +9,7 @@ app = create_app(Config(
     login=True,
     wechat=True,
 ))
+from flask_template import worker
 
 if __name__ == '__main__':
     app.config.update(DEBUG=True)

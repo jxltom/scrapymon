@@ -1,5 +1,5 @@
 import unittest
-from config import Config
+from config import Config, CeleryConfig
 from flask_template import create_app
 from flask import render_template
 
@@ -20,6 +20,29 @@ class TestBasicConfig(unittest.TestCase):
         app = create_app(Config())
         app.config.update(DEBUG=True)
         self.assertTrue(app.config['DEBUG'])
+
+
+class TestCeleryConfig(unittest.TestCase):
+    """Test celery configuration in config.py"""
+
+    def test_celery_config(self):
+        """Test CeleryConfig class."""
+        create_app(Config())
+        from flask_template import worker
+        self.assertEqual(worker.conf['CELERY_TIMEZONE'],
+                         CeleryConfig.CELERY_TIMEZONE)
+        self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
+                         CeleryConfig.CELERY_ENABLE_UTC)
+        self.assertEqual(worker.conf['BROKER_URL'],
+                         CeleryConfig.BROKER_URL)
+        self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
+                         CeleryConfig.CELERY_RESULT_BACKEND)
+
+    def test_celery(self):
+        """Test celery."""
+        create_app(Config())
+        from flask_template.backend.celerytask.celerytask import celery_test
+        self.assertTrue(celery_test.delay(1, 2))
 
 
 class TestBootstrapConfig(unittest.TestCase):
