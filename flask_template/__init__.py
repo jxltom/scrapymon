@@ -39,7 +39,7 @@ def create_app(cfg):
 
         from easy_scheduler import Scheduler
         global scheduler
-        scheduler = Scheduler()
+        scheduler = Scheduler(timezone='Asia/Hong_Kong')
         scheduler.start()
     else:
         if scheduler:

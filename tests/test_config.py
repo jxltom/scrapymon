@@ -150,7 +150,7 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         app = create_app(Config(index=True))
         app = app.test_client()
         rv = app.get('/_')
-        self.assertEqual(rv.get_data(as_text=True), '')
+        self.assertEqual(rv.get_data(as_text=True), 'success')
 
 
 class TestLoginBlueprintConfig(unittest.TestCase):
