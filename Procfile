@@ -1,2 +1,2 @@
 web: gunicorn wsgi:app
-worker: python wsgi:worker
+worker: celery worker -A wsgi.worker --loglevel=info
