@@ -37,7 +37,7 @@ def create_app(cfg):
     if getattr(cfg, 'scheduler', None) is not None:
         app.config.update(_upper(cfg.scheduler))
 
-        from flask_template.kernel.scheduler.scheduler import Scheduler
+        from easy_scheduler import Scheduler
         global scheduler
         scheduler = Scheduler()
         scheduler.start()

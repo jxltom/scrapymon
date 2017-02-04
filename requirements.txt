@@ -8,5 +8,5 @@ Flask-Mail==0.9.1
 Flask-Script==2.0.5
 werobot==1.0.0
 arrow==0.10.0
-APScheduler==3.3.1
+https://github.com/jxltom/easy-scheduler/archive/master.zip
 gunicorn==19.6.0
