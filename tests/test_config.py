@@ -1,5 +1,5 @@
 import unittest
-from config import Config, DatabaseConfig, CeleryConfig
+from config import Config, DBConfig, CeleryConfig
 from flask_template import create_app, create_worker
 from flask import render_template
 
@@ -85,7 +85,7 @@ class TestDatabaseConfig(unittest.TestCase):
 
     def setUp(self):
         """Initialize test."""
-        self.db = DatabaseConfig.SQLALCHEMY_DATABASE_URI
+        self.db = DBConfig.SQLALCHEMY_DATABASE_URI
 
     def test_database_config(self):
         """Test DatabaseConfig class."""
