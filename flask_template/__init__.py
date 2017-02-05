@@ -7,6 +7,7 @@ mail = None
 login_manager = None
 scheduler = None
 robot = None
+worker = None
 
 
 def create_app(config):
@@ -115,8 +116,9 @@ def create_app(config):
     return app
 
 
-def create_worker(app):
+def update_worker(app):
     """Create Celery instance."""
+    global worker
 
     # Initialize Celery instance.
     worker = Celery(app.import_name)
@@ -131,13 +133,10 @@ def create_worker(app):
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
 
-    return worker
+    # Register Celery tasks.
+    import flask_template.backend.async_tasks.async_tasks
 
 
 def _upper(d):
     """Return non-lower dictionary from dictonary."""
     return dict(((k, d[k]) for k in d if k.isupper()))
-
-
-# Register Celery tasks.
-import flask_template.backend.async_tasks.async_tasks
