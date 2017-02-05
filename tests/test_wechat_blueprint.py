@@ -13,4 +13,10 @@ class TestWechatBlueprint(unittest.TestCase):
     def test_wechat(self):
         """Test wechat views."""
         app = self.app.test_client()
-        app.post(self.wechat_url)
+        rv = app.post(self.wechat_url)
+        self.assertEqual(rv.status_code, 403)
+        self.assertTrue('WeRoBot' in rv.get_data(as_text=True))
+
+        rv = app.get(self.wechat_url)
+        self.assertEqual(rv.status_code, 403)
+        self.assertTrue('WeRoBot' in rv.get_data(as_text=True))
