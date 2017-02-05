@@ -1,5 +1,6 @@
 from flask import Flask
 from celery import Celery
+from flask_template.backend.async_tasks import *  # register celery tasks
 
 bootstrap = None
 db = None
@@ -130,9 +131,6 @@ def create_worker(app):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
-
-    # Register Celery tasks.
-    import flask_template.backend.async_tasks.async_tasks
 
     return worker
 

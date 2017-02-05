@@ -1,7 +1,6 @@
 from config import Config
 from flask_template import create_app, create_worker
 
-
 app = create_app(Config(
     bootstrap=True,
     db='sqlite://',
