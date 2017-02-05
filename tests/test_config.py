@@ -353,7 +353,5 @@ class TestCeleryConfig(unittest.TestCase):
 
     def test_celery(self):
         """Test celery."""
-        app = create_app(Config())
-        create_worker(app)
         from flask_template.backend.async_tasks.async_tasks import async_test
         self.assertTrue(async_test.delay(1, 2))

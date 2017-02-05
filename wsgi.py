@@ -1,5 +1,5 @@
 from config import Config
-from flask_template import create_app, create_worker, load
+from flask_template import create_app, create_worker, register_celery
 
 app = create_app(Config(
     bootstrap=True,
@@ -11,7 +11,7 @@ app = create_app(Config(
     wechat=True,
 ))
 worker = create_worker(app)
-load()
+register_celery()
 
 if __name__ == '__main__':
     app.config.update(DEBUG=True)

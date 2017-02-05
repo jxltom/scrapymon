@@ -110,7 +110,7 @@ def create_app(config):
         robot = None
 
     # Add configuration for Celery.
-    app.config.update(config.celery)
+    app.config.celery = config.celery
 
     return app
 
@@ -120,7 +120,10 @@ def create_worker(app):
 
     # Initialize Celery instance.
     worker = Celery(app.import_name)
-    worker.conf.update(app.config)
+
+    # Configuration for Celery
+    worker.conf.update(app.config.celery)
+    del app.config.celery
 
     # Add app_context to Celery task.
     TaskBase = worker.Task
@@ -139,6 +142,6 @@ def _upper(d):
     return dict(((k, d[k]) for k in d if k.isupper()))
 
 
-def load():
-    # Register Celery tasks.
+def register_celery():
+    """Register Celery tasks."""
     import flask_template.backend.async_tasks.async_tasks
