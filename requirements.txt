@@ -6,9 +6,9 @@ Flask-Login==0.4.0
 Flask-WTF==0.13.1
 Flask-Mail==0.9.1
 Flask-Script==2.0.5
-werobot==1.0.0
+git+https://github.com/whtsky/WeRoBot.git@v1.0.0
 arrow==0.10.0
-https://github.com/jxltom/easy-scheduler/archive/master.zip
+git+https://github.com/jxltom/easy-scheduler.git
 gunicorn==19.6.0
 celery==4.0.2
 redis==2.10.5

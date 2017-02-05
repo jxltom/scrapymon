@@ -10,8 +10,8 @@ A template for flask applications.
 - SMTP mail supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
 - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
 - Login supported by [Flask-Login](https://github.com/maxcountryman/flask-login)
-- [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
+- [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
 
 ## TODO
 
