@@ -11,14 +11,10 @@ robot = None
 
 def create_app(config):
     """Create flask instance."""
+
     # Initialize flask instance.
     app = Flask(__name__)
     app.config.update(config.basic)
-
-    # Add configuration for Celery.
-    app.config.update(config.celery)
-    # Register tasks for Celery.
-    from flask_template.backend import async_tasks
 
     # Initialize Flask-Bootstrap.
     if getattr(config, 'bootstrap', None) is not None:
@@ -113,14 +109,20 @@ def create_app(config):
     else:
         robot = None
 
+    # Add configuration for Celery.
+    app.config.update(config.celery)
+
     return app
 
 
 def create_worker(app):
     """Create Celery instance."""
+
+    # Initialize Celery instance.
     worker = Celery(app.import_name)
     worker.conf.update(app.config)
 
+    # Add app_context to Celery task.
     TaskBase = worker.Task
     class ContextTask(TaskBase):
         abstract = True
@@ -128,6 +130,9 @@ def create_worker(app):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
+
+    # Register Celery tasks.
+    import flask_template.backend.async_tasks.async_tasks
 
     return worker
 
