@@ -17,6 +17,8 @@ def create_app(config):
 
     # Add configuration for Celery.
     app.config.update(config.celery)
+    # Register tasks for Celery.
+    from flask_template.backend import async_tasks
 
     # Initialize Flask-Bootstrap.
     if getattr(config, 'bootstrap', None) is not None:
