@@ -126,7 +126,7 @@ def create_worker(app):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
-
+    
     return worker
 
 
