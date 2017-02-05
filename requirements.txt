@@ -2,13 +2,12 @@ flask==0.12
 Flask-Bootstrap==3.3.7.0
 Flask-SQLAlchemy==2.1
 mysql-connector==2.1.4
+git+https://github.com/jxltom/easy-scheduler.git
+Flask-Mail==0.9.1
 Flask-Login==0.4.0
 Flask-WTF==0.13.1
-Flask-Mail==0.9.1
-Flask-Script==2.0.5
 git+https://github.com/whtsky/WeRoBot.git@v1.0.0
 arrow==0.10.0
-git+https://github.com/jxltom/easy-scheduler.git
-gunicorn==19.6.0
 celery==4.0.2
 redis==2.10.5
+gunicorn==19.6.0

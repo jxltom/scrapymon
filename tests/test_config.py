@@ -83,8 +83,61 @@ class TestBootstrapConfig(unittest.TestCase):
 class TestDatabaseConfig(unittest.TestCase):
     """Test database in config.py."""
 
-    def test_database(self):
-        pass
+    def setUp(self):
+        """Initialize test."""
+        self.db = 'mysql+mysqlconnector://' \
+                  'flask-template:flask-template' \
+                  '@jxltom.me:3306/flask-template'
+
+    def test_database_config(self):
+        """Test DatabaseConfig class."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.db
+
+        cfg = Config(db='')
+        with self.assertRaises(AttributeError):
+            cfg.db
+
+        cfg = Config(db=False)
+        with self.assertRaises(AttributeError):
+            cfg.db
+
+        cfg = Config(db=self.db)
+        self.assertTrue(cfg.db)
+
+    def test_database_instance(self):
+        """Test db instance."""
+        create_app(Config())
+        from flask_template import db
+        self.assertTrue(db is None)
+
+        create_app(Config(db=''))
+        from flask_template import db
+        self.assertTrue(db is None)
+
+        create_app(Config(db=self.db))
+        from flask_template import db
+        self.assertTrue(db)
+
+    def test_database_config_in_app(self):
+        """Test database configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
+            app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
+            app.config['SQLALCHEMY_DATABASE_URI']
+
+        app = create_app(Config(db=''))
+        with self.assertRaises(KeyError):
+            app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
+            app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
+            app.config['SQLALCHEMY_DATABASE_URI']
+
+        app = create_app(Config(db=self.db))
+        app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
+        app.config['SQLALCHEMY_DATABASE_URI']
 
 
 class TestSchedulerConfig(unittest.TestCase):
