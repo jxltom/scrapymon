@@ -342,14 +342,15 @@ class TestCeleryConfig(unittest.TestCase):
                          CeleryConfig.BROKER_URL)
         self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
                          CeleryConfig.CELERY_RESULT_BACKEND)
-        self.assertEqual(app.config['CELERY_TIMEZONE'],
-                         CeleryConfig.CELERY_TIMEZONE)
-        self.assertEqual(app.config['CELERY_ENABLE_UTC'],
-                         CeleryConfig.CELERY_ENABLE_UTC)
-        self.assertEqual(app.config['BROKER_URL'],
-                         CeleryConfig.BROKER_URL)
-        self.assertEqual(app.config['CELERY_RESULT_BACKEND'],
-                         CeleryConfig.CELERY_RESULT_BACKEND)
+
+        with self.assertRaises(KeyError):
+            app.config['CELERY_TIMEZONE']
+            app.config['CELERY_ENABLE_UTC']
+            app.config['BROKER_URL']
+            app.config['CELERY_RESULT_BACKEND']
+
+        with self.assertRaises(AttributeError):
+            app.config.celery
 
     def test_celery(self):
         """Test celery."""
