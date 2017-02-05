@@ -11,6 +11,7 @@ app = create_app(Config(
     wechat=True,
 ))
 worker = create_worker(app)
+from flask_template.backend.async_tasks.async_tasks import send_mail
 
 if __name__ == '__main__':
     app.config.update(DEBUG=True)
