@@ -1,11 +1,11 @@
-from flask_template import worker
+from wsgi import worker
+from flask_template import mail
 from flask_mail import Message
 
 
 @worker.task
 def send_mail(**kwargs):
-    """Send mail by Flask-Mail."""
-    from flask_template import mail
+    """Send mail."""
     mail.send(Message(**kwargs))
     return 0
 

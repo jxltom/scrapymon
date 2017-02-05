@@ -7,14 +7,16 @@ mail = None
 login_manager = None
 scheduler = None
 robot = None
-worker = Celery(__name__)
 
 
 def create_app(config):
     """Create flask instance."""
     # Initialize flask instance.
     app = Flask(__name__)
-    app.config.update(_upper(config.basic))
+    app.config.update(config.basic)
+
+    # Add configuration for Celery.
+    app.config.update(config.celery)
 
     # Initialize Flask-Bootstrap.
     if getattr(config, 'bootstrap', None) is not None:
@@ -109,19 +111,23 @@ def create_app(config):
     else:
         robot = None
 
-    # Initialize Celery
-    worker.conf.update(config.celery)
+    return app
+
+
+def create_worker(app):
+    """Create Celery instance."""
+    worker = Celery(app.import_name)
+    worker.conf.update(app.config)
 
     TaskBase = worker.Task
     class ContextTask(TaskBase):
         abstract = True
         def __call__(self, *args, **kwargs):
-            print(app.extensions)
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
 
-    return app
+    return worker
 
 
 def _upper(d):

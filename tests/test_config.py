@@ -1,6 +1,6 @@
 import unittest
 from config import Config, CeleryConfig
-from flask_template import create_app
+from flask_template import create_app, create_worker
 from flask import render_template
 
 
@@ -172,14 +172,12 @@ class TestMailConfig(unittest.TestCase):
 
     def test_mail(self):
         """Test mail."""
-        create_app(Config(mail=True))
         from flask_template.backend.async_tasks.async_tasks import send_mail
         self.assertEqual(send_mail(subject='success', body='success',
                                    recipients=['jxltom@gmail.com']), 0)
 
     def test_async_mail(self):
         """Test async mail."""
-        create_app(Config(mail=True))
         from flask_template.backend.async_tasks.async_tasks import send_mail
         send_mail.delay(subject='success', body='success',
                         recipients=['jxltom@gmail.com'])
@@ -334,8 +332,8 @@ class TestCeleryConfig(unittest.TestCase):
 
     def test_celery_config(self):
         """Test CeleryConfig class."""
-        create_app(Config())
-        from flask_template import worker
+        app = create_app(Config())
+        worker = create_worker(app)
         self.assertEqual(worker.conf['CELERY_TIMEZONE'],
                          CeleryConfig.CELERY_TIMEZONE)
         self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
@@ -344,9 +342,18 @@ class TestCeleryConfig(unittest.TestCase):
                          CeleryConfig.BROKER_URL)
         self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
                          CeleryConfig.CELERY_RESULT_BACKEND)
+        self.assertEqual(app.config['CELERY_TIMEZONE'],
+                         CeleryConfig.CELERY_TIMEZONE)
+        self.assertEqual(app.config['CELERY_ENABLE_UTC'],
+                         CeleryConfig.CELERY_ENABLE_UTC)
+        self.assertEqual(app.config['BROKER_URL'],
+                         CeleryConfig.BROKER_URL)
+        self.assertEqual(app.config['CELERY_RESULT_BACKEND'],
+                         CeleryConfig.CELERY_RESULT_BACKEND)
 
     def test_celery(self):
         """Test celery."""
-        create_app(Config())
+        app = create_app(Config())
+        create_worker(app)
         from flask_template.backend.async_tasks.async_tasks import async_test
         self.assertTrue(async_test.delay(1, 2))
