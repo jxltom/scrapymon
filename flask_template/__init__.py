@@ -140,4 +140,4 @@ def _upper(d):
 
 
 # Register Celery tasks.
-from flask_template.backend.async_tasks import async_tasks
+import flask_template.backend.async_tasks.async_tasks
