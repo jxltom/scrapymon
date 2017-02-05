@@ -3,9 +3,7 @@ from flask_template import create_app, create_worker, register_celery
 
 app = create_app(Config(
     bootstrap=True,
-    db='mysql+mysqlconnector://'
-       'flask-template:flask-template'
-       '@jxltom.me:3306/flask-template',
+    db=True,
     scheduler=True,
     mail=True,
     index=True,

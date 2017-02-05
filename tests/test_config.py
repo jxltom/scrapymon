@@ -1,5 +1,5 @@
 import unittest
-from config import Config, CeleryConfig
+from config import Config, DatabaseConfig, CeleryConfig
 from flask_template import create_app, create_worker
 from flask import render_template
 
@@ -85,9 +85,7 @@ class TestDatabaseConfig(unittest.TestCase):
 
     def setUp(self):
         """Initialize test."""
-        self.db = 'mysql+mysqlconnector://' \
-                  'flask-template:flask-template' \
-                  '@jxltom.me:3306/flask-template'
+        self.db = DatabaseConfig.SQLALCHEMY_DATABASE_URI
 
     def test_database_config(self):
         """Test DatabaseConfig class."""
@@ -95,15 +93,11 @@ class TestDatabaseConfig(unittest.TestCase):
         with self.assertRaises(AttributeError):
             cfg.db
 
-        cfg = Config(db='')
-        with self.assertRaises(AttributeError):
-            cfg.db
-
         cfg = Config(db=False)
         with self.assertRaises(AttributeError):
             cfg.db
 
-        cfg = Config(db=self.db)
+        cfg = Config(db=True)
         self.assertTrue(cfg.db)
 
     def test_database_instance(self):
@@ -112,11 +106,11 @@ class TestDatabaseConfig(unittest.TestCase):
         from flask_template import db
         self.assertTrue(db is None)
 
-        create_app(Config(db=''))
+        create_app(Config(db=False))
         from flask_template import db
         self.assertTrue(db is None)
 
-        create_app(Config(db=self.db))
+        create_app(Config(db=True))
         from flask_template import db
         self.assertTrue(db)
 
@@ -128,13 +122,13 @@ class TestDatabaseConfig(unittest.TestCase):
             app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
             app.config['SQLALCHEMY_DATABASE_URI']
 
-        app = create_app(Config(db=''))
+        app = create_app(Config(db=False))
         with self.assertRaises(KeyError):
             app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
             app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
             app.config['SQLALCHEMY_DATABASE_URI']
 
-        app = create_app(Config(db=self.db))
+        app = create_app(Config(db=True))
         app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
         app.config['SQLALCHEMY_DATABASE_URI']
