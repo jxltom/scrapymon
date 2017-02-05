@@ -131,6 +131,8 @@ def create_worker(app):
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
 
+    import flask_template.backend.async_tasks
+
     return worker
 
 
