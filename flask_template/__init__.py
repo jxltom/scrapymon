@@ -3,6 +3,7 @@ from celery import Celery
 
 bootstrap = None
 db = None
+mail = None
 login_manager = None
 scheduler = None
 robot = None
@@ -14,18 +15,6 @@ def create_app(config):
     # Initialize flask instance.
     app = Flask(__name__)
     app.config.update(_upper(config.basic))
-
-    # Initialize Celery
-    worker.conf.update(config.celery)
-
-    TaskBase = worker.Task
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    worker.Task = ContextTask
-    from flask_template.backend.celerytask import celerytask
 
     # Initialize Flask-Bootstrap.
     if getattr(config, 'bootstrap', None) is not None:
@@ -59,6 +48,16 @@ def create_app(config):
         if scheduler:
             scheduler.shutdown()
             scheduler = None
+
+    # Initialize for Flask-Mail
+    if getattr(config, 'mail', None) is not None:
+        app.config.update(_upper(config.mail))
+
+        from flask_mail import Mail
+        global mail
+        mail = Mail(app)
+    else:
+        mail = None
 
     # Initialize index blueprint.
     if getattr(config, 'index', None) is not None:
@@ -109,6 +108,18 @@ def create_app(config):
                          methods=['GET', 'POST'])
     else:
         robot = None
+
+    # Initialize Celery
+    worker.conf.update(config.celery)
+
+    TaskBase = worker.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            print(app.extensions)
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    worker.Task = ContextTask
 
     return app
 

@@ -22,29 +22,6 @@ class TestBasicConfig(unittest.TestCase):
         self.assertTrue(app.config['DEBUG'])
 
 
-class TestCeleryConfig(unittest.TestCase):
-    """Test celery configuration in config.py"""
-
-    def test_celery_config(self):
-        """Test CeleryConfig class."""
-        create_app(Config())
-        from flask_template import worker
-        self.assertEqual(worker.conf['CELERY_TIMEZONE'],
-                         CeleryConfig.CELERY_TIMEZONE)
-        self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
-                         CeleryConfig.CELERY_ENABLE_UTC)
-        self.assertEqual(worker.conf['BROKER_URL'],
-                         CeleryConfig.BROKER_URL)
-        self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
-                         CeleryConfig.CELERY_RESULT_BACKEND)
-
-    def test_celery(self):
-        """Test celery."""
-        create_app(Config())
-        from flask_template.backend.celerytask.celerytask import celery_test
-        self.assertTrue(celery_test.delay(1, 2))
-
-
 class TestBootstrapConfig(unittest.TestCase):
     """Test bootstrap configuration in config.py."""
 
@@ -139,6 +116,73 @@ class TestSchedulerConfig(unittest.TestCase):
         create_app(Config(scheduler=True))
         from flask_template import scheduler
         self.assertTrue(scheduler)
+
+
+class TestMailConfig(unittest.TestCase):
+    """Test mail in conf.py."""
+
+    def test_mail_config(self):
+        """Test MailConfig config."""
+        cfg = Config()
+        with self.assertRaises(AttributeError):
+            cfg.mail
+
+        cfg = Config(mail=False)
+        with self.assertRaises(AttributeError):
+            cfg.mail
+
+        cfg = Config(mail=True)
+        self.assertTrue(cfg.mail)
+
+    def test_mail_config_in_app(self):
+        """Test mail configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['MAIL_SERVER']
+            app.config['MAIL_PORT']
+            app.config['MAIL_USE_TLS']
+            app.config['MAIL_USE_SSL']
+            app.config['MAIL_USERNAME']
+            app.config['MAIL_PASSWORD']
+            app.config['MAIL_DEFAULT_SENDER']
+
+        app = create_app(Config(mail=True))
+        self.assertTrue(app.config['MAIL_SERVER'])
+        self.assertTrue(app.config['MAIL_PORT'])
+        self.assertTrue(app.config['MAIL_USE_TLS'] in (True, False))
+        self.assertTrue(app.config['MAIL_USE_SSL'] in (True, False))
+        self.assertTrue(app.config['MAIL_USERNAME'])
+        self.assertTrue(app.config['MAIL_PASSWORD'])
+        self.assertTrue(app.config['MAIL_DEFAULT_SENDER'] or
+                        app.config['MAIL_DEFAULT_SENDER'] is None)
+
+    def test_mail_instance(self):
+        """Test mail instance."""
+        create_app(Config())
+        from flask_template import mail
+        self.assertTrue(mail is None)
+
+        create_app(Config(mail=False))
+        from flask_template import mail
+        self.assertTrue(mail is None)
+
+        create_app(Config(mail=True))
+        from flask_template import mail
+        self.assertTrue(mail)
+
+    def test_mail(self):
+        """Test mail."""
+        create_app(Config(mail=True))
+        from flask_template.backend.async_tasks.async_tasks import send_mail
+        self.assertEqual(send_mail(subject='success', body='success',
+                                   recipients=['jxltom@gmail.com']), 0)
+
+    def test_async_mail(self):
+        """Test async mail."""
+        create_app(Config(mail=True))
+        from flask_template.backend.async_tasks.async_tasks import send_mail
+        send_mail.delay(subject='success', body='success',
+                        recipients=['jxltom@gmail.com'])
 
 
 class TestIndexBlueprintConfig(unittest.TestCase):
@@ -283,3 +327,26 @@ class TestWechatBlueprintConfig(unittest.TestCase):
         create_app(Config(wechat=True))
         from flask_template import robot
         self.assertTrue(robot._handlers['text'])
+
+
+class TestCeleryConfig(unittest.TestCase):
+    """Test celery configuration in config.py"""
+
+    def test_celery_config(self):
+        """Test CeleryConfig class."""
+        create_app(Config())
+        from flask_template import worker
+        self.assertEqual(worker.conf['CELERY_TIMEZONE'],
+                         CeleryConfig.CELERY_TIMEZONE)
+        self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
+                         CeleryConfig.CELERY_ENABLE_UTC)
+        self.assertEqual(worker.conf['BROKER_URL'],
+                         CeleryConfig.BROKER_URL)
+        self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
+                         CeleryConfig.CELERY_RESULT_BACKEND)
+
+    def test_celery(self):
+        """Test celery."""
+        create_app(Config())
+        from flask_template.backend.async_tasks.async_tasks import async_test
+        self.assertTrue(async_test.delay(1, 2))

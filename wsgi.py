@@ -6,6 +6,7 @@ app = create_app(Config(
     bootstrap=True,
     db='sqlite://',
     scheduler=True,
+    mail=True,
     index=True,
     login=True,
     wechat=True,
