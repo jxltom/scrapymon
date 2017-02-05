@@ -12,4 +12,5 @@ def send_mail(**kwargs):
 
 @worker.task
 def async_test(x, y):
+    """Celery test."""
     return x + y

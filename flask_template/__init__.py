@@ -1,6 +1,5 @@
 from flask import Flask
 from celery import Celery
-from flask_template.backend.async_tasks import *  # register celery tasks
 
 bootstrap = None
 db = None
@@ -138,3 +137,7 @@ def create_worker(app):
 def _upper(d):
     """Return non-lower dictionary from dictonary."""
     return dict(((k, d[k]) for k in d if k.isupper()))
+
+
+# Register Celery tasks.
+from flask_template.backend.async_tasks import async_tasks
