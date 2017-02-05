@@ -131,8 +131,6 @@ def create_worker(app):
                 return TaskBase.__call__(self, *args, **kwargs)
     worker.Task = ContextTask
 
-    import flask_template.backend.async_tasks
-
     return worker
 
 
@@ -141,5 +139,6 @@ def _upper(d):
     return dict(((k, d[k]) for k in d if k.isupper()))
 
 
-# Register Celery tasks.
-import flask_template.backend.async_tasks.async_tasks
+def load():
+    # Register Celery tasks.
+    import flask_template.backend.async_tasks.async_tasks
