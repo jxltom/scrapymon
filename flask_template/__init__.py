@@ -13,8 +13,32 @@ mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 login_manager = LoginManager()
 robot = WeRoBot(enable_session=False)
+worker = Celery(__name__)
+
+def teardown(func):
+
+    def wrapper(*args, **kwargs):
+        _app = func(*args, **kwargs)
+
+        # Add context to Celery.
+        TaskBase = worker.Task
+        class ContextTask(TaskBase):
+            abstract = True
+            def __call__(self, *args, **kwargs):
+                #with _app.app_context():
+                _app.app_context.push()
+                return TaskBase.__call__(self, *args, **kwargs)
+        worker.Task = ContextTask
+
+        # Register Celery tasks.
+        from flask_template.backend.async_tasks import async_tasks
+
+        return _app
+
+    return wrapper
 
 
+@teardown
 def create_app(config):
     """Create flask instance."""
 
@@ -27,22 +51,21 @@ def create_app(config):
         app.config.update(_upper(config.bootstrap))
         bootstrap.init_app(app)
 
-    # Initialize for Flask-SQLAlchemy.
+    # Initialize Flask-SQLAlchemy.
     if config.has_attr('db'):
         app.config.update(_upper(config.db))
         db.init_app(app)
 
         import flask_template.models  # load db tables
 
-    # Initialize for Flask-Mail
+    # Initialize Flask-Mail
     if config.has_attr('mail'):
         app.config.update(_upper(config.mail))
         mail.init_app(app)
 
-    # Initialize for APScheduler.
+    # Initialize APScheduler.
     if config.has_attr('scheduler'):
-        if not scheduler._scheduler.running:
-            scheduler.start()
+        scheduler.start()
 
     # Initialize index blueprint.
     if config.has_attr('index'):
@@ -76,41 +99,10 @@ def create_app(config):
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
 
-    # Add configuration for Celery.
-    app.config.celery = config.celery
+    # Initialize Celery.
+    worker.conf.update(config.celery)
 
     return app
-
-
-def _register_worker_tasks(func):
-    """Register Celery tasks."""
-    def wrapper(*args, **kwargs):
-        worker = func(*args, **kwargs)
-        from flask_template.backend.async_tasks import async_tasks
-        return worker
-    return wrapper
-
-
-def create_worker(app):
-    """Create Celery instance."""
-
-    # Initialize Celery instance.
-    worker = Celery(app.import_name)
-
-    # Configuration for Celery
-    worker.conf.update(app.config.celery)
-    del app.config.celery
-
-    # Add app_context to Celery task.
-    TaskBase = worker.Task
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    worker.Task = ContextTask
-
-    return worker
 
 
 def _upper(d):

@@ -1,6 +1,6 @@
 import unittest
 from config import Config, DBConfig, WechatBlueprintConfig, CeleryConfig
-from flask_template import create_app, create_worker
+from flask_template import create_app
 from flask import render_template
 
 
@@ -166,12 +166,14 @@ class TestMailConfig(unittest.TestCase):
 
     def test_mail(self):
         """Test mail."""
+        create_app(Config())
         from flask_template.backend.async_tasks.async_tasks import send_mail
         self.assertEqual(send_mail(subject='success', body='success',
                                    recipients=['jxltom@gmail.com']), 0)
 
     def test_async_mail(self):
         """Test async mail."""
+        create_app(Config())
         from flask_template.backend.async_tasks.async_tasks import send_mail
         send_mail.delay(subject='success', body='success',
                         recipients=['jxltom@gmail.com'])
@@ -307,7 +309,7 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery_config(self):
         """Test CeleryConfig class."""
         app = create_app(Config())
-        worker = create_worker(app)
+        from flask_template import worker
         self.assertEqual(worker.conf['CELERY_TIMEZONE'],
                          CeleryConfig.CELERY_TIMEZONE)
         self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
@@ -328,5 +330,6 @@ class TestCeleryConfig(unittest.TestCase):
 
     def test_celery(self):
         """Test celery."""
+        create_app(Config())
         from flask_template.backend.async_tasks.async_tasks import async_test
         self.assertTrue(async_test.delay(1, 2))

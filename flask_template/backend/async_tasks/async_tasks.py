@@ -1,4 +1,4 @@
-from wsgi import worker
+from flask_template import worker
 from flask_template import mail
 from flask_mail import Message
 
