@@ -106,31 +106,6 @@ class TestDatabaseConfig(unittest.TestCase):
         app.config['SQLALCHEMY_ECHO']
 
 
-class TestSchedulerConfig(unittest.TestCase):
-    """Test scheduler configuration."""
-
-    def test_scheduler_config(self):
-        """Test SchedulerConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('scheduler'))
-
-        config = Config(scheduler=False)
-        self.assertFalse(config.has_attr('scheduler'))
-
-        config = Config(scheduler=True)
-        self.assertTrue(config.has_attr('scheduler'))
-
-    def test_scheduler(self):
-        """Test scheduler in flask app."""
-        create_app(Config())
-        from flask_template import scheduler
-        self.assertFalse(scheduler._scheduler.running)
-
-        create_app(Config(scheduler=True))
-        from flask_template import scheduler
-        self.assertTrue(scheduler._scheduler.running)
-
-
 class TestMailConfig(unittest.TestCase):
     """Test mail configuration."""
 
@@ -182,6 +157,31 @@ class TestMailConfig(unittest.TestCase):
                         recipients=['jxltom@gmail.com'])
 
 
+class TestSchedulerConfig(unittest.TestCase):
+    """Test scheduler configuration."""
+
+    def test_scheduler_config(self):
+        """Test SchedulerConfig class."""
+        config = Config()
+        self.assertFalse(config.has_attr('scheduler'))
+
+        config = Config(scheduler=False)
+        self.assertFalse(config.has_attr('scheduler'))
+
+        config = Config(scheduler=True)
+        self.assertTrue(config.has_attr('scheduler'))
+
+    def test_scheduler(self):
+        """Test scheduler in flask app."""
+        create_app(Config())
+        from flask_template import scheduler
+        self.assertFalse(scheduler._scheduler.running)
+
+        create_app(Config(scheduler=True))
+        from flask_template import scheduler
+        self.assertTrue(scheduler._scheduler.running)
+
+
 class TestIndexBlueprintConfig(unittest.TestCase):
     """Test index blueprint configuration."""
 
@@ -220,7 +220,7 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
     def setUp(self):
         from config import LoginBlueprintConfig
-        self.login_url = \
+        self.url = \
             LoginBlueprintConfig.login_blueprint_prefix + \
             LoginBlueprintConfig.login_view_route
 
@@ -233,38 +233,47 @@ class TestLoginBlueprintConfig(unittest.TestCase):
         self.assertFalse(config.has_attr('login'))
 
         config = Config(login=True)
-        self.assertTrue(config.has_attr('login'))
         self.assertTrue(config.has_attr('bootstrap'))
+        self.assertTrue(config.has_attr('db'))
+        self.assertTrue(config.has_attr('login'))
+
+    def test_login_blueprint_config_in_app(self):
+        """Test login blueprint configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['SESSION_PROTECTION']
+
+        app = create_app(Config(login=False))
+        with self.assertRaises(KeyError):
+            app.config['SESSION_PROTECTION']
+
+        app = create_app(Config(login=True))
+        self.assertTrue(app.config['SESSION_PROTECTION'])
+        with self.assertRaises(KeyError):
+            app.config['login_blueprint_prefix']
+            app.config['login_view_route']
+            app.config['success_redirect_url']
 
     def test_login_manager_boostrap_instance(self):
         """Test login manager instance."""
         create_app(Config(login=True))
         from flask_template import login_manager
         self.assertTrue(login_manager.login_view)
-        self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
-        self.assertTrue(login_manager.LOGIN_USERNAME)
-        self.assertTrue(login_manager.LOGIN_PASSWORD)
-        self.assertTrue(login_manager.REDIRECT_URL_ON_SUCCESS)
-
-    def test_login_blueprint_config_in_app(self):
-        """Test login blueprint configuration in flask app."""
-        app = create_app(Config(login=True))
-        with self.assertRaises(KeyError):
-            app.config['login_username']
-            app.config['login_password']
-            app.config['login_blueprint_prefix']
-            app.config['login_view_route']
+        self.assertTrue(login_manager.login_view_route)
+        self.assertTrue(login_manager.success_redirect_url)
+        self.assertTrue(login_manager.login_admins)
+        self.assertEqual(type(login_manager.login_admins), dict)
 
     def test_login_blueprint_route(self):
         """Test login blueprint route."""
         app = create_app(Config())
         app = app.test_client()
-        rv = app.get(self.login_url)
+        rv = app.get(self.url)
         self.assertEqual(rv.status_code, 404)
 
         app = create_app(Config(login=True))
         app = app.test_client()
-        rv = app.get(self.login_url)
+        rv = app.get(self.url)
         self.assertEqual(rv.status_code, 200)
 
 

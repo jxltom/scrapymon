@@ -6,7 +6,7 @@ from flask_template.models.user import User
 from flask import render_template, request, redirect, url_for
 
 
-@login.route(login_manager.LOGIN_VIEW_ROUTE, methods=['GET', 'POST'])
+@login.route(login_manager.login_view_route, methods=['GET', 'POST'])
 def log_in():
     """Login.
 
@@ -14,7 +14,7 @@ def log_in():
     login_view of login_manager.
     """
     if current_user.is_authenticated:
-        return redirect(login_manager.REDIRECT_URL_ON_SUCCESS)
+        return redirect(login_manager.success_redirect_url)
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -26,7 +26,7 @@ def log_in():
             login_user(User(id_=username), remember=form.remember.data)
 
             return redirect(request.args.get('next') or
-                            login_manager.REDIRECT_URL_ON_SUCCESS)
+                            login_manager.success_redirect_url)
 
     return render_template('login.html', form=form)
 

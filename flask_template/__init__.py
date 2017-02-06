@@ -44,6 +44,15 @@ def _teardown(func):
             if _app.extensions.get('sqlalchemy'):
                 db.create_all()
 
+        # Initialize admin accounts for login
+        if getattr(_app, 'login_manager', None):
+            from flask_template.models.user import User
+            with _app.app_context():
+                for id, pwd in login_manager.login_admins.items():
+                    if not User.query.get(id):
+                        db.session.add(User(id, pwd))
+                db.session.commit()
+
         return _app
 
     return wrapper
@@ -89,13 +98,13 @@ def create_app(config):
 
     # Initialize login blueprint.
     if config.has_attr('login'):
+        app.config.update(_upper(config.login))
+
         login_manager.init_app(app)
-        login_manager.login_view = 'login.log_in'
-        login_manager.LOGIN_VIEW_ROUTE = config.login['login_view_route']
-        login_manager.LOGIN_USERNAME = config.login['login_username']
-        login_manager.LOGIN_PASSWORD = config.login['login_password']
-        login_manager.REDIRECT_URL_ON_SUCCESS = \
-            config.login['redirect_url_on_success']
+        login_manager.login_view = 'login.log_in'  # login view function
+        login_manager.login_view_route = config.login['login_view_route']
+        login_manager.success_redirect_url = config.login['success_redirect_url']
+        login_manager.login_admins = config.login['login_admins']
 
         from flask_template.views.login import login as login_blueprint
         app.register_blueprint(
