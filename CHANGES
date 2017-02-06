@@ -7,9 +7,15 @@
     - SMTP mail supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
     - Database immigration supported
 
+- Bugfixes
+
+    - Fixed an issue where celery is binded with context of local flask instance not global flask instance.
+    - Fixed an issue where importing variables in wsgi.py, not in application package, which changing testing environment.
+
 - Miscellaneous
 
-    - Refactor initialization using decorators.
+    - Refactor initialization using decorators
+    - Refactor authentication using database
 
 ## Version 0.1.1 (2017-02-04)
 
@@ -24,6 +30,6 @@
     - [Bootstrap](http://getbootstrap.com/) supported by [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap/)
     - Database supported by [Flask-SQLAlchemy](https://github.com/mitsuhiko/flask-sqlalchemy)
     - Task scheduling supported by [APScheduler](https://github.com/agronholm/apscheduler)
+    - Authentication supported by [Flask-Login](https://github.com/maxcountryman/flask-login)
     - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
-    - Login supported by [Flask-Login](https://github.com/maxcountryman/flask-login)
     - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported

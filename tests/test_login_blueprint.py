@@ -1,5 +1,5 @@
 import unittest
-from config import Config
+from config import Config, LoginBlueprintConfig
 from flask_template import create_app
 
 
@@ -7,43 +7,37 @@ class TestLoginBlueprint(unittest.TestCase):
     """Test the login blueprint."""
 
     def setUp(self):
-        """Initialize flask app."""
-        cfg = Config(login=True)
-
+        """Initialize tests."""
         self.login_url = \
-            cfg.login['login_blueprint_prefix'] + \
-            cfg.login['login_view_route']
-        self.login_required_url = \
-            cfg.login['login_blueprint_prefix'] + \
-            cfg.login['login_view_route'] + \
-            'login_required'
-        self.username = cfg.login['login_username']
-        self.password = cfg.login['login_password']
+            LoginBlueprintConfig.login_blueprint_prefix + \
+            LoginBlueprintConfig.login_view_route
+        self.login_required_url = self.login_url + 'login_required'
 
-        self.app = create_app(cfg)
+        self.id, self.pwd = list(LoginBlueprintConfig.login_admins.items())[0]
 
     def test_login(self):
-        """Test login blueprint."""
-        app = self.app.test_client()
+        """Test login page."""
+        app = create_app(Config(login=True))
+        app = app.test_client()
         rv = app.post(
             self.login_url,
-            data=dict(username=self.username, password=self.password,
+            data=dict(username=self.id, password=self.pwd,
                       remember=False, submit=True),
             follow_redirects=False
         )
         self.assertTrue(rv.status_code in (200, 302))
 
-        app = self.app.test_client()
         rv = app.post(
             self.login_url,
-            data=dict(username=self.username, password=self.password),
+            data=dict(username='invalid', password='invalid'),
             follow_redirects=False
         )
         self.assertTrue(rv.status_code in (200, 302))
 
     def test_login_required(self):
-        """Test login required function."""
-        app = self.app.test_client()
+        """Test required login page."""
+        app = create_app(Config(login=True))
+        app = app.test_client()
         rv = app.get(self.login_required_url)
         self.assertTrue('Unauthorized' not in rv.get_data(as_text=True))
         self.assertEqual(rv.status_code, 302)

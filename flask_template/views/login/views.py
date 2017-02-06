@@ -1,8 +1,8 @@
-from . import login
-from .form import LoginForm
-from flask_login import login_user, current_user, login_required
-from flask_template import login_manager
+from flask_template.views.login import login
+from flask_template.views.login.form import LoginForm
 from flask_template.models.user import User
+from flask_template import login_manager
+from flask_login import login_user, current_user, login_required
 from flask import render_template, request, redirect, url_for
 
 
@@ -18,12 +18,12 @@ def log_in():
 
     form = LoginForm()
     if form.validate_on_submit():
-        username, password = form.username.data, form.password.data
+        id, pwd = form.username.data, form.password.data
         form.username.data, form.password.data = '', ''
 
-        if _auth(username, password):
+        if _auth(id, pwd):
             form.remember.data = True  # always enable remember me
-            login_user(User(id_=username), remember=form.remember.data)
+            login_user(User(id, pwd), remember=form.remember.data)
 
             return redirect(request.args.get('next') or
                             login_manager.success_redirect_url)
@@ -32,14 +32,14 @@ def log_in():
 
 
 @login_manager.user_loader
-def user_loader(id_):
-    return User(id_=id_)
+def user_loader(id):
+    return User.query.get(id)
 
 
-def _auth(username, password):
+def _auth(id, pwd):
     """Authentication for login."""
-    if login_manager.LOGIN_USERNAME == username \
-            and login_manager.LOGIN_PASSWORD == password:
+    user = User.query.get(id)
+    if user and user.id == id and user.pwd == pwd:
         return True
     return False
 
