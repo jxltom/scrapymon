@@ -280,6 +280,9 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 class TestWechatBlueprintConfig(unittest.TestCase):
     """Test wechat blueprint configuration."""
 
+    def setUp(self):
+        self.wechat_url = WechatBlueprintConfig.wechat_view_route
+
     def test_wechat_blueprint_config(self):
         """Test WechatConfig class."""
         config = Config()
@@ -313,6 +316,18 @@ class TestWechatBlueprintConfig(unittest.TestCase):
         create_app(Config(wechat=True))
         from flask_template import robot
         self.assertTrue(robot._handlers['text'])
+
+    def test_wechat(self):
+        """Test wechat views."""
+        app = create_app(Config(wechat=True))
+        app = app.test_client()
+        rv = app.post(self.wechat_url)
+        self.assertEqual(rv.status_code, 403)
+        self.assertTrue('WeRoBot' in rv.get_data(as_text=True))
+
+        rv = app.get(self.wechat_url)
+        self.assertEqual(rv.status_code, 403)
+        self.assertTrue('WeRoBot' in rv.get_data(as_text=True))
 
 
 class TestCeleryConfig(unittest.TestCase):

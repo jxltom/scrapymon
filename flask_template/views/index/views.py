@@ -1,4 +1,4 @@
-from . import index
+from flask_template.views.index import index
 
 
 @index.route('/_')
