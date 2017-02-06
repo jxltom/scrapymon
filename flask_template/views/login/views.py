@@ -33,7 +33,7 @@ def log_in():
 
 
 @login_manager.user_loader
-def user_loader(uid):
+def _user_loader(uid):
     return User.query.get(uid)
 
 
