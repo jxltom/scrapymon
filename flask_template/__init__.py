@@ -39,9 +39,9 @@ def _teardown(func):
         import flask_template.backend.async_tasks
 
         # Load and initialize DB tables
-        import flask_template.models
-        with _app.app_context():
-            if _app.extensions.get('sqlalchemy'):
+        if _app.extensions.get('sqlalchemy'):
+            import flask_template.models
+            with _app.app_context():
                 db.create_all()
 
         # Initialize admin accounts for login
@@ -54,7 +54,6 @@ def _teardown(func):
                 db.session.commit()
 
         return _app
-
     return wrapper
 
 
