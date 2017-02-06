@@ -1,9 +1,10 @@
-from flask_template.views.login import login
-from flask_template.views.login.form import LoginForm
-from flask_template.models.user import User
-from flask_template import login_manager
-from flask_login import login_user, current_user, login_required
 from flask import render_template, request, redirect, url_for
+from flask_login import login_user, current_user, login_required
+
+from flask_template import login_manager
+from flask_template.models.user import User
+from . import login
+from .form import LoginForm
 
 
 @login.route(login_manager.login_view_route, methods=['GET', 'POST'])
