@@ -325,9 +325,6 @@ class TestCeleryConfig(unittest.TestCase):
             app.config['BROKER_URL']
             app.config['CELERY_RESULT_BACKEND']
 
-        with self.assertRaises(AttributeError):
-            app.config.celery
-
     def test_celery(self):
         """Test celery."""
         create_app(Config())

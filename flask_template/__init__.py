@@ -16,12 +16,17 @@ robot = WeRoBot(enable_session=False)
 worker = Celery(__name__)
 
 
-def teardown(func):
+def _teardown(func):
+    """Teardown after initialization."""
+    _app = None
 
     def wrapper(*args, **kwargs):
+
+        # Initialize flask instance.
+        global _app
         _app = func(*args, **kwargs)
 
-        # Add context to Celery.
+        # Push context to Celery.
         TaskBase = worker.Task
         class ContextTask(TaskBase):
             abstract = True
@@ -38,7 +43,12 @@ def teardown(func):
     return wrapper
 
 
-@teardown
+def _upper(d):
+    """Return non-lower dictionary from dictonary."""
+    return dict(((k, d[k]) for k in d if k.isupper()))
+
+
+@_teardown
 def create_app(config):
     """Create flask instance."""
 
@@ -103,8 +113,3 @@ def create_app(config):
     worker.conf.update(config.celery)
 
     return app
-
-
-def _upper(d):
-    """Return non-lower dictionary from dictonary."""
-    return dict(((k, d[k]) for k in d if k.isupper()))
