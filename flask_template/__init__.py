@@ -48,9 +48,9 @@ def _teardown(func):
         if getattr(_app, 'login_manager', None):
             from flask_template.models.user import User
             with _app.app_context():
-                for id, pwd in login_manager.login_admins.items():
-                    if not User.query.get(id):
-                        db.session.add(User(id, pwd))
+                for uid, pwd in login_manager.login_admins.items():
+                    if not User.query.get(uid):
+                        db.session.add(User(uid, pwd))
                 db.session.commit()
 
         return _app

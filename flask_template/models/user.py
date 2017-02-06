@@ -7,15 +7,15 @@ class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.String(255), primary_key=True)
+    uid = db.Column(db.String(255), primary_key=True)
     pwd = db.Column(db.String(255))
 
-    def __init__(self, id, pwd):
+    def __init__(self, uid, pwd):
         """Initialize user."""
-        self.id = id
+        self.uid = uid
         self.pwd = pwd
 
     def get_id(self):
-        """Get user ID."""
-        return self.id
+        """Get user uid."""
+        return self.uid
 

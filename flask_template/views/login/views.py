@@ -18,12 +18,12 @@ def log_in():
 
     form = LoginForm()
     if form.validate_on_submit():
-        id, pwd = form.username.data, form.password.data
+        uid, pwd = form.username.data, form.password.data
         form.username.data, form.password.data = '', ''
 
-        if _auth(id, pwd):
+        if _auth(uid, pwd):
             form.remember.data = True  # always enable remember me
-            login_user(User(id, pwd), remember=form.remember.data)
+            login_user(User(uid, pwd), remember=form.remember.data)
 
             return redirect(request.args.get('next') or
                             login_manager.success_redirect_url)
@@ -32,14 +32,14 @@ def log_in():
 
 
 @login_manager.user_loader
-def user_loader(id):
-    return User.query.get(id)
+def user_loader(uid):
+    return User.query.get(uid)
 
 
-def _auth(id, pwd):
+def _auth(uid, pwd):
     """Authentication for login."""
-    user = User.query.get(id)
-    if user and user.id == id and user.pwd == pwd:
+    user = User.query.get(uid)
+    if user and user.uid == uid and user.pwd == pwd:
         return True
     return False
 
