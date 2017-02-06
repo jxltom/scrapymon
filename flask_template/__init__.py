@@ -35,8 +35,14 @@ def _teardown(func):
                     return TaskBase.__call__(self, *args, **kwargs)
         worker.Task = ContextTask
 
-        # Register Celery tasks.
+        # Load Celery tasks.
         from flask_template.backend.async_tasks import async_tasks
+
+        # Load and initialize DB tables
+        import flask_template.models
+        with _app.app_context():
+            if _app.extensions.get('sqlalchemy'):
+                db.create_all()
 
         return _app
 
@@ -65,8 +71,6 @@ def create_app(config):
     if config.has_attr('db'):
         app.config.update(_upper(config.db))
         db.init_app(app)
-
-        import flask_template.models  # load db tables
 
     # Initialize Flask-Mail
     if config.has_attr('mail'):

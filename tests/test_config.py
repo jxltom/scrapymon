@@ -90,17 +90,20 @@ class TestDatabaseConfig(unittest.TestCase):
             app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
             app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
             app.config['SQLALCHEMY_DATABASE_URI']
+            app.config['SQLALCHEMY_ECHO']
 
         app = create_app(Config(db=False))
         with self.assertRaises(KeyError):
             app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
             app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
             app.config['SQLALCHEMY_DATABASE_URI']
+            app.config['SQLALCHEMY_ECHO']
 
         app = create_app(Config(db=True))
         app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
         app.config['SQLALCHEMY_DATABASE_URI']
+        app.config['SQLALCHEMY_ECHO']
 
 
 class TestSchedulerConfig(unittest.TestCase):
