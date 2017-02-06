@@ -1,8 +1,9 @@
 from flask import Flask
 from celery import Celery
+from flask_sqlalchemy import SQLAlchemy
 
 bootstrap = None
-db = None
+db = SQLAlchemy()
 mail = None
 login_manager = None
 scheduler = None
@@ -30,9 +31,9 @@ def create_app(config):
     if getattr(config, 'db', None) is not None:
         app.config.update(_upper(config.db))
 
-        from flask_sqlalchemy import SQLAlchemy
+
         global db
-        db = SQLAlchemy(app)
+        db.init_app(app)
     else:
         db = None
 
@@ -127,11 +128,14 @@ def create_worker(app):
 
     # Add app_context to Celery task.
     TaskBase = worker.Task
+
     class ContextTask(TaskBase):
         abstract = True
+
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
+
     worker.Task = ContextTask
 
     return worker
@@ -145,3 +149,19 @@ def _upper(d):
 def register_celery():
     """Register Celery tasks."""
     import flask_template.backend.async_tasks.async_tasks
+
+
+def init_database():
+    """Initialize databse."""
+    global db
+    #print(db)
+    from wsgi import app
+    from flask_template.models.login_model import User
+    with app.app_context():
+        db.create_all()
+
+    #from flask_template.models.login_model import User
+    #me = User('tom', 'abc')
+    #db.session.add(me)
+    #db.session.commit()
+
