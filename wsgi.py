@@ -11,7 +11,6 @@ app = create_app(Config(
     wechat=True,
 ))
 
-
 if __name__ == '__main__':
     app.config.update(DEBUG=True)
     app.run()

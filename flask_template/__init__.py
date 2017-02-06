@@ -36,7 +36,7 @@ def _teardown(func):
         worker.Task = ContextTask
 
         # Load Celery tasks.
-        from flask_template.backend.async_tasks import async_tasks
+        import flask_template.backend.async_tasks
 
         # Load and initialize DB tables
         import flask_template.models

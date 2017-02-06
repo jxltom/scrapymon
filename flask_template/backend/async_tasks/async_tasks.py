@@ -1,6 +1,7 @@
-from flask_template import worker
-from flask_template import mail
 from flask_mail import Message
+
+from flask_template import mail
+from flask_template import worker
 
 
 @worker.task
