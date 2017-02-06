@@ -13,7 +13,7 @@ class TestLoginBlueprint(unittest.TestCase):
             LoginBlueprintConfig.login_view_route
         self.login_required_url = self.login_url + 'login_required'
 
-        self.id, self.pwd = list(LoginBlueprintConfig.login_admins.items())[0]
+        self.uid, self.pwd = list(LoginBlueprintConfig.login_admins.items())[0]
 
     def test_login(self):
         """Test login page."""
@@ -21,7 +21,7 @@ class TestLoginBlueprint(unittest.TestCase):
         app = app.test_client()
         rv = app.post(
             self.login_url,
-            data=dict(username=self.id, password=self.pwd,
+            data=dict(username=self.uid, password=self.pwd,
                       remember=False, submit=True),
             follow_redirects=False
         )

@@ -7,8 +7,8 @@ class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
 
-    uid = db.Column(db.String(255), primary_key=True)
-    pwd = db.Column(db.String(255))
+    uid = db.Column(db.String(64), primary_key=True)
+    pwd = db.Column(db.String(64))
 
     def __init__(self, uid, pwd):
         """Initialize user."""
