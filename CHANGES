@@ -1,10 +1,15 @@
 # Changelog
 
-## Version 0.1.2 (2017-02-05)
+## Version 0.1.2 (2017-02-06)
 
 - Features
 
     - SMTP mail supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
+    - Database immigration supported
+
+- Miscellaneous
+
+    - Refactor initialization using decorators.
 
 ## Version 0.1.1 (2017-02-04)
 
