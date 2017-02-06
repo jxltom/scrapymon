@@ -1,13 +1,18 @@
 from flask import Flask
 from celery import Celery
+from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from easy_scheduler import Scheduler
+from flask_mail import Mail
+from flask_login import LoginManager
+from werobot import WeRoBot
 
-bootstrap = None
+bootstrap = Bootstrap()
 db = SQLAlchemy()
-mail = None
-login_manager = None
-scheduler = None
-robot = None
+mail = Mail()
+login_manager = LoginManager()
+scheduler = Scheduler(timezone='Asia/Hong_Kong')
+robot = WeRoBot(enable_session=False)
 
 
 def create_app(config):
@@ -15,67 +20,38 @@ def create_app(config):
 
     # Initialize flask instance.
     app = Flask(__name__)
-    app.config.update(config.basic)
+    app.config.update(_upper(config.basic))
 
     # Initialize Flask-Bootstrap.
-    if getattr(config, 'bootstrap', None) is not None:
+    if config.has_attr('bootstrap'):
         app.config.update(_upper(config.bootstrap))
-
-        from flask_bootstrap import Bootstrap
-        global bootstrap
-        bootstrap = Bootstrap(app)
-    else:
-        bootstrap = None
+        bootstrap.init_app(app)
 
     # Initialize for Flask-SQLAlchemy.
-    if getattr(config, 'db', None) is not None:
+    if config.has_attr('db'):
         app.config.update(_upper(config.db))
-
-
-        global db
         db.init_app(app)
-    else:
-        db = None
+
+        import flask_template.models  # load db tables
 
     # Initialize for APScheduler.
-    if getattr(config, 'scheduler', None) is not None:
-        app.config.update(_upper(config.scheduler))
-
-        from easy_scheduler import Scheduler
-        global scheduler
-        scheduler = Scheduler(timezone='Asia/Hong_Kong')
+    if config.has_attr('scheduler'):
         scheduler.start()
-    else:
-        if scheduler:
-            scheduler.shutdown()
-            scheduler = None
 
     # Initialize for Flask-Mail
-    if getattr(config, 'mail', None) is not None:
+    if config.has_attr('mail'):
         app.config.update(_upper(config.mail))
-
-        from flask_mail import Mail
-        global mail
-        mail = Mail(app)
-    else:
-        mail = None
+        mail.init_app(app)
 
     # Initialize index blueprint.
-    if getattr(config, 'index', None) is not None:
-        app.config.update(_upper(config.index))
-
+    if config.has_attr('index'):
         from flask_template.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=config.index['index_blueprint_prefix'])
 
     # Initialize login blueprint.
-    if getattr(config, 'login', None) is not None:
-        app.config.from_object(_upper(config.login))
-
-        from flask_login import LoginManager
-        global login_manager
-        login_manager = LoginManager(app)
-
+    if config.has_attr('login'):
+        login_manager.init_app(app)
         login_manager.login_view = 'login.log_in'
         login_manager.LOGIN_VIEW_ROUTE = config.login['login_view_route']
         login_manager.LOGIN_USERNAME = config.login['login_username']
@@ -86,29 +62,18 @@ def create_app(config):
         from flask_template.views.login import login as login_blueprint
         app.register_blueprint(
             login_blueprint, url_prefix=config.login['login_blueprint_prefix'])
-    else:
-        login_manager = None
 
     # Initialize wechat blueprint.
-    if getattr(config, 'wechat', None) is not None:
-        app.config.update(_upper(config.wechat))
+    if config.has_attr('wechat'):
+        robot.config['TOKEN'] = config.wechat['wechat_token']
+        robot.config['SESSION_STORAGE'] = config.wechat['wechat_session_storage']
 
-        from werobot import WeRoBot
+        import flask_template.views.wechat.views  # load robot handlers
         from werobot.contrib.flask import make_view
-        global robot
-        robot = WeRoBot(
-            token=config.wechat['wechat_token'],
-            enable_session=config.wechat['wechat_enable_session'],
-            session_storage=config.wechat['wechat_session_storage']
-        )
-
-        from flask_template.views.wechat.views import robot  # refresh robot
         app.add_url_rule(rule=config.wechat['wechat_view_route'],
                          endpoint='werobot',
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
-    else:
-        robot = None
 
     # Add configuration for Celery.
     app.config.celery = config.celery
@@ -149,19 +114,3 @@ def _upper(d):
 def register_celery():
     """Register Celery tasks."""
     import flask_template.backend.async_tasks.async_tasks
-
-
-def init_database():
-    """Initialize databse."""
-    global db
-    #print(db)
-    from wsgi import app
-    from flask_template.models.login_model import User
-    with app.app_context():
-        db.create_all()
-
-    #from flask_template.models.login_model import User
-    #me = User('tom', 'abc')
-    #db.session.add(me)
-    #db.session.commit()
-

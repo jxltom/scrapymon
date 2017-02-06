@@ -1,20 +1,21 @@
 import unittest
-from config import Config, DBConfig, CeleryConfig
+from config import Config, DBConfig, WechatBlueprintConfig, CeleryConfig
 from flask_template import create_app, create_worker
 from flask import render_template
 
 
 class TestBasicConfig(unittest.TestCase):
-    """Test basic configuration in config.py."""
+    """Test basic configuration."""
 
-    def test_secrete_key(self):
-        """Test secrete key of flask."""
+    def test_basic_config(self):
+        """Test BasicConfig class."""
+        config = Config()
+        self.assertTrue(config.has_attr('basic'))
+
+    def test_basic_config_in_app(self):
+        """Test basic configuration in flask app."""
         app = create_app(Config())
         self.assertTrue(app.config['SECRET_KEY'])
-
-    def test_debug(self):
-        """Test debug of flask."""
-        app = create_app(Config())
         self.assertFalse(app.config['DEBUG'])
 
         app = create_app(Config())
@@ -23,34 +24,18 @@ class TestBasicConfig(unittest.TestCase):
 
 
 class TestBootstrapConfig(unittest.TestCase):
-    """Test bootstrap configuration in config.py."""
+    """Test bootstrap configuration."""
 
     def test_bootstrap_config(self):
         """Test BootstrapConfig class."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.bootstrap
+        config = Config()
+        self.assertFalse(config.has_attr('bootstrap'))
 
-        cfg = Config(bootstrap=False)
-        with self.assertRaises(AttributeError):
-            cfg.bootstrap
+        config = Config(bootstrap=False)
+        self.assertFalse(config.has_attr('bootstrap'))
 
-        cfg = Config(bootstrap=True)
-        self.assertTrue(cfg.bootstrap)
-
-    def test_bootstrap_instance(self):
-        """Test bootstrap instance in flask_template."""
-        create_app(Config())
-        from flask_template import bootstrap
-        self.assertTrue(bootstrap is None)
-
-        create_app(Config(bootstrap=False))
-        from flask_template import bootstrap
-        self.assertTrue(bootstrap is None)
-
-        create_app(Config(bootstrap=True))
-        from flask_template import bootstrap
-        self.assertTrue(bootstrap is not None)
+        config = Config(bootstrap=True)
+        self.assertTrue(config.has_attr('bootstrap'))
 
     def test_bootstrap_config_in_app(self):
         """Test bootstrap configuration in flask app."""
@@ -81,38 +66,22 @@ class TestBootstrapConfig(unittest.TestCase):
 
 
 class TestDatabaseConfig(unittest.TestCase):
-    """Test database in config.py."""
+    """Test database configuration."""
 
     def setUp(self):
-        """Initialize test."""
-        self.db = DBConfig.SQLALCHEMY_DATABASE_URI
+        """Initialize tests."""
+        self.uri = DBConfig.SQLALCHEMY_DATABASE_URI
 
     def test_database_config(self):
         """Test DatabaseConfig class."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.db
+        config = Config()
+        self.assertFalse(config.has_attr('db'))
 
-        cfg = Config(db=False)
-        with self.assertRaises(AttributeError):
-            cfg.db
+        config = Config(db=False)
+        self.assertFalse(config.has_attr('db'))
 
-        cfg = Config(db=True)
-        self.assertTrue(cfg.db)
-
-    def test_database_instance(self):
-        """Test db instance."""
-        create_app(Config())
-        from flask_template import db
-        self.assertTrue(db is None)
-
-        create_app(Config(db=False))
-        from flask_template import db
-        self.assertTrue(db is None)
-
-        create_app(Config(db=True))
-        from flask_template import db
-        self.assertTrue(db)
+        config = Config(db=True)
+        self.assertTrue(config.has_attr('db'))
 
     def test_database_config_in_app(self):
         """Test database configuration in flask app."""
@@ -135,51 +104,43 @@ class TestDatabaseConfig(unittest.TestCase):
 
 
 class TestSchedulerConfig(unittest.TestCase):
-    """Test scheduler configuration in config.py."""
+    """Test scheduler configuration."""
 
     def test_scheduler_config(self):
-        """Test SchedulerClass config."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.scheduler
+        """Test SchedulerConfig class."""
+        config = Config()
+        self.assertFalse(config.has_attr('scheduler'))
 
-        cfg = Config(scheduler=False)
-        with self.assertRaises(AttributeError):
-            cfg.scheduler
+        config = Config(scheduler=False)
+        self.assertFalse(config.has_attr('scheduler'))
 
-        cfg = Config(scheduler=True)
-        self.assertTrue(type(cfg.scheduler) is dict)
+        config = Config(scheduler=True)
+        self.assertTrue(config.has_attr('scheduler'))
 
-    def test_scheduler_instance(self):
-        """Test scheduelr instance."""
+    def test_scheduler(self):
+        """Test scheduler in flask app."""
         create_app(Config())
         from flask_template import scheduler
-        self.assertTrue(scheduler is None)
-
-        create_app(Config(scheduler=False))
-        from flask_template import scheduler
-        self.assertTrue(scheduler is None)
+        self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
         from flask_template import scheduler
-        self.assertTrue(scheduler)
+        self.assertTrue(scheduler._scheduler.running)
 
 
 class TestMailConfig(unittest.TestCase):
-    """Test mail in conf.py."""
+    """Test mail configuration."""
 
     def test_mail_config(self):
-        """Test MailConfig config."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.mail
+        """Test MailConfig class."""
+        config = Config()
+        self.assertFalse(config.has_attr('mail'))
 
-        cfg = Config(mail=False)
-        with self.assertRaises(AttributeError):
-            cfg.mail
+        config = Config(mail=False)
+        self.assertFalse(config.has_attr('mail'))
 
-        cfg = Config(mail=True)
-        self.assertTrue(cfg.mail)
+        config = Config(mail=True)
+        self.assertTrue(config.has_attr('mail'))
 
     def test_mail_config_in_app(self):
         """Test mail configuration in flask app."""
@@ -203,20 +164,6 @@ class TestMailConfig(unittest.TestCase):
         self.assertTrue(app.config['MAIL_DEFAULT_SENDER'] or
                         app.config['MAIL_DEFAULT_SENDER'] is None)
 
-    def test_mail_instance(self):
-        """Test mail instance."""
-        create_app(Config())
-        from flask_template import mail
-        self.assertTrue(mail is None)
-
-        create_app(Config(mail=False))
-        from flask_template import mail
-        self.assertTrue(mail is None)
-
-        create_app(Config(mail=True))
-        from flask_template import mail
-        self.assertTrue(mail)
-
     def test_mail(self):
         """Test mail."""
         from flask_template.backend.async_tasks.async_tasks import send_mail
@@ -231,20 +178,18 @@ class TestMailConfig(unittest.TestCase):
 
 
 class TestIndexBlueprintConfig(unittest.TestCase):
-    """Test index blueprint in config.py."""
+    """Test index blueprint configuration."""
 
     def test_index_blueprint_config(self):
         """Test IndexConfig class."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.index
+        config = Config()
+        self.assertFalse(config.has_attr('index'))
 
-        cfg = Config(index=False)
-        with self.assertRaises(AttributeError):
-            cfg.index
+        config = Config(index=False)
+        self.assertFalse(config.has_attr('index'))
 
-        cfg = Config(index=True)
-        self.assertTrue(cfg.index)
+        config = Config(index=True)
+        self.assertTrue(config.has_attr('index'))
 
     def test_index_blueprint_config_in_app(self):
         """Test index blueprint configuration in app."""
@@ -266,7 +211,7 @@ class TestIndexBlueprintConfig(unittest.TestCase):
 
 
 class TestLoginBlueprintConfig(unittest.TestCase):
-    """Test login blueprint in config.py."""
+    """Test login blueprint configuration."""
 
     def setUp(self):
         from config import LoginBlueprintConfig
@@ -276,37 +221,25 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
     def test_login_blueprint_config(self):
         """Test LoginConfig class."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.login
+        config = Config()
+        self.assertFalse(config.has_attr('login'))
 
-        cfg = Config(login=False)
-        with self.assertRaises(AttributeError):
-            cfg.login
+        config = Config(login=False)
+        self.assertFalse(config.has_attr('login'))
 
-        cfg = Config(login=True)
-        self.assertTrue(cfg.login)
+        config = Config(login=True)
+        self.assertTrue(config.has_attr('login'))
+        self.assertTrue(config.has_attr('bootstrap'))
 
     def test_login_manager_boostrap_instance(self):
         """Test login manager instance."""
-        create_app(Config())
-        from flask_template import login_manager
-        self.assertTrue(login_manager is None)
-
-        create_app(Config(login=False))
-        from flask_template import login_manager
-        self.assertTrue(login_manager is None)
-
         create_app(Config(login=True))
-        from flask_template import login_manager, bootstrap
-        self.assertTrue(login_manager is not None)
+        from flask_template import login_manager
         self.assertTrue(login_manager.login_view)
         self.assertTrue(login_manager.LOGIN_VIEW_ROUTE)
         self.assertTrue(login_manager.LOGIN_USERNAME)
         self.assertTrue(login_manager.LOGIN_PASSWORD)
         self.assertTrue(login_manager.REDIRECT_URL_ON_SUCCESS)
-
-        self.assertTrue(bootstrap)
 
     def test_login_blueprint_config_in_app(self):
         """Test login blueprint configuration in flask app."""
@@ -331,32 +264,26 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
 
 class TestWechatBlueprintConfig(unittest.TestCase):
-    """Test wechat blueprint in config.py."""
+    """Test wechat blueprint configuration."""
 
     def test_wechat_blueprint_config(self):
         """Test WechatConfig class."""
-        cfg = Config()
-        with self.assertRaises(AttributeError):
-            cfg.wechat
+        config = Config()
+        self.assertFalse(config.has_attr('wechat'))
 
-        cfg = Config(wechat=False)
-        with self.assertRaises(AttributeError):
-            cfg.wechat
+        config = Config(wechat=False)
+        self.assertFalse(config.has_attr('wechat'))
 
-        cfg = Config(wechat=True)
-        self.assertTrue(cfg.wechat)
+        config = Config(wechat=True)
+        self.assertTrue(config.has_attr('wechat'))
 
     def test_robot_instance(self):
         """Test robot instance."""
-        create_app(Config())
-        from flask_template import robot
-        self.assertTrue(robot is None)
-
         create_app(Config(wechat=True))
         from flask_template import robot
-        self.assertTrue(robot is not None)
         self.assertTrue(robot.config['TOKEN'])
-        self.assertTrue(robot.config['SESSION_STORAGE'] is None)
+        self.assertTrue(robot.config['SESSION_STORAGE'] is
+                        WechatBlueprintConfig.wechat_session_storage)
 
     def test_wechat_blueprint_config_in_app(self):
         """Test wechat blueprint configurationin flask app."""
@@ -375,7 +302,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
 
 
 class TestCeleryConfig(unittest.TestCase):
-    """Test celery configuration in config.py"""
+    """Test celery configuration."""
 
     def test_celery_config(self):
         """Test CeleryConfig class."""

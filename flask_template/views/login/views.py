@@ -2,7 +2,7 @@ from . import login
 from .form import LoginForm
 from flask_login import login_user, current_user, login_required
 from flask_template import login_manager
-from flask_template.models.login_model import User
+from flask_template.models.user import User
 from flask import render_template, request, redirect, url_for
 
 
