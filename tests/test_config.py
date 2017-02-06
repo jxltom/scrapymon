@@ -309,7 +309,7 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery_config(self):
         """Test CeleryConfig class."""
         app = create_app(Config())
-        from flask_template import worker
+        from wsgi import worker
         self.assertEqual(worker.conf['CELERY_TIMEZONE'],
                          CeleryConfig.CELERY_TIMEZONE)
         self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
