@@ -166,14 +166,14 @@ class TestMailConfig(unittest.TestCase):
 
     def test_mail(self):
         """Test mail."""
-        create_app(Config())
+        create_app(Config(mail=True))
         from flask_template.backend.async_tasks.async_tasks import send_mail
         self.assertEqual(send_mail(subject='success', body='success',
                                    recipients=['jxltom@gmail.com']), 0)
 
     def test_async_mail(self):
         """Test async mail."""
-        create_app(Config())
+        create_app(Config(mail=True))
         from flask_template.backend.async_tasks.async_tasks import send_mail
         send_mail.delay(subject='success', body='success',
                         recipients=['jxltom@gmail.com'])

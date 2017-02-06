@@ -15,6 +15,7 @@ login_manager = LoginManager()
 robot = WeRoBot(enable_session=False)
 worker = Celery(__name__)
 
+
 def teardown(func):
 
     def wrapper(*args, **kwargs):
@@ -25,9 +26,8 @@ def teardown(func):
         class ContextTask(TaskBase):
             abstract = True
             def __call__(self, *args, **kwargs):
-                #with _app.app_context():
-                _app.app_context.push()
-                return TaskBase.__call__(self, *args, **kwargs)
+                with _app.app_context():
+                    return TaskBase.__call__(self, *args, **kwargs)
         worker.Task = ContextTask
 
         # Register Celery tasks.
