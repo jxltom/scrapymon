@@ -1,4 +1,4 @@
-from flask_template import robot
+from flask_boilerplate import robot
 
 
 @robot.filter('_')

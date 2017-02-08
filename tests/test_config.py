@@ -1,6 +1,6 @@
 import unittest
 from config import Config, DBConfig, WechatBlueprintConfig, CeleryConfig
-from flask_template import create_app
+from flask_boilerplate import create_app
 from flask import render_template
 
 
@@ -145,14 +145,14 @@ class TestMailConfig(unittest.TestCase):
     def test_mail(self):
         """Test mail."""
         create_app(Config(mail=True))
-        from flask_template.backend.async_tasks.async_tasks import send_mail
+        from flask_boilerplate.backend.async_tasks.async_tasks import send_mail
         self.assertEqual(send_mail(subject='success', body='success',
                                    recipients=['jxltom@gmail.com']), 0)
 
     def test_async_mail(self):
         """Test async mail."""
         create_app(Config(mail=True))
-        from flask_template.backend.async_tasks.async_tasks import send_mail
+        from flask_boilerplate.backend.async_tasks.async_tasks import send_mail
         send_mail.delay(subject='success', body='success',
                         recipients=['jxltom@gmail.com'])
 
@@ -174,11 +174,11 @@ class TestSchedulerConfig(unittest.TestCase):
     def test_scheduler(self):
         """Test scheduler in flask app."""
         create_app(Config())
-        from flask_template import scheduler
+        from flask_boilerplate import scheduler
         self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
-        from flask_template import scheduler
+        from flask_boilerplate import scheduler
         self.assertTrue(scheduler._scheduler.running)
 
 
@@ -257,7 +257,7 @@ class TestLoginBlueprintConfig(unittest.TestCase):
     def test_login_manager_boostrap_instance(self):
         """Test login manager instance."""
         create_app(Config(login=True))
-        from flask_template import login_manager
+        from flask_boilerplate import login_manager
         self.assertTrue(login_manager.login_view)
         self.assertTrue(login_manager.login_view_route)
         self.assertTrue(login_manager.success_redirect_url)
@@ -297,7 +297,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_robot_instance(self):
         """Test robot instance."""
         create_app(Config(wechat=True))
-        from flask_template import robot
+        from flask_boilerplate import robot
         self.assertTrue(robot.config['TOKEN'])
         self.assertTrue(robot.config['SESSION_STORAGE'] is
                         WechatBlueprintConfig.wechat_session_storage)
@@ -314,7 +314,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_wechat_blueprint_route(self):
         """Test wechat blueprint route."""
         create_app(Config(wechat=True))
-        from flask_template import robot
+        from flask_boilerplate import robot
         self.assertTrue(robot._handlers['text'])
 
     def test_wechat(self):
@@ -336,7 +336,7 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery_config(self):
         """Test CeleryConfig class."""
         app = create_app(Config())
-        from flask_template import worker
+        from flask_boilerplate import worker
         self.assertEqual(worker.conf['CELERY_TIMEZONE'],
                          CeleryConfig.CELERY_TIMEZONE)
         self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
@@ -355,5 +355,5 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery(self):
         """Test celery."""
         create_app(Config())
-        from flask_template.backend.async_tasks.async_tasks import async_test
+        from flask_boilerplate.backend.async_tasks.async_tasks import async_test
         self.assertTrue(async_test.delay(1, 2))

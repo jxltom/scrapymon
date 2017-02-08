@@ -1,6 +1,6 @@
-# flask-template
+# flask-boilerplate
 
-A template for flask applications.
+A boilerplate for flask applications.
 
 ## Features
 

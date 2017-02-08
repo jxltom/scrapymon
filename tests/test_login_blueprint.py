@@ -1,6 +1,6 @@
 import unittest
 from config import Config, LoginBlueprintConfig
-from flask_template import create_app
+from flask_boilerplate import create_app
 
 
 class TestLoginBlueprint(unittest.TestCase):

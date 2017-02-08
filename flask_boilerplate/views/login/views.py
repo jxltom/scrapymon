@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, current_user, login_required
 
-from flask_template import login_manager
-from flask_template.models.user import User
+from flask_boilerplate import login_manager
+from flask_boilerplate.models.user import User
 from . import login
 from .form import LoginForm
 
