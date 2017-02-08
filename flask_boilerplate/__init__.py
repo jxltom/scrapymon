@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_basicauth import BasicAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from easy_scheduler import Scheduler
@@ -8,6 +9,7 @@ from werobot import WeRoBot
 from celery import Celery
 
 bootstrap = Bootstrap()
+auth = BasicAuth()
 db = SQLAlchemy()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
@@ -74,6 +76,11 @@ def create_app(config):
     if config.has_attr('bootstrap'):
         app.config.update(_upper(config.bootstrap))
         bootstrap.init_app(app)
+
+    app.config['BASIC_AUTH_USERNAME'] = 'test'
+    app.config['BASIC_AUTH_PASSWORD'] = 'test'
+    app.config['BASIC_AUTH_FORCE'] = True
+    auth.init_app(app)
 
     # Initialize Flask-SQLAlchemy.
     if config.has_attr('db'):
