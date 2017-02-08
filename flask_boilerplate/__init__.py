@@ -10,16 +10,16 @@ from celery import Celery
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-httpauth = BasicAuth()
+basicauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 login_manager = LoginManager()
-robot = WeRoBot(enable_session=False)
+wechat = WeRoBot(enable_session=False)
 worker = Celery()
 
 
 def _teardown(func):
-    """Teardown after initialization."""
+    """Teardown works after initialization."""
     _app = None
 
     def wrapper(*args, **kwargs):
@@ -52,7 +52,7 @@ def _teardown(func):
                     return TaskBase.__call__(self, *args, **kwargs)
         worker.Task = ContextTask
 
-        # Load Celery tasks.
+        # Load Celery tasks (must load at last).
         import flask_boilerplate.async
 
         return _app
@@ -85,7 +85,7 @@ def create_app(cfg):
     # Initialize Flask-BasicAuth.
     if cfg.has_attr('basicauth'):
         app.config.update(_upper(cfg.basicauth))
-        httpauth.init_app(app)
+        basicauth.init_app(app)
 
     # Initialize Flask-Mail
     if cfg.has_attr('mail'):
@@ -118,18 +118,19 @@ def create_app(cfg):
 
     # Initialize wechat blueprint.
     if cfg.has_attr('wechat'):
-        robot.config['TOKEN'] = cfg.wechat['wechat_token']
-        robot.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
+        wechat.config['TOKEN'] = cfg.wechat['wechat_token']
+        wechat.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
 
         import flask_boilerplate.views.wechat.views  # load robot handlers
         from werobot.contrib.flask import make_view
         app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
                          endpoint='werobot',
-                         view_func=make_view(robot),
+                         view_func=make_view(wechat),
                          methods=['GET', 'POST'])
 
     # Initialize Celery.
     worker.conf.update(cfg.celery)
     worker.main = __name__
+    print(worker.conf)
 
     return app

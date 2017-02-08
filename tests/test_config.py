@@ -343,9 +343,9 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_robot_instance(self):
         """Test robot instance."""
         create_app(Config(wechat=True))
-        from flask_boilerplate import robot
-        self.assertTrue(robot.config['TOKEN'])
-        self.assertTrue(robot.config['SESSION_STORAGE'] is
+        from flask_boilerplate import wechat
+        self.assertTrue(wechat.config['TOKEN'])
+        self.assertTrue(wechat.config['SESSION_STORAGE'] is
                         WechatBlueprintConfig.wechat_session_storage)
 
     def test_wechat_blueprint_config_in_app(self):
@@ -360,8 +360,8 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_wechat_blueprint_route(self):
         """Test wechat blueprint route."""
         create_app(Config(wechat=True))
-        from flask_boilerplate import robot
-        self.assertTrue(robot._handlers['text'])
+        from flask_boilerplate import wechat
+        self.assertTrue(wechat._handlers['text'])
 
     def test_wechat(self):
         """Test wechat views."""

@@ -1,6 +1,6 @@
-from flask_boilerplate import robot
+from flask_boilerplate import wechat
 
 
-@robot.filter('_')
+@wechat.filter('_')
 def wechat_test():
     return 'success'
