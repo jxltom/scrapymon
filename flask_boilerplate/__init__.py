@@ -42,7 +42,7 @@ def _teardown(func):
                     if not User.query.get(uid):
                         db.session.add(User(uid, pwd))
                 db.session.commit()
-        
+
         # Push context to Celery.
         TaskBase = worker.Task
         class ContextTask(TaskBase):
@@ -53,7 +53,7 @@ def _teardown(func):
         worker.Task = ContextTask
 
         # Load Celery tasks.
-        import flask_boilerplate.backend.async_tasks
+        import flask_boilerplate.async
 
         return _app
     return wrapper
