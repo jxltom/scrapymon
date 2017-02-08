@@ -4,8 +4,9 @@ from flask_boilerplate import create_app, worker
 app = create_app(Config(
     bootstrap=True,
     db=True,
-    scheduler=True,
+    httpauth=True,
     mail=True,
+    scheduler=True,
     index=True,
     login=True,
     wechat=True,

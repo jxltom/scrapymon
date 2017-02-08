@@ -9,8 +9,8 @@ from werobot import WeRoBot
 from celery import Celery
 
 bootstrap = Bootstrap()
-auth = BasicAuth()
 db = SQLAlchemy()
+httpauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 login_manager = LoginManager()
@@ -77,15 +77,15 @@ def create_app(config):
         app.config.update(_upper(config.bootstrap))
         bootstrap.init_app(app)
 
-    app.config['BASIC_AUTH_USERNAME'] = 'test'
-    app.config['BASIC_AUTH_PASSWORD'] = 'test'
-    app.config['BASIC_AUTH_FORCE'] = True
-    auth.init_app(app)
-
     # Initialize Flask-SQLAlchemy.
     if config.has_attr('db'):
         app.config.update(_upper(config.db))
         db.init_app(app)
+
+    # Initialize Flask-BasicAuth.
+    if config.has_attr('httpauth'):
+        app.config.update(_upper(config.httpauth))
+        httpauth.init_app(app)
 
     # Initialize Flask-Mail
     if config.has_attr('mail'):
