@@ -83,8 +83,8 @@ def create_app(config):
         db.init_app(app)
 
     # Initialize Flask-BasicAuth.
-    if config.has_attr('httpauth'):
-        app.config.update(_upper(config.httpauth))
+    if config.has_attr('basicauth'):
+        app.config.update(_upper(config.basicauth))
         httpauth.init_app(app)
 
     # Initialize Flask-Mail

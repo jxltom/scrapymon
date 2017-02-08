@@ -6,6 +6,7 @@ A boilerplate for flask applications.
 
 - [Bootstrap](http://getbootstrap.com/) supported by [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap/)
 - Database supported by [Flask-SQLAlchemy](https://github.com/mitsuhiko/flask-sqlalchemy)
+- [http Basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) supported by [Flask-BasicAuth](https://github.com/jpvanhal/flask-basicauth)
 - SMTP mail, compatible with asynchronous mode, supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
 - Task scheduling supported by [APScheduler](https://github.com/agronholm/apscheduler) and [easy-scheduler](https://github.com/jxltom/easy-scheduler)
 - Authentication with database backend supported by [Flask-Login](https://github.com/maxcountryman/flask-login)

@@ -4,13 +4,13 @@
 
 - Features
 
-    - Database immigration supported
+    - [http Basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) supported by [Flask-BasicAuth](https://github.com/jpvanhal/flask-basicauth)
 
 ## Version 0.1.2 (2017-02-06)
 
 - Features
 
-    - SMTP mail supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
+    - SMTP mail, compatible with asynchronous mode, supported by [Flask-Mail](https://github.com/mattupstate/flask-mail)
 
 - Bugfixes
 
@@ -35,6 +35,6 @@
     - [Bootstrap](http://getbootstrap.com/) supported by [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap/)
     - Database supported by [Flask-SQLAlchemy](https://github.com/mitsuhiko/flask-sqlalchemy)
     - Task scheduling supported by [APScheduler](https://github.com/agronholm/apscheduler)
-    - Authentication supported by [Flask-Login](https://github.com/maxcountryman/flask-login)
+    - Authentication with database backend supported by [Flask-Login](https://github.com/maxcountryman/flask-login)
     - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
     - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
