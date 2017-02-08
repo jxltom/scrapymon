@@ -28,7 +28,7 @@ def _teardown(func):
         global _app
         _app = func(*args, **kwargs)
 
-        # Load and initialize DB tables
+        # Register database tables
         if _app.extensions.get('sqlalchemy'):
             import flask_boilerplate.models
             with _app.app_context():
@@ -52,7 +52,7 @@ def _teardown(func):
                     return TaskBase.__call__(self, *args, **kwargs)
         worker.Task = ContextTask
 
-        # Load Celery tasks (must load at last).
+        # Register Celery tasks (must load at last).
         import flask_boilerplate.async
 
         return _app
