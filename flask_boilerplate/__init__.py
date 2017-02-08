@@ -15,7 +15,7 @@ mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 login_manager = LoginManager()
 robot = WeRoBot(enable_session=False)
-worker = Celery(__name__)
+worker = Celery()
 
 
 def _teardown(func):
@@ -27,18 +27,6 @@ def _teardown(func):
         # Initialize flask instance.
         global _app
         _app = func(*args, **kwargs)
-
-        # Push context to Celery.
-        TaskBase = worker.Task
-        class ContextTask(TaskBase):
-            abstract = True
-            def __call__(self, *args, **kwargs):
-                with _app.app_context():
-                    return TaskBase.__call__(self, *args, **kwargs)
-        worker.Task = ContextTask
-
-        # Load Celery tasks.
-        import flask_boilerplate.backend.async_tasks
 
         # Load and initialize DB tables
         if _app.extensions.get('sqlalchemy'):
@@ -54,6 +42,18 @@ def _teardown(func):
                     if not User.query.get(uid):
                         db.session.add(User(uid, pwd))
                 db.session.commit()
+        
+        # Push context to Celery.
+        TaskBase = worker.Task
+        class ContextTask(TaskBase):
+            abstract = True
+            def __call__(self, *args, **kwargs):
+                with _app.app_context():
+                    return TaskBase.__call__(self, *args, **kwargs)
+        worker.Task = ContextTask
+
+        # Load Celery tasks.
+        import flask_boilerplate.backend.async_tasks
 
         return _app
     return wrapper
@@ -130,5 +130,6 @@ def create_app(cfg):
 
     # Initialize Celery.
     worker.conf.update(cfg.celery)
+    worker.main = __name__
 
     return app
