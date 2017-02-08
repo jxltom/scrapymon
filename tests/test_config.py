@@ -9,8 +9,8 @@ class TestBasicConfig(unittest.TestCase):
 
     def test_basic_config(self):
         """Test BasicConfig class."""
-        config = Config()
-        self.assertTrue(config.has_attr('basic'))
+        cfg = Config()
+        self.assertTrue(cfg.has_attr('basic'))
 
     def test_basic_config_in_app(self):
         """Test basic configuration in flask app."""
@@ -28,14 +28,14 @@ class TestBootstrapConfig(unittest.TestCase):
 
     def test_bootstrap_config(self):
         """Test BootstrapConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('bootstrap'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('bootstrap'))
 
-        config = Config(bootstrap=False)
-        self.assertFalse(config.has_attr('bootstrap'))
+        cfg = Config(bootstrap=False)
+        self.assertFalse(cfg.has_attr('bootstrap'))
 
-        config = Config(bootstrap=True)
-        self.assertTrue(config.has_attr('bootstrap'))
+        cfg = Config(bootstrap=True)
+        self.assertTrue(cfg.has_attr('bootstrap'))
 
     def test_bootstrap_config_in_app(self):
         """Test bootstrap configuration in flask app."""
@@ -74,14 +74,14 @@ class TestDatabaseConfig(unittest.TestCase):
 
     def test_database_config(self):
         """Test DatabaseConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('db'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('db'))
 
-        config = Config(db=False)
-        self.assertFalse(config.has_attr('db'))
+        cfg = Config(db=False)
+        self.assertFalse(cfg.has_attr('db'))
 
-        config = Config(db=True)
-        self.assertTrue(config.has_attr('db'))
+        cfg = Config(db=True)
+        self.assertTrue(cfg.has_attr('db'))
 
     def test_database_config_in_app(self):
         """Test database configuration in flask app."""
@@ -157,14 +157,14 @@ class TestMailConfig(unittest.TestCase):
 
     def test_mail_config(self):
         """Test MailConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('mail'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('mail'))
 
-        config = Config(mail=False)
-        self.assertFalse(config.has_attr('mail'))
+        cfg = Config(mail=False)
+        self.assertFalse(cfg.has_attr('mail'))
 
-        config = Config(mail=True)
-        self.assertTrue(config.has_attr('mail'))
+        cfg = Config(mail=True)
+        self.assertTrue(cfg.has_attr('mail'))
 
     def test_mail_config_in_app(self):
         """Test mail configuration in flask app."""
@@ -208,14 +208,14 @@ class TestSchedulerConfig(unittest.TestCase):
 
     def test_scheduler_config(self):
         """Test SchedulerConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('scheduler'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('scheduler'))
 
-        config = Config(scheduler=False)
-        self.assertFalse(config.has_attr('scheduler'))
+        cfg = Config(scheduler=False)
+        self.assertFalse(cfg.has_attr('scheduler'))
 
-        config = Config(scheduler=True)
-        self.assertTrue(config.has_attr('scheduler'))
+        cfg = Config(scheduler=True)
+        self.assertTrue(cfg.has_attr('scheduler'))
 
     def test_scheduler(self):
         """Test scheduler in flask app."""
@@ -233,14 +233,14 @@ class TestIndexBlueprintConfig(unittest.TestCase):
 
     def test_index_blueprint_config(self):
         """Test IndexConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('index'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('index'))
 
-        config = Config(index=False)
-        self.assertFalse(config.has_attr('index'))
+        cfg = Config(index=False)
+        self.assertFalse(cfg.has_attr('index'))
 
-        config = Config(index=True)
-        self.assertTrue(config.has_attr('index'))
+        cfg = Config(index=True)
+        self.assertTrue(cfg.has_attr('index'))
 
     def test_index_blueprint_config_in_app(self):
         """Test index blueprint configuration in app."""
@@ -272,16 +272,16 @@ class TestLoginBlueprintConfig(unittest.TestCase):
 
     def test_login_blueprint_config(self):
         """Test LoginConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('login'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('login'))
 
-        config = Config(login=False)
-        self.assertFalse(config.has_attr('login'))
+        cfg = Config(login=False)
+        self.assertFalse(cfg.has_attr('login'))
 
-        config = Config(login=True)
-        self.assertTrue(config.has_attr('bootstrap'))
-        self.assertTrue(config.has_attr('db'))
-        self.assertTrue(config.has_attr('login'))
+        cfg = Config(login=True)
+        self.assertTrue(cfg.has_attr('bootstrap'))
+        self.assertTrue(cfg.has_attr('db'))
+        self.assertTrue(cfg.has_attr('login'))
 
     def test_login_blueprint_config_in_app(self):
         """Test login blueprint configuration in flask app."""
@@ -331,14 +331,14 @@ class TestWechatBlueprintConfig(unittest.TestCase):
 
     def test_wechat_blueprint_config(self):
         """Test WechatConfig class."""
-        config = Config()
-        self.assertFalse(config.has_attr('wechat'))
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('wechat'))
 
-        config = Config(wechat=False)
-        self.assertFalse(config.has_attr('wechat'))
+        cfg = Config(wechat=False)
+        self.assertFalse(cfg.has_attr('wechat'))
 
-        config = Config(wechat=True)
-        self.assertTrue(config.has_attr('wechat'))
+        cfg = Config(wechat=True)
+        self.assertTrue(cfg.has_attr('wechat'))
 
     def test_robot_instance(self):
         """Test robot instance."""

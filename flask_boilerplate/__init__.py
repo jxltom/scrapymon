@@ -65,70 +65,70 @@ def _upper(d):
 
 
 @_teardown
-def create_app(config):
+def create_app(cfg):
     """Create flask instance."""
 
     # Initialize flask instance.
     app = Flask(__name__)
-    app.config.update(_upper(config.basic))
+    app.config.update(_upper(cfg.basic))
 
     # Initialize Flask-Bootstrap.
-    if config.has_attr('bootstrap'):
-        app.config.update(_upper(config.bootstrap))
+    if cfg.has_attr('bootstrap'):
+        app.config.update(_upper(cfg.bootstrap))
         bootstrap.init_app(app)
 
     # Initialize Flask-SQLAlchemy.
-    if config.has_attr('db'):
-        app.config.update(_upper(config.db))
+    if cfg.has_attr('db'):
+        app.config.update(_upper(cfg.db))
         db.init_app(app)
 
     # Initialize Flask-BasicAuth.
-    if config.has_attr('basicauth'):
-        app.config.update(_upper(config.basicauth))
+    if cfg.has_attr('basicauth'):
+        app.config.update(_upper(cfg.basicauth))
         httpauth.init_app(app)
 
     # Initialize Flask-Mail
-    if config.has_attr('mail'):
-        app.config.update(_upper(config.mail))
+    if cfg.has_attr('mail'):
+        app.config.update(_upper(cfg.mail))
         mail.init_app(app)
 
     # Initialize APScheduler.
-    if config.has_attr('scheduler'):
+    if cfg.has_attr('scheduler'):
         scheduler.start()
 
     # Initialize index blueprint.
-    if config.has_attr('index'):
+    if cfg.has_attr('index'):
         from flask_boilerplate.views.index import index as index_blueprint
         app.register_blueprint(
-            index_blueprint, url_prefix=config.index['index_blueprint_prefix'])
+            index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
 
     # Initialize login blueprint.
-    if config.has_attr('login'):
-        app.config.update(_upper(config.login))
+    if cfg.has_attr('login'):
+        app.config.update(_upper(cfg.login))
 
         login_manager.init_app(app)
         login_manager.login_view = 'login.log_in'  # login view function
-        login_manager.login_view_route = config.login['login_view_route']
-        login_manager.success_redirect_url = config.login['success_redirect_url']
-        login_manager.login_admins = config.login['login_admins']
+        login_manager.login_view_route = cfg.login['login_view_route']
+        login_manager.success_redirect_url = cfg.login['success_redirect_url']
+        login_manager.login_admins = cfg.login['login_admins']
 
         from flask_boilerplate.views.login import login as login_blueprint
         app.register_blueprint(
-            login_blueprint, url_prefix=config.login['login_blueprint_prefix'])
+            login_blueprint, url_prefix=cfg.login['login_blueprint_prefix'])
 
     # Initialize wechat blueprint.
-    if config.has_attr('wechat'):
-        robot.config['TOKEN'] = config.wechat['wechat_token']
-        robot.config['SESSION_STORAGE'] = config.wechat['wechat_session_storage']
+    if cfg.has_attr('wechat'):
+        robot.config['TOKEN'] = cfg.wechat['wechat_token']
+        robot.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
 
         import flask_boilerplate.views.wechat.views  # load robot handlers
         from werobot.contrib.flask import make_view
-        app.add_url_rule(rule=config.wechat['wechat_view_route'],
+        app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
                          endpoint='werobot',
                          view_func=make_view(robot),
                          methods=['GET', 'POST'])
 
     # Initialize Celery.
-    worker.conf.update(config.celery)
+    worker.conf.update(cfg.celery)
 
     return app
