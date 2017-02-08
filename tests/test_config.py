@@ -383,20 +383,20 @@ class TestCeleryConfig(unittest.TestCase):
         """Test CeleryConfig class."""
         app = create_app(Config())
         from flask_boilerplate import worker
-        self.assertEqual(worker.conf['CELERY_TIMEZONE'],
-                         CeleryConfig.CELERY_TIMEZONE)
-        self.assertEqual(worker.conf['CELERY_ENABLE_UTC'],
-                         CeleryConfig.CELERY_ENABLE_UTC)
-        self.assertEqual(worker.conf['BROKER_URL'],
-                         CeleryConfig.BROKER_URL)
-        self.assertEqual(worker.conf['CELERY_RESULT_BACKEND'],
-                         CeleryConfig.CELERY_RESULT_BACKEND)
+        self.assertEqual(worker.conf['timezone'],
+                         CeleryConfig.timezone)
+        self.assertEqual(worker.conf['enable_utc'],
+                         CeleryConfig.enable_utc)
+        self.assertEqual(worker.conf['broker_url'],
+                         CeleryConfig.broker_url)
+        self.assertEqual(worker.conf['result_backend'],
+                         CeleryConfig.result_backend)
 
         with self.assertRaises(KeyError):
-            app.config['CELERY_TIMEZONE']
-            app.config['CELERY_ENABLE_UTC']
+            app.config['timezone']
+            app.config['enable_utc']
             app.config['BROKER_URL']
-            app.config['CELERY_RESULT_BACKEND']
+            app.config['result_backend']
 
     def test_celery(self):
         """Test celery."""

@@ -131,6 +131,5 @@ def create_app(cfg):
     # Initialize Celery.
     worker.conf.update(cfg.celery)
     worker.main = __name__
-    print(worker.conf)
 
     return app
