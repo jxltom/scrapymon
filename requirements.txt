@@ -1,5 +1,6 @@
 flask==0.12
 Flask-Bootstrap==3.3.7.0
+Flask-BasicAuth==0.2.0
 Flask-SQLAlchemy==2.1
 mysql-connector==2.1.4
 Flask-Mail==0.9.1
