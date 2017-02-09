@@ -137,10 +137,12 @@ def create_app(cfg):
     datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, datastore)
 
+    from flask_boilerplate.async.mail import send_mail
+
     @security.send_mail_task
-    def test(x):
-        print('sd')
-        return x
+    def send(msg):
+        send_mail.delay(subject=msg.subject, sender=msg.sender,
+                        recipients=msg.recipients, body=msg.body, html=msg.html)
 
     # Initialize Celery.
     worker.conf.update(cfg.celery)
