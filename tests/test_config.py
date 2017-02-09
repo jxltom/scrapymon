@@ -228,6 +228,64 @@ class TestSchedulerConfig(unittest.TestCase):
         self.assertTrue(scheduler._scheduler.running)
 
 
+class TestSecurityConfig(unittest.TestCase):
+    """Test security configuration."""
+
+    def test_security_config(self):
+        """Test SecurityConfig class."""
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('security'))
+
+        cfg = Config(security=False)
+        self.assertFalse(cfg.has_attr('security'))
+
+        cfg = Config(security=True)
+        self.assertTrue(cfg.has_attr('bootstrap'))
+        self.assertTrue(cfg.has_attr('db'))
+        self.assertTrue(cfg.has_attr('mail'))
+        self.assertTrue(cfg.has_attr('security'))
+
+    # TODO test all conf vars.
+    def test_security_config_in_app(self):
+        """Test security configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['SESSION_PROTECTION']
+
+        app = create_app(Config(security=False))
+        with self.assertRaises(KeyError):
+            app.config['SESSION_PROTECTION']
+
+        app = create_app(Config(security=True))
+        self.assertTrue(app.config['SESSION_PROTECTION'])
+        with self.assertRaises(KeyError):
+            app.config['login_blueprint_prefix']
+            app.config['login_view_route']
+            app.config['success_redirect_url']
+
+    def test_login_manager_boostrap_instance(self):
+        """Test login manager instance."""
+        create_app(Config(login=True))
+        from flask_boilerplate import login_manager
+        self.assertTrue(login_manager.login_view)
+        self.assertTrue(login_manager.login_view_route)
+        self.assertTrue(login_manager.success_redirect_url)
+        self.assertTrue(login_manager.login_admins)
+        self.assertEqual(type(login_manager.login_admins), dict)
+
+    def test_login_blueprint_route(self):
+        """Test login blueprint route."""
+        app = create_app(Config())
+        app = app.test_client()
+        rv = app.get(self.url)
+        self.assertEqual(rv.status_code, 404)
+
+        app = create_app(Config(login=True))
+        app = app.test_client()
+        rv = app.get(self.url)
+        self.assertEqual(rv.status_code, 200)
+
+
 class TestIndexBlueprintConfig(unittest.TestCase):
     """Test index blueprint configuration."""
 
@@ -259,68 +317,6 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         app = app.test_client()
         rv = app.get('/_')
         self.assertEqual(rv.get_data(as_text=True), 'success')
-
-
-class TestLoginBlueprintConfig(unittest.TestCase):
-    """Test login blueprint configuration."""
-
-    def setUp(self):
-        from config import LoginBlueprintConfig
-        self.url = \
-            LoginBlueprintConfig.login_blueprint_prefix + \
-            LoginBlueprintConfig.login_view_route
-
-    def test_login_blueprint_config(self):
-        """Test LoginConfig class."""
-        cfg = Config()
-        self.assertFalse(cfg.has_attr('login'))
-
-        cfg = Config(login=False)
-        self.assertFalse(cfg.has_attr('login'))
-
-        cfg = Config(login=True)
-        self.assertTrue(cfg.has_attr('bootstrap'))
-        self.assertTrue(cfg.has_attr('db'))
-        self.assertTrue(cfg.has_attr('login'))
-
-    def test_login_blueprint_config_in_app(self):
-        """Test login blueprint configuration in flask app."""
-        app = create_app(Config())
-        with self.assertRaises(KeyError):
-            app.config['SESSION_PROTECTION']
-
-        app = create_app(Config(login=False))
-        with self.assertRaises(KeyError):
-            app.config['SESSION_PROTECTION']
-
-        app = create_app(Config(login=True))
-        self.assertTrue(app.config['SESSION_PROTECTION'])
-        with self.assertRaises(KeyError):
-            app.config['login_blueprint_prefix']
-            app.config['login_view_route']
-            app.config['success_redirect_url']
-
-    def test_login_manager_boostrap_instance(self):
-        """Test login manager instance."""
-        create_app(Config(login=True))
-        from flask_boilerplate import login_manager
-        self.assertTrue(login_manager.login_view)
-        self.assertTrue(login_manager.login_view_route)
-        self.assertTrue(login_manager.success_redirect_url)
-        self.assertTrue(login_manager.login_admins)
-        self.assertEqual(type(login_manager.login_admins), dict)
-
-    def test_login_blueprint_route(self):
-        """Test login blueprint route."""
-        app = create_app(Config())
-        app = app.test_client()
-        rv = app.get(self.url)
-        self.assertEqual(rv.status_code, 404)
-
-        app = create_app(Config(login=True))
-        app = app.test_client()
-        rv = app.get(self.url)
-        self.assertEqual(rv.status_code, 200)
 
 
 class TestWechatBlueprintConfig(unittest.TestCase):

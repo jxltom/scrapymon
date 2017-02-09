@@ -4,12 +4,12 @@ from flask_boilerplate import create_app, worker
 app = create_app(Config(
     bootstrap=True,
     db=True,
-    httpauth=False,
+    basicauth=True,
     mail=True,
     scheduler=True,
-    index=False,
-    login=False,
-    wechat=False,
+    security=True,
+    index=True,
+    wechat=True,
 ))
 
 if __name__ == '__main__':

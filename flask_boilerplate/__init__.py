@@ -8,6 +8,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import LoginManager
 from werobot import WeRoBot
 from celery import Celery
+import arrow
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -20,53 +21,18 @@ wechat = WeRoBot(enable_session=False)
 worker = Celery()
 
 
-def _teardown(func):
+def teardown(func):
     """Teardown works after initialization."""
     _app = None
 
     def wrapper(*args, **kwargs):
-
-        # Initialize flask instance.
         global _app
         _app = func(*args, **kwargs)
-
-        # Register database tables
-        if _app.extensions.get('sqlalchemy'):
-            import flask_boilerplate.models
-            with _app.app_context():
-                db.create_all()
-
-        # Initialize admin accounts for login
-        #if getattr(_app, 'login_manager', None):
-         #   from flask_boilerplate.models.user import User
-         #   with _app.app_context():
-          #      for uid, pwd in login_manager.login_admins.items():
-          #          if not User.query.get(uid):
-          #              db.session.add(User(uid, pwd))
-          #      db.session.commit()
-
-        # Push context to Celery.
-        TaskBase = worker.Task
-        class ContextTask(TaskBase):
-            abstract = True
-            def __call__(self, *args, **kwargs):
-                with _app.app_context():
-                    return TaskBase.__call__(self, *args, **kwargs)
-        worker.Task = ContextTask
-
-        # Register Celery tasks (must load at last).
-        import flask_boilerplate.async
-
         return _app
     return wrapper
 
 
-def _upper(d):
-    """Return non-lower dictionary from dictonary."""
-    return dict(((k, d[k]) for k in d if k.isupper()))
-
-
-@_teardown
+@teardown
 def create_app(cfg):
     """Create flask instance."""
 
@@ -84,6 +50,10 @@ def create_app(cfg):
         app.config.update(_upper(cfg.db))
         db.init_app(app)
 
+        import flask_boilerplate.models  # register tables
+        with app.app_context():
+            db.create_all()
+
     # Initialize Flask-BasicAuth.
     if cfg.has_attr('basicauth'):
         app.config.update(_upper(cfg.basicauth))
@@ -98,25 +68,41 @@ def create_app(cfg):
     if cfg.has_attr('scheduler'):
         scheduler.start()
 
+    # Initialize Flask-Security.
+    if cfg.has_attr('security'):
+        app.config.update(_upper(cfg.security))
+
+        # Initialize datastore.
+        from flask_boilerplate.models.user import User, Role
+
+        _datastore = SQLAlchemyUserDatastore(db, User, Role)
+        _security_ctx = security.init_app(app, _datastore)
+        security.datastore = _datastore
+
+        # Create default admins.
+        with app.app_context():
+            for email, pwd in cfg.security['security_admins'].items():
+                if not security.datastore.get_user(email):
+                    security.datastore.create_user(
+                        email=email, password=pwd,
+                        confirmed_at=arrow.utcnow().datetime,
+                    )
+            security.datastore.commit()
+
+        # Sending mail asynchrounously.
+        if cfg.security['security_async_mail']:
+            from flask_boilerplate.async.mail import send_mail
+
+            _security_ctx.send_mail_task(lambda msg: send_mail.delay(
+                subject=msg.subject, sender=msg.sender,
+                recipients=msg.recipients, body=msg.body, html=msg.html
+            ))
+
     # Initialize index blueprint.
     if cfg.has_attr('index'):
         from flask_boilerplate.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
-
-    # Initialize login blueprint.
-    if cfg.has_attr('login'):
-        app.config.update(_upper(cfg.login))
-
-        login_manager.init_app(app)
-        login_manager.login_view = 'login.log_in'  # login view function
-        login_manager.login_view_route = cfg.login['login_view_route']
-        login_manager.success_redirect_url = cfg.login['success_redirect_url']
-        login_manager.login_admins = cfg.login['login_admins']
-
-        from flask_boilerplate.views.login import login as login_blueprint
-        app.register_blueprint(
-            login_blueprint, url_prefix=cfg.login['login_blueprint_prefix'])
 
     # Initialize wechat blueprint.
     if cfg.has_attr('wechat'):
@@ -130,22 +116,26 @@ def create_app(cfg):
                          view_func=make_view(wechat),
                          methods=['GET', 'POST'])
 
-    from flask_boilerplate.models.user import User, Role
-    app.config['SECURITY_CONFIRMABLE'] = True
-    app.config['SECURITY_REGISTERABLE'] = True
-    app.config['SECURITY_RECOVERABLE'] = True
-    datastore = SQLAlchemyUserDatastore(db, User, Role)
-    security.init_app(app, datastore)
-
-    from flask_boilerplate.async.mail import send_mail
-
-    @security.send_mail_task
-    def send(msg):
-        send_mail.delay(subject=msg.subject, sender=msg.sender,
-                        recipients=msg.recipients, body=msg.body, html=msg.html)
-
     # Initialize Celery.
     worker.conf.update(cfg.celery)
     worker.main = __name__
 
+    # Push context to Celery.
+    worker.app = app
+    TaskBase = worker.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with worker.app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    worker.Task = ContextTask
+
+    # Register Celery tasks.
+    import flask_boilerplate.async
+
     return app
+
+
+def _upper(d):
+    """Return non-lower dictionary from dictonary."""
+    return dict(((k, d[k]) for k in d if k.isupper()))
