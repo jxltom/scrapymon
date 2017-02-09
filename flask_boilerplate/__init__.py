@@ -12,7 +12,7 @@ import arrow
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-basicauth = BasicAuth()
+httpauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 security = Security()
@@ -55,9 +55,9 @@ def create_app(cfg):
             db.create_all()
 
     # Initialize Flask-BasicAuth.
-    if cfg.has_attr('basicauth'):
-        app.config.update(_upper(cfg.basicauth))
-        basicauth.init_app(app)
+    if cfg.has_attr('httpauth'):
+        app.config.update(_upper(cfg.httpauth))
+        httpauth.init_app(app)
 
     # Initialize Flask-Mail
     if cfg.has_attr('mail'):

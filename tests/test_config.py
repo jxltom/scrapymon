@@ -106,47 +106,47 @@ class TestDatabaseConfig(unittest.TestCase):
         app.config['SQLALCHEMY_ECHO']
 
 
-class TestBasicAuthConfig(unittest.TestCase):
-    """Test basic auth configuration."""
+class TestHttpAuthConfig(unittest.TestCase):
+    """Test http auth configuration."""
 
-    def test_basic_auth_config(self):
-        """Test BasicAuthConfig class."""
+    def test_http_auth_config(self):
+        """Test HttpAuthConfig class."""
         cfg = Config()
-        self.assertFalse(cfg.has_attr('basicauth'))
+        self.assertFalse(cfg.has_attr('httpauth'))
 
         cfg = Config(basicauth=False)
-        self.assertFalse(cfg.has_attr('basicauth'))
+        self.assertFalse(cfg.has_attr('httpauth'))
 
-        cfg = Config(basicauth=True)
-        self.assertTrue(cfg.has_attr('basicauth'))
+        cfg = Config(httpauth=True)
+        self.assertTrue(cfg.has_attr('httpauth'))
 
-    def test_basic_auth_config_in_app(self):
-        """Test basic auth configuration in flask app."""
+    def test_http_auth_config_in_app(self):
+        """Test http auth configuration in flask app."""
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['BASIC_AUTH_USERNAME']
             app.config['BASIC_AUTH_PASSWORD']
             app.config['BASIC_AUTH_FORCE']
 
-        app = create_app(Config(basicauth=False))
+        app = create_app(Config(httpauth=False))
         with self.assertRaises(KeyError):
             app.config['BASIC_AUTH_USERNAME']
             app.config['BASIC_AUTH_PASSWORD']
             app.config['BASIC_AUTH_FORCE']
 
-        app = create_app(Config(basicauth=True))
+        app = create_app(Config(httpauth=True))
         self.assertTrue(app.config['BASIC_AUTH_USERNAME'])
         self.assertTrue(app.config['BASIC_AUTH_PASSWORD'])
         self.assertTrue(app.config['BASIC_AUTH_FORCE'] in (True, False))
 
     def test_http_auth(self):
-        """Test basic auth."""
+        """Test http auth."""
         app = create_app(Config(index=True))
         app = app.test_client()
         rv = app.get('_')
         self.assertEqual(rv.status_code, 200)
 
-        app = create_app(Config(index=True, basicauth=True))
+        app = create_app(Config(index=True, httpauth=True))
         app = app.test_client()
         rv = app.get('_')
         self.assertEqual(rv.status_code, 401)

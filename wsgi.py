@@ -4,7 +4,7 @@ from flask_boilerplate import create_app, worker
 app = create_app(Config(
     bootstrap=True,
     db=True,
-    basicauth=True,
+    httpauth=True,
     mail=True,
     scheduler=True,
     auth=True,
