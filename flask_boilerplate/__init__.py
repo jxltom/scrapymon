@@ -4,6 +4,7 @@ from flask_basicauth import BasicAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from easy_scheduler import Scheduler
+from flask_security import Security, SQLAlchemyUserDatastore
 from flask_login import LoginManager
 from werobot import WeRoBot
 from celery import Celery
@@ -13,6 +14,7 @@ db = SQLAlchemy()
 basicauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
+security = Security()
 login_manager = LoginManager()
 wechat = WeRoBot(enable_session=False)
 worker = Celery()
@@ -35,13 +37,13 @@ def _teardown(func):
                 db.create_all()
 
         # Initialize admin accounts for login
-        if getattr(_app, 'login_manager', None):
-            from flask_boilerplate.models.user import User
-            with _app.app_context():
-                for uid, pwd in login_manager.login_admins.items():
-                    if not User.query.get(uid):
-                        db.session.add(User(uid, pwd))
-                db.session.commit()
+        #if getattr(_app, 'login_manager', None):
+         #   from flask_boilerplate.models.user import User
+         #   with _app.app_context():
+          #      for uid, pwd in login_manager.login_admins.items():
+          #          if not User.query.get(uid):
+          #              db.session.add(User(uid, pwd))
+          #      db.session.commit()
 
         # Push context to Celery.
         TaskBase = worker.Task
@@ -127,6 +129,18 @@ def create_app(cfg):
                          endpoint='werobot',
                          view_func=make_view(wechat),
                          methods=['GET', 'POST'])
+
+    from flask_boilerplate.models.user import User, Role
+    app.config['SECURITY_CONFIRMABLE'] = True
+    app.config['SECURITY_REGISTERABLE'] = True
+    app.config['SECURITY_RECOVERABLE'] = True
+    datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, datastore)
+
+    @security.send_mail_task
+    def test(x):
+        print('sd')
+        return x
 
     # Initialize Celery.
     worker.conf.update(cfg.celery)

@@ -1,22 +1,27 @@
-from flask_login import UserMixin
+from flask_security import UserMixin, RoleMixin
 
 from flask_boilerplate import db
 
+roles_users = db.Table(
+    'roles_users',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')),
+)
+
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
 
 class User(db.Model, UserMixin):
-    """Table users in database."""
-
-    __tablename__ = 'users'
-
-    uid = db.Column(db.String(64), primary_key=True)
-    pwd = db.Column(db.String(64))
-
-    def __init__(self, uid, pwd):
-        """Initialize user."""
-        self.uid = uid
-        self.pwd = pwd
-
-    def get_id(self):
-        """Get user uid."""
-        return self.uid
-
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean())
+    confirmed_at = db.Column(db.DateTime())
+    roles = db.relationship(
+        'Role', secondary=roles_users,
+        backref=db.backref('users', lazy='dynamic')
+    )
