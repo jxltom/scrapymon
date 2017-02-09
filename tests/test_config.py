@@ -245,23 +245,52 @@ class TestSecurityConfig(unittest.TestCase):
         self.assertTrue(cfg.has_attr('mail'))
         self.assertTrue(cfg.has_attr('security'))
 
-    # TODO test all conf vars.
     def test_security_config_in_app(self):
         """Test security configuration in flask app."""
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['SESSION_PROTECTION']
 
-        app = create_app(Config(security=False))
-        with self.assertRaises(KeyError):
-            app.config['SESSION_PROTECTION']
+            app.config['SECURITY_PASSWORD_HASH']
+            app.config['SECURITY_PASSWORD_SALT']
+
+            app.config['SECURITY_URL_PREFIX']
+            app.config['SECURITY_LOGIN_URL']
+
+            app.config['SECURITY_POST_LOGIN_VIEW']
+            app.config['SECURITY_POST_LOGOUT_VIEW']
+
+            app.config['SECURITY_CONFIRMABLE']
+            app.config['SECURITY_REGISTERABLE']
+            app.config['SECURITY_RECOVERABLE']
+            app.config['SECURITY_TRACKABLE']
+            app.config['SECURITY_CHANGEABLE']
+
+            app.config['security_async_mail']
+            app.config['security_admins']
 
         app = create_app(Config(security=True))
         self.assertTrue(app.config['SESSION_PROTECTION'])
+
+        self.assertTrue(app.config['SECURITY_PASSWORD_HASH'])
+        self.assertTrue(app.config['SECURITY_PASSWORD_SALT'])
+        self.assertTrue(type(app.config['SECURITY_PASSWORD_SALT']) in (str, bytes))
+
+        app.config['SECURITY_URL_PREFIX']
+        app.config['SECURITY_LOGIN_URL']
+
+        app.config['SECURITY_POST_LOGIN_VIEW']
+        app.config['SECURITY_POST_LOGOUT_VIEW']
+
+        app.config['SECURITY_CONFIRMABLE']
+        app.config['SECURITY_REGISTERABLE']
+        app.config['SECURITY_RECOVERABLE']
+        app.config['SECURITY_TRACKABLE']
+        app.config['SECURITY_CHANGEABLE']
+
         with self.assertRaises(KeyError):
-            app.config['login_blueprint_prefix']
-            app.config['login_view_route']
-            app.config['success_redirect_url']
+            app.config['security_async_mail']
+            app.config['security_admins']
 
     def test_login_manager_boostrap_instance(self):
         """Test login manager instance."""

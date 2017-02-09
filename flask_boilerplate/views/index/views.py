@@ -1,6 +1,6 @@
-from . import index
 from flask_security import login_required
-from flask import render_template
+
+from . import index
 
 
 @index.route('/_')
@@ -8,7 +8,7 @@ def index_test():
     return 'success'
 
 
-@index.route('/___')
+@index.route('/_login_required')
 @login_required
 def login_required_test():
-    return render_template('index.html')
+    return 'success'

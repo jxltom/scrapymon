@@ -89,7 +89,7 @@ def create_app(cfg):
                     )
             security.datastore.commit()
 
-        # Sending mail asynchrounously.
+        # Sending mail asynchronously.
         if cfg.security['security_async_mail']:
             from flask_boilerplate.async.mail import send_mail
 
