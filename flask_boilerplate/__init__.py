@@ -69,8 +69,8 @@ def create_app(cfg):
         scheduler.start()
 
     # Initialize Flask-Security.
-    if cfg.has_attr('security'):
-        app.config.update(_upper(cfg.security))
+    if cfg.has_attr('auth'):
+        app.config.update(_upper(cfg.auth))
 
         # Initialize datastore.
         from flask_boilerplate.models.user import User, Role
@@ -81,7 +81,7 @@ def create_app(cfg):
 
         # Create default admins.
         with app.app_context():
-            for email, pwd in cfg.security['security_admins'].items():
+            for email, pwd in cfg.auth['security_admins'].items():
                 if not security.datastore.get_user(email):
                     security.datastore.create_user(
                         email=email, password=pwd,
@@ -90,7 +90,7 @@ def create_app(cfg):
             security.datastore.commit()
 
         # Sending mail asynchronously.
-        if cfg.security['security_async_mail']:
+        if cfg.auth['security_async_mail']:
             from flask_boilerplate.async.mail import send_mail
 
             _security_ctx.send_mail_task(lambda msg: send_mail.delay(
