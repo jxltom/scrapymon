@@ -6,7 +6,7 @@ Flask-BasicAuth==0.2.0
 Flask-Mail==0.9.1
 git+https://github.com/jxltom/easy-scheduler.git
 arrow==0.10.0
-git+https://github.com/jxltom/flask-security.git@respect-flask-mail
+git+https://github.com/jxltom/flask-security.git
 celery==4.0.2
 redis==2.10.5
 gunicorn==19.6.0

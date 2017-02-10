@@ -1,0 +1,29 @@
+{% if security.registerable or security.recoverable or security.confirmable %}
+
+    <div>
+        {% if not request.path == url_for_security('login') and not current_user.is_authenticated %}
+            <a class="login-link" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">Login</a>
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+            <a class="login-link" href="{{ url_for_security('logout') }}">Logout</a>
+
+            {% if not request.path == url_for_security('change_password') %}
+                <a class="login-link" href="{{ url_for_security('change_password') }}">Change password</a>
+            {% endif %}
+        {% endif %}
+
+        {% if security.registerable and not request.path == url_for_security('register') and not request.path == url_for_security('change_password') %}
+            <a class="login-link" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">Register</a>
+        {% endif %}
+
+        {% if security.recoverable and not request.path == url_for_security('forgot_password') and not request.path == url_for_security('change_password') %}
+            <a class="login-link" href="{{ url_for_security('forgot_password') }}">Forgot password?</a>
+        {% endif %}
+
+        {% if security.confirmable and not request.path == url_for_security('send_confirmation') and not request.path == url_for_security('change_password') %}
+            <a class="login-link" href="{{ url_for_security('send_confirmation') }}">Resend comfirmation email</a>
+        {% endif %}
+    </div>
+
+{% endif %}

@@ -1,0 +1,22 @@
+{% extends "security/_auth_base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% include "security/_messages.html" %}
+
+        <section class="login-form">
+            <form class="form" action="{{ url_for_security('login') }}" method="post" role="form" name="login_user_form">
+                {{ login_user_form.hidden_tag() }}
+                {{ wtf.form_field(login_user_form.email, placeholder="Email", class="form-control input-lg") }}
+                {{ wtf.form_field(login_user_form.password, placeholder="Password", class="form-control input-lg") }}
+                {{ wtf.form_field(login_user_form.remember) }}
+                {{ wtf.form_field(login_user_form.next, class="form-control input-lg") }}
+                {{ wtf.form_field(login_user_form.submit, class='btn btn-lg btn-primary btn-block') }}
+
+                {% include "security/_menu.html" %}
+            </form>
+        </section>
+    </div>
+{% endblock %}

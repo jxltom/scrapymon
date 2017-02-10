@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from flask_basicauth import BasicAuth
 from flask_sqlalchemy import SQLAlchemy
+from flask_basicauth import BasicAuth
 from flask_mail import Mail
 from easy_scheduler import Scheduler
 from flask_security import Security, SQLAlchemyUserDatastore
-from flask_login import LoginManager
 from werobot import WeRoBot
 from celery import Celery
 import arrow
@@ -16,7 +15,6 @@ httpauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 security = Security()
-login_manager = LoginManager()
 wechat = WeRoBot(enable_session=False)
 worker = Celery()
 

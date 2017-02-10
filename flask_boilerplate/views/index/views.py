@@ -1,3 +1,4 @@
+from flask import request
 from flask_security import login_required
 
 from . import index
