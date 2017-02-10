@@ -32,38 +32,84 @@ def teardown(func):
 
 @teardown
 def create_app(cfg):
-    """Create flask instance."""
+    """Create flask instance from configuration."""
 
     # Initialize flask instance.
     app = Flask(__name__)
     app.config.update(_upper(cfg.basic))
 
+    # Initialize Flask-Bootstrap.
     _init_bootstrap(app, cfg)
 
     # Initialize Flask-SQLAlchemy.
+    _init_db(app, cfg)
+
+    # Initialize Flask-BasicAuth.
+    _init_httpauth(app, cfg)
+
+    # Initialize Flask-Mail
+    _init_mail(app, cfg)
+
+    # Initialize APScheduler.
+    _init_scheduler(app, cfg)
+
+    # Initialize Flask-Security.
+    _init_auth(app, cfg)
+
+    # Initialize index blueprint.
+    _init_index(app, cfg)
+
+    # Initialize wechat blueprint.
+    _init_wechat(app, cfg)
+
+    # Initialize Celery.
+    _init_worker(app, cfg)
+
+    return app
+
+
+def _init_bootstrap(app, cfg):
+    """Initialize Flask-Bootstrap."""
+    if cfg.has_attr('bootstrap'):
+        app.config.update(_upper(cfg.bootstrap))
+        bootstrap.init_app(app)
+
+
+def _init_db(app, cfg):
+    """Initialize Flask-SQLAlchemy."""
     if cfg.has_attr('db'):
         app.config.update(_upper(cfg.db))
         db.init_app(app)
 
         import flask_boilerplate.models  # register tables
+
+        # Initalize tables.
         with app.app_context():
             db.create_all()
 
-    # Initialize Flask-BasicAuth.
+
+def _init_httpauth(app, cfg):
+    """Initialize Flask-BasicAuth."""
     if cfg.has_attr('httpauth'):
         app.config.update(_upper(cfg.httpauth))
         httpauth.init_app(app)
 
-    # Initialize Flask-Mail
+
+def _init_mail(app, cfg):
+    """Initialize Flask-Mail."""
     if cfg.has_attr('mail'):
         app.config.update(_upper(cfg.mail))
         mail.init_app(app)
 
-    # Initialize APScheduler.
+
+def _init_scheduler(app, cfg):
+    """Initialize APScheduler."""
     if cfg.has_attr('scheduler'):
         scheduler.start()
 
-    # Initialize Flask-Security.
+
+def _init_auth(app, cfg):
+    """Initialize Flask-Security."""
     if cfg.has_attr('auth'):
         app.config.update(_upper(cfg.auth))
 
@@ -84,7 +130,7 @@ def create_app(cfg):
                     )
             security.datastore.commit()
 
-        # Sending mail asynchronously.
+        # Set Sending mail asynchronously via Celery.
         if cfg.auth['security_async_mail']:
             from flask_boilerplate.async.mail import send_mail
 
@@ -93,13 +139,17 @@ def create_app(cfg):
                 recipients=msg.recipients, body=msg.body, html=msg.html
             ))
 
-    # Initialize index blueprint.
+
+def _init_index(app, cfg):
+    """Initialize index blueprint."""
     if cfg.has_attr('index'):
         from flask_boilerplate.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
 
-    # Initialize wechat blueprint.
+
+def _init_wechat(app, cfg):
+    """Initialize wechat blueprint."""
     if cfg.has_attr('wechat'):
         wechat.config['TOKEN'] = cfg.wechat['wechat_token']
         wechat.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
@@ -111,7 +161,9 @@ def create_app(cfg):
                          view_func=make_view(wechat),
                          methods=['GET', 'POST'])
 
-    # Initialize Celery.
+
+def _init_worker(app, cfg):
+    """Initialize Celery."""
     worker.conf.update(cfg.celery)
     worker.main = __name__
 
@@ -128,10 +180,6 @@ def create_app(cfg):
     # Register Celery tasks.
     import flask_boilerplate.async
 
-    return app
-
-
-def _init_bootstrap(app, cfg):
 
 def _upper(d):
     """Return non-lower dictionary from dictonary."""
