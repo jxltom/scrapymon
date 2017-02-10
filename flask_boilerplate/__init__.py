@@ -38,10 +38,7 @@ def create_app(cfg):
     app = Flask(__name__)
     app.config.update(_upper(cfg.basic))
 
-    # Initialize Flask-Bootstrap.
-    if cfg.has_attr('bootstrap'):
-        app.config.update(_upper(cfg.bootstrap))
-        bootstrap.init_app(app)
+    _init_bootstrap(app, cfg)
 
     # Initialize Flask-SQLAlchemy.
     if cfg.has_attr('db'):
@@ -133,6 +130,8 @@ def create_app(cfg):
 
     return app
 
+
+def _init_bootstrap(app, cfg):
 
 def _upper(d):
     """Return non-lower dictionary from dictonary."""
