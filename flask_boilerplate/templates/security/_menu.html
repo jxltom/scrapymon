@@ -15,7 +15,7 @@
             {% endif %}
         {% endif %}
 
-        {% if request.path == url_for_security('register') %}
+        {% if security.registerable and request.path == url_for_security('register') %}
             {% if security.confirmable %}
                 <a class="login-link" href="{{ url_for_security('send_confirmation') }}">Not received confirmation email?</a>
             {% endif %}
