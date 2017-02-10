@@ -10,7 +10,7 @@ A boilerplate for flask applications.
 - SMTP mail, compatible with asynchronous mode, supported by [Flask-Mail](https://github.com/mattupstate/flask-mail) and Celery
 - Task scheduling supported by [APScheduler](https://github.com/agronholm/apscheduler) and [easy-scheduler](https://github.com/jxltom/easy-scheduler)
 - Role-based authentication with registration, email confirmation, password recovery, and login tracking, supported by [Flask-Login](https://github.com/maxcountryman/flask-login), [Flask-Login](https://github.com/maxcountryman/flask-login) , [Flask-WTF](https://github.com/lepture/flask-wtf) and [Flask-Principal](https://github.com/mattupstate/flask-principal)                                       
-- Data management interface supported by [Flask-Admin](https://github.com/flask-admin/flask-admin)
+- Administrative interface supported by [Flask-Admin](https://github.com/flask-admin/flask-admin)
 - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
