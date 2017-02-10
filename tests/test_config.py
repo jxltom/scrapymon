@@ -248,6 +248,7 @@ class TestAuthConfig(unittest.TestCase):
 
     def test_auth_config_in_app(self):
         """Test auth configuration in flask app."""
+        # Test when auth disactivated.
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['SESSION_PROTECTION']
@@ -260,6 +261,7 @@ class TestAuthConfig(unittest.TestCase):
 
             app.config['SECURITY_POST_LOGIN_VIEW']
             app.config['SECURITY_POST_LOGOUT_VIEW']
+            app.config['SECURITY_POST_REGISTER_VIEW']
 
             app.config['SECURITY_CONFIRMABLE']
             app.config['SECURITY_REGISTERABLE']
@@ -270,6 +272,7 @@ class TestAuthConfig(unittest.TestCase):
             app.config['security_async_mail']
             app.config['security_admins']
 
+        # Test when auth is activated.
         app = create_app(Config(auth=True))
         self.assertTrue(app.config['SESSION_PROTECTION'])
 
@@ -282,6 +285,7 @@ class TestAuthConfig(unittest.TestCase):
 
         app.config['SECURITY_POST_LOGIN_VIEW']
         app.config['SECURITY_POST_LOGOUT_VIEW']
+        app.config['SECURITY_POST_REGISTER_VIEW']
 
         app.config['SECURITY_CONFIRMABLE']
         app.config['SECURITY_REGISTERABLE']
