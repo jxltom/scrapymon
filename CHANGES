@@ -6,6 +6,7 @@
 
     - [http Basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) supported by [Flask-BasicAuth](https://github.com/jpvanhal/flask-basicauth)
     - Role-based authentication with registration, email confirmation, password recovery, and login tracking, supported by [Flask-Login](https://github.com/maxcountryman/flask-login), [Flask-Login](https://github.com/maxcountryman/flask-login) , [Flask-WTF](https://github.com/lepture/flask-wtf) and [Flask-Principal](https://github.com/mattupstate/flask-principal)
+    - Data management interface supported by [Flask-Admin](https://github.com/flask-admin/flask-admin)
 
 ## Version 0.1.2 (2017-02-06)
 
