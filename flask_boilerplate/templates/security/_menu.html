@@ -5,16 +5,18 @@
             <a class="login-link" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">Login</a>
         {% endif %}
 
-        {% if request.path == url_for_security('login') or (security.registerable and request.path == url_for_security('register')) %}
-            {% if security.registerable and not request.path == url_for_security('register') %}
+        {% if request.path == url_for_security('login') %}
+            {% if security.registerable %}
                 <a class="login-link" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">Register</a>
             {% endif %}
 
-            {% if security.recoverable and not request.path == url_for_security('forgot_password') %}
+            {% if security.recoverable %}
                 <a class="login-link" href="{{ url_for_security('forgot_password') }}">Forgot password?</a>
             {% endif %}
+        {% endif %}
 
-            {% if security.registerable and request.path == url_for_security('register') and security.confirmable %}
+        {% if request.path == url_for_security('register') %}
+            {% if security.confirmable %}
                 <a class="login-link" href="{{ url_for_security('send_confirmation') }}">Not received confirmation email?</a>
             {% endif %}
         {% endif %}
