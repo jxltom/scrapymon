@@ -3,26 +3,11 @@ body {
     padding-top: 70px;
 }
 
-.navbar {
-    background: #2980B8 none;
-}
-
 .container-fluid {
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-right: 40px;
+    padding-left: 40px;
 }
 
-.navbar-toggle:hover:before,
-.navbar-toggle:focus:before,
-.navbar-inverse .navbar-toggle:hover:before,
-.navbar-inverse .navbar-toggle:focus:before,
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus,
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
-    color: white;
-}
-
-.navbar-inverse .navbar-collapse {
-    border-top: 1px solid #2966B8;
+.container-fluid .admin-form {
+    margin-top: 35px;
 }

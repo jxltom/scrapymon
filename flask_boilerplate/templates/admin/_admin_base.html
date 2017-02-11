@@ -3,8 +3,6 @@
 {% block head_css %}
 
     {{ super() }}
-
-    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='admin/_admin_base.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
@@ -16,40 +14,42 @@
 {% endblock %}
 
 {% block page_body %}
- <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header navbar-left">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+    <div class="container-fluid">
 
-            {% block brand %}
-                <a class="navbar-brand" href="#">{{ admin_view.admin.name }}</a>
-            {% endblock %}
-        </div><!-- /.navbar-header -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-        <!-- navbar content -->
-        <div class="collapse navbar-collapse" id="admin-navbar-collapse">
-            {% block main_menu %}
-                <ul class="nav navbar-nav">
-                    {{ layout.menu() }}
-                </ul>
-            {% endblock %}
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header navbar-left">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-            {% block menu_links %}
-                <ul class="nav navbar-nav navbar-right">
-                    {{ layout.menu_links() }}
-                </ul>
-            {% endblock %}
-            {% block access_control %}
-            {% endblock %}
-        </div>
-    </nav><!-- /navbar -->
+                {% block brand %}
+                    <a class="navbar-brand" href="#">{{ admin_view.admin.name }}</a>
+                {% endblock %}
+            </div><!-- /.navbar-header -->
+
+            <!-- navbar content -->
+            <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+                {% block main_menu %}
+                    <ul class="nav navbar-nav">
+                        {{ layout.menu() }}
+                    </ul>
+                {% endblock %}
+
+                {% block menu_links %}
+                    <ul class="nav navbar-nav navbar-right">
+                        {{ layout.menu_links() }}
+                    </ul>
+                {% endblock %}
+                {% block access_control %}
+                {% endblock %}
+            </div>
+        </nav><!-- /navbar -->
 
 
 
@@ -61,13 +61,6 @@
         {% set render_ctx = h.resolve_ctx() %}
 
         {% block body %}{% endblock %}
+
     </div>
-{% endblock %}
-
-{% block tail_js %}
-
-    {{ super() }}
-    <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
-    <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
 {% endblock %}
