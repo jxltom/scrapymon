@@ -163,11 +163,12 @@ def _init_admin(app, cfg):
     admin.name = 'Admin'
     admin.base_template = 'admin/_admin_base.html'
 
-    admin.init_app(app)
+    from flask_boilerplate.views.admin import CustomIndexView
+    admin.init_app(app, index_view=CustomIndexView())
 
     from flask_boilerplate.models.user import User
-    from flask_boilerplate.views.admin import UserView
-    admin.add_view(UserView(User, db.session))
+    from flask_boilerplate.views.admin import CustomModelView
+    admin.add_view(CustomModelView(User, db.session))
 
 
 def _init_index(app, cfg):
