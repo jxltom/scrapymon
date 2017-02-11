@@ -1,12 +1,16 @@
 {% extends "admin/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block head_css %}
 
     <link href="{{ admin_static.url(filename="bootstrap/bootstrap3/css/bootstrap.min.css", v='3.3.5') }}" rel="stylesheet">
     <link href="{{ admin_static.url(filename="admin/css/bootstrap3/admin.css", v='1.1.1') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='admin/_admin_base.css') }}" rel="stylesheet">
 
+    {# Add Flat-UI support. #}
+    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
+
+    {# Add IE fixes. #}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
         <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
@@ -17,42 +21,41 @@
 
 {% block page_body %}
 
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header navbar-left">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            {% block brand %}
+                <a class="navbar-brand" href="#">{{ admin_view.admin.name }}</a>
+            {% endblock %}
+        </div><!-- /.navbar-header -->
+
+        <!-- navbar content -->
+        <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+            {% block main_menu %}
+                <ul class="nav navbar-nav">
+                    {{ layout.menu() }}
+                </ul>
+            {% endblock %}
+
+            {% block menu_links %}
+                <ul class="nav navbar-nav navbar-right">
+                    {{ layout.menu_links() }}
+                </ul>
+            {% endblock %}
+            {% block access_control %}
+            {% endblock %}
+        </div>
+    </nav><!-- /navbar -->
+
     <div class="container-fluid">
-
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header navbar-left">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                {% block brand %}
-                    <a class="navbar-brand" href="#">{{ admin_view.admin.name }}</a>
-                {% endblock %}
-            </div><!-- /.navbar-header -->
-
-            <!-- navbar content -->
-            <div class="collapse navbar-collapse" id="admin-navbar-collapse">
-                {% block main_menu %}
-                    <ul class="nav navbar-nav">
-                        {{ layout.menu() }}
-                    </ul>
-                {% endblock %}
-
-                {% block menu_links %}
-                    <ul class="nav navbar-nav navbar-right">
-                        {{ layout.menu_links() }}
-                    </ul>
-                {% endblock %}
-                {% block access_control %}
-                {% endblock %}
-            </div>
-        </nav><!-- /navbar -->
-
         {% block messages %}
             {{ layout.messages() }}
         {% endblock %}
@@ -60,7 +63,8 @@
         {# store the jinja2 context for form_rules rendering logic #}
         {% set render_ctx = h.resolve_ctx() %}
 
-        {% block body %}{% endblock %}
+        {# Compatible with Flask-Bootstrap. #}
+        {% block body %}{% block content %}{% endblock %}{% endblock %}
     </div>
 {% endblock %}
 

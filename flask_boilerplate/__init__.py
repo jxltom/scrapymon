@@ -160,7 +160,7 @@ def _init_admin(app, cfg):
     """Initialize Flask-Admin."""
 
     admin.template_mode = 'bootstrap3'
-    admin.name = 'Webscheduler'
+    admin.name = 'Admin'
     admin.base_template = 'admin/_admin_base.html'
 
     admin.init_app(app)

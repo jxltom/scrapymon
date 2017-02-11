@@ -2,7 +2,7 @@ from config import Config
 from flask_boilerplate import create_app, worker
 
 app = create_app(Config(
-    bootstrap=True,
+    bootstrap=False,
     db=True,
     httpauth=True,
     mail=True,
