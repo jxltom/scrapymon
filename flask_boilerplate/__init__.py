@@ -5,6 +5,7 @@ from flask_basicauth import BasicAuth
 from flask_mail import Mail
 from easy_scheduler import Scheduler
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_admin import Admin
 from werobot import WeRoBot
 from celery import Celery
 import arrow
@@ -15,6 +16,7 @@ httpauth = BasicAuth()
 mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 security = Security()
+admin = Admin()
 wechat = WeRoBot(enable_session=False)
 worker = Celery()
 
@@ -55,6 +57,9 @@ def create_app(cfg):
 
     # Initialize Flask-Security.
     _init_auth(app, cfg)
+
+    # Initialize Flask-Admin
+    _init_admin(app, cfg)
 
     # Initialize index blueprint.
     _init_index(app, cfg)
@@ -138,6 +143,31 @@ def _init_auth(app, cfg):
                 subject=msg.subject, sender=msg.sender,
                 recipients=msg.recipients, body=msg.body, html=msg.html
             ))
+
+        from flask_admin import helpers as admin_helpers
+        from flask import url_for
+        @_security_ctx.context_processor
+        def security_context_processor():
+            return dict(
+                admin_base_template=admin.base_template,
+                admin_view=admin.index_view,
+                h=admin_helpers,
+                get_url=url_for,
+            )
+
+
+def _init_admin(app, cfg):
+    """Initialize Flask-Admin."""
+
+    admin.template_mode = 'bootstrap3'
+    admin.name = 'Webscheduler'
+    admin.base_template = 'admin/_admin_base.html'
+
+    admin.init_app(app)
+
+    from flask_boilerplate.models.user import User
+    from flask_boilerplate.views.admin import UserView
+    admin.add_view(UserView(User, db.session))
 
 
 def _init_index(app, cfg):
