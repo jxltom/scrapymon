@@ -2,11 +2,9 @@
 
 {% block content %}
 
-    <div class="container">
+
 
         <section class="login-form">
-
-            {% include "security/_messages.html" %}
 
             <form class="form" action="{{ url_for_security('login') }}" method="post" role="form" name="login_user_form">
                 {{ login_user_form.hidden_tag() }}
@@ -19,5 +17,5 @@
                 {% include "security/_menu.html" %}
             </form>
         </section>
-    </div>
+
 {% endblock %}

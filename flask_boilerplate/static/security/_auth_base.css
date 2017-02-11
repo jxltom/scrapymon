@@ -1,12 +1,7 @@
-body {
-    background-color: #F2F2F2;
-}
-
 .login-form {
     margin: 100px auto;
     max-width: 400px;
     padding-top: 28px;
-    background-color: #F2F2F2;
     border: 1px solid #CBCBCB;
 }
 
