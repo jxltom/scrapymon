@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
@@ -6,7 +6,7 @@ from flask_mail import Mail
 from easy_scheduler import Scheduler
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_security.utils import encrypt_password
-from flask_admin import Admin
+from flask_admin import Admin, helpers as admin_helpers
 from werobot import WeRoBot
 from celery import Celery
 import arrow
@@ -145,16 +145,16 @@ def _init_auth(app, cfg):
                 recipients=msg.recipients, body=msg.body, html=msg.html
             ))
 
-        from flask_admin import helpers as admin_helpers
-        from flask import url_for
-        @_security_ctx.context_processor
-        def security_context_processor():
-            return dict(
-                admin_base_template=admin.base_template,
-                admin_view=admin.index_view,
-                h=admin_helpers,
-                get_url=url_for,
-            )
+        # Pass Flask-Admin context to Flask-Security
+        if cfg.has_attr('admin'):
+            @_security_ctx.context_processor
+            def security_context_processor():
+                return dict(
+                    admin_base_template=admin.base_template,
+                    admin_view=admin.index_view,
+                    h=admin_helpers,
+                    get_url=url_for,
+                )
 
 
 def _init_admin(app, cfg):
