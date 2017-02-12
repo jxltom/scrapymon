@@ -128,8 +128,9 @@ def _init_auth(app, cfg):
 
         # Create default admins.
         with app.app_context():
-            admin_role = Role(name='admin')
-            db.session.add(admin_role)
+            root_role, user_role = Role(name='root'), Role(name='user')
+            db.session.add(root_role)
+            db.session.add(user_role)
             db.session.commit()
 
             for email, pwd in cfg.auth['security_admins'].items():
@@ -137,7 +138,7 @@ def _init_auth(app, cfg):
                     security.datastore.create_user(
                         email=email, password=encrypt_password(pwd),
                         confirmed_at=arrow.utcnow().datetime,
-                        roles=[admin_role, ]
+                        roles=[root_role, user_role]
                     )
             security.datastore.commit()
 
