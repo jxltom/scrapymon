@@ -159,16 +159,21 @@ def _init_auth(app, cfg):
 def _init_admin(app, cfg):
     """Initialize Flask-Admin."""
 
-    admin.template_mode = 'bootstrap3'
-    admin.name = 'Admin'
-    admin.base_template = 'admin/_admin_base.html'
+    if cfg.has_attr('admin'):
+        app.config.update(_upper(cfg.admin))
 
-    from flask_boilerplate.views.admin import CustomIndexView
-    admin.init_app(app, index_view=CustomIndexView())
+        admin.template_mode = cfg.admin['admin_template_mode']
+        admin.name = cfg.admin['admin_name']
+        admin.base_template = cfg.admin['admin_base_template']
 
-    from flask_boilerplate.models.user import User
-    from flask_boilerplate.views.admin import CustomModelView
-    admin.add_view(CustomModelView(User, db.session))
+        # Add index view with authentication.
+        from flask_boilerplate.views.admin import CustomIndexView
+        admin.init_app(app, index_view=CustomIndexView())
+
+        # Add database views
+        from flask_boilerplate.models.user import User
+        from flask_boilerplate.views.admin import CustomModelView
+        admin.add_view(CustomModelView(User, db.session))
 
 
 def _init_index(app, cfg):

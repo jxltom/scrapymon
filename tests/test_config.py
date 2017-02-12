@@ -42,16 +42,16 @@ class TestBootstrapConfig(unittest.TestCase):
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['BOOTSTRAP_SERVE_LOCAL']
-            app.config['BOOTSTRAP_USE_MINIFIED']
+            app.config['BOOTSTRAP_ENABLED']
 
         app = create_app(Config(bootstrap=False))
         with self.assertRaises(KeyError):
             app.config['BOOTSTRAP_SERVE_LOCAL']
-            app.config['BOOTSTRAP_USE_MINIFIED']
+            app.config['BOOTSTRAP_ENABLED']
 
         app = create_app(Config(bootstrap=True))
         self.assertTrue(app.config['BOOTSTRAP_SERVE_LOCAL'])
-        self.assertTrue(app.config['BOOTSTRAP_USE_MINIFIED'])
+        self.assertTrue(app.config['BOOTSTRAP_ENABLED'])
 
     def test_bootstrap_template(self):
         """Test base.html template when bootstrap not exists."""
@@ -303,6 +303,41 @@ class TestAuthConfig(unittest.TestCase):
         app = app.test_client()
         rv = app.get('/_login_required')
         self.assertEqual(rv.status_code, 302)
+
+
+class TestAdminConfig(unittest.TestCase):
+    """Test admin configuration."""
+
+    def test_admin_config(self):
+        """Test AdminConfig class."""
+        cfg = Config()
+        self.assertFalse(cfg.has_attr('admin'))
+
+        cfg = Config(admin=False)
+        self.assertFalse(cfg.has_attr('admin'))
+
+        cfg = Config(admin=True)
+        self.assertTrue(cfg.has_attr('admin'))
+        self.assertTrue(cfg.has_attr('auth'))
+        self.assertTrue(cfg.has_attr('db'))
+        self.assertTrue(cfg.has_attr('bootstrap'))
+
+    def test_admin_config_in_app(self):
+        """Test admin configuration in flask app."""
+        app = create_app(Config())
+        with self.assertRaises(KeyError):
+            app.config['ADMIN_ENABLED']
+
+            app.config['admin_template_mode']
+            app.config['admin_name']
+            app.config['admin_base_template']
+
+        app = create_app(Config(admin=True))
+        self.assertTrue(app.config['ADMIN_ENABLED'])
+        with self.assertRaises(KeyError):
+            app.config['admin_template_mode']
+            app.config['admin_name']
+            app.config['admin_base_template']
 
 
 class TestIndexBlueprintConfig(unittest.TestCase):

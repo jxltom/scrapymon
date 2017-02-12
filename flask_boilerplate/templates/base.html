@@ -1,14 +1,21 @@
-{% if config['BOOTSTRAP_USE_MINIFIED'] %}
+{% if config.get('ADMIN_ENABLED') %}
+
+    {% extends "admin/_base.html" %}
+
+{% elif config.get('BOOTSTRAP_ENABLED') %}
 
     {% extends "bootstrap/base.html" %}
-    {% extends "admin/master.html" %}
     {% import "bootstrap/wtf.html" as wtf %}
+    {% import "bootstrap/utils.html" as utils %}
 
     {% block styles %}
 
         {{ super() }}
+
+        {# Add Flat-UI support. #}
         <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
 
+        {# Add IE fixes. #}
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
         <!--[if lt IE 9]>
         <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
@@ -17,9 +24,18 @@
 
     {% endblock %}
 
+    {% block content %}
+
+        {{ super() }}
+        <p>sdsdsdsd</p>
+
+    {% endblock %}
+
     {% block scripts %}
 
         {{ super() }}
+
+        {# Add Flat-UI support. #}
         <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
         <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
         <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
