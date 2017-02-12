@@ -14,7 +14,3 @@ A boilerplate for flask applications.
 - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
-
-## TODO
-
-- Test login blueprint with CSRF protection.
