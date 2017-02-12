@@ -354,14 +354,6 @@ class TestAdminConfig(unittest.TestCase):
             app.config['admin_name']
             app.config['admin_base_template']
 
-    def test_admin_instance(self):
-        """Test admin instance."""
-        create_app(Config(admin=True))
-        from flask_boilerplate import admin
-        self.assertEqual(admin.template_mode, AdminConfig.admin_template_mode)
-        self.assertEqual(admin.name, AdminConfig.admin_name)
-        self.assertEqual(admin.base_template, AdminConfig.admin_base_template)
-
 
 class TestIndexBlueprintConfig(unittest.TestCase):
     """Test index blueprint configuration."""

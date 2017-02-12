@@ -18,7 +18,7 @@ mail = Mail()
 scheduler = Scheduler(timezone='Asia/Hong_Kong')
 security = Security()
 admin = Admin()
-wechat = WeRoBot(enable_session=False)
+wechat = WeRoBot()
 worker = Celery()
 
 
