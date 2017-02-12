@@ -15,6 +15,10 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(255), unique=True)
     description = db.Column(db.String(255))
 
+    def __str__(self):
+        """Return name attribute as foreign key."""
+        return self.name
+
 
 class User(db.Model, UserMixin):
     """User table."""
