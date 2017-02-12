@@ -165,7 +165,6 @@ def _init_auth(app, cfg):
 
 def _init_admin(app, cfg):
     """Initialize Flask-Admin."""
-
     if cfg.has_attr('admin'):
         app.config.update(_upper(cfg.admin))
 
