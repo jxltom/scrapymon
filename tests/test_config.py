@@ -262,12 +262,18 @@ class TestAuthConfig(unittest.TestCase):
             app.config['SECURITY_POST_LOGIN_VIEW']
             app.config['SECURITY_POST_LOGOUT_VIEW']
             app.config['SECURITY_POST_REGISTER_VIEW']
+            app.config['SECURITY_POST_CONFIRM_VIEW']
+            app.config['SECURITY_POST_RESET_VIEW']
+            app.config['SECURITY_POST_CHANGE_VIEW']
+            app.config['SECURITY_UNAUTHORIZED_VIEW']
 
             app.config['SECURITY_CONFIRMABLE']
             app.config['SECURITY_REGISTERABLE']
             app.config['SECURITY_RECOVERABLE']
             app.config['SECURITY_TRACKABLE']
             app.config['SECURITY_CHANGEABLE']
+
+            app.config['SECURITY_DEFAULT_REMEMBER_ME']
 
             app.config['security_async_mail']
             app.config['security_admins']
@@ -286,12 +292,18 @@ class TestAuthConfig(unittest.TestCase):
         app.config['SECURITY_POST_LOGIN_VIEW']
         app.config['SECURITY_POST_LOGOUT_VIEW']
         app.config['SECURITY_POST_REGISTER_VIEW']
+        app.config['SECURITY_POST_CONFIRM_VIEW']
+        app.config['SECURITY_POST_RESET_VIEW']
+        app.config['SECURITY_POST_CHANGE_VIEW']
+        app.config['SECURITY_UNAUTHORIZED_VIEW']
 
         app.config['SECURITY_CONFIRMABLE']
         app.config['SECURITY_REGISTERABLE']
         app.config['SECURITY_RECOVERABLE']
         app.config['SECURITY_TRACKABLE']
         app.config['SECURITY_CHANGEABLE']
+
+        app.config['SECURITY_DEFAULT_REMEMBER_ME']
 
         with self.assertRaises(KeyError):
             app.config['security_async_mail']
@@ -301,7 +313,7 @@ class TestAuthConfig(unittest.TestCase):
         """Test auth."""
         app = create_app(Config(index=True, auth=True))
         app = app.test_client()
-        rv = app.get('/_login_required')
+        rv = app.get('/_auth')
         self.assertEqual(rv.status_code, 302)
 
 
@@ -327,6 +339,7 @@ class TestAdminConfig(unittest.TestCase):
         app = create_app(Config())
         with self.assertRaises(KeyError):
             app.config['ADMIN_ENABLED']
+            app.config['FLASK_ADMIN_SWATCH']
 
             app.config['admin_template_mode']
             app.config['admin_name']
@@ -334,6 +347,7 @@ class TestAdminConfig(unittest.TestCase):
 
         app = create_app(Config(admin=True))
         self.assertTrue(app.config['ADMIN_ENABLED'])
+        self.assertTrue(app.config['FLASK_ADMIN_SWATCH'])
         with self.assertRaises(KeyError):
             app.config['admin_template_mode']
             app.config['admin_name']
@@ -370,7 +384,7 @@ class TestIndexBlueprintConfig(unittest.TestCase):
         app = create_app(Config(index=True))
         app = app.test_client()
         rv = app.get('/_')
-        self.assertEqual(rv.get_data(as_text=True), 'success')
+        self.assertEqual(rv.get_data(as_text=True), '')
 
 
 class TestWechatBlueprintConfig(unittest.TestCase):

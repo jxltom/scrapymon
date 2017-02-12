@@ -6,7 +6,6 @@ from flask_security import current_user
 
 class CustomIndexView(AdminIndexView):
     """Index view with authentication."""
-
     def is_accessible(self):
         """Authentication for views."""
         if current_user.is_authenticated:
@@ -20,10 +19,22 @@ class CustomIndexView(AdminIndexView):
 
 class CustomModelView(ModelView):
     """Admin views with authentication"""
-    can_delete = False
-    can_edit = False
-    column_searchable_list = ['id', 'email', 'password']
-    column_editable_list = ['password']
+    can_create = True
+    can_delete = True
+    can_edit = True
+    can_export = True
+    can_view_details = True
+    can_set_page_size = True
+
+    edit_modal = False
+    create_modal = False
+
+    column_searchable_list = ['email', ]
+    column_editable_list = ['email', 'password', 'active']
+    column_exclude_list = ['password']
+    column_filters = ['active']
+
+    form_excluded_columns = ['active']
 
     def is_accessible(self):
         """Authentication for views."""

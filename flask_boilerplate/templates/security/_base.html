@@ -1,4 +1,12 @@
-{% extends "base.html" %}
+{% if config.get('ADMIN_ENABLED') %}
+
+    {% extends "admin/_base.html" %}
+
+{% else %}
+
+    {% extends "base.html" %}
+
+{% endif %}
 
 {% block styles %}
 

@@ -3,25 +3,33 @@
 
 {% block head_css %}
 
+    <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}"
+          rel="stylesheet">
+    <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css', v='1.1.1') }}" rel="stylesheet">
+
+    {% if admin_view.extra_css %}
+        {% for css_url in admin_view.extra_css %}
+            <link href="{{ css_url }}" rel="stylesheet">
+        {% endfor %}
+    {% endif %}
+
+    {# Add Flat-UI support. #}
+    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
+
+    {# Add custom CSS. #}
+    <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='admin/_base.css') }}" rel="stylesheet">
+
     {# Compatable with Flask-Bootstrap. #}
-    {% block styles %}
+    {% block styles %}{% endblock %}
 
-        <link href="{{ admin_static.url(filename="bootstrap/bootstrap3/css/bootstrap.min.css", v='3.3.5') }}" rel="stylesheet">
-        <link href="{{ admin_static.url(filename="admin/css/bootstrap3/admin.css", v='1.1.1') }}" rel="stylesheet">
+    {# Add IE fixes. #}
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+    <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
+    <script src="{{ url_for('static', filename='flat-ui/js/respond.min.js') }}"></script>
+    <![endif]-->
 
-        {# Add custom CSS. #}
-        <link href="{{ url_for('static', filename='admin/_base.css') }}" rel="stylesheet">
-
-        {# Add Flat-UI support. #}
-        <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
-
-        {# Add IE fixes. #}
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-        <!--[if lt IE 9]>
-        <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
-        <script src="{{ url_for('static', filename='flat-ui/js/respond.min.js') }}"></script>
-        <![endif]-->
-    {% endblock %}
 {% endblock %}
 
 {% block page_body %}
@@ -75,9 +83,17 @@
 
 {% block tail_js %}
 
-    {{ super() }}
+    <script src="{{ admin_static.url(filename='vendor/jquery.min.js', v='2.1.4') }}" type="text/javascript"></script>
+    <script src="{{ admin_static.url(filename='vendor/moment.min.js', v='2.9.0') }}" type="text/javascript"></script>
+    <script src="{{ admin_static.url(filename='vendor/select2/select2.min.js', v='3.5.2') }}" type="text/javascript"></script>
 
-    {# Add Flat-UI support. #}
+    {% if admin_view.extra_js %}
+        {% for js_url in admin_view.extra_js %}
+            <script src="{{ js_url }}" type="text/javascript"></script>
+        {% endfor %}
+    {% endif %}
+
+    {# Add Flat-UI support and remove original bootstrap JS. #}
     <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>

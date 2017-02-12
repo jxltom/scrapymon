@@ -1,8 +1,4 @@
-{% if config.get('ADMIN_ENABLED') %}
-
-    {% extends "admin/_base.html" %}
-
-{% elif config.get('BOOTSTRAP_ENABLED') %}
+{% if config.get('BOOTSTRAP_ENABLED') %}
 
     {% extends "bootstrap/base.html" %}
     {% import "bootstrap/wtf.html" as wtf %}
@@ -15,6 +11,9 @@
         {# Add Flat-UI support. #}
         <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
 
+        {# Add custom CSS. #}
+        <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
+
         {# Add IE fixes. #}
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
         <!--[if lt IE 9]>
@@ -26,20 +25,18 @@
 
     {% block content %}
 
-        {{ super() }}
-        <p>sdsdsdsd</p>
-
+        <div class="container-fluid">
+            {{ utils.flashed_messages(container=False, dismissible=True) }}
+        </div>
     {% endblock %}
 
     {% block scripts %}
 
-        {{ super() }}
+        <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
 
-        {# Add Flat-UI support. #}
+        {# Add Flat-UI support and removed original bootstrap JS. #}
         <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
         <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
         <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
-
     {% endblock %}
-
 {% endif %}
