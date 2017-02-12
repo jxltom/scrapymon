@@ -24,7 +24,7 @@
 
         <a class="login-link" href="{{ url_for_security('logout') }}">Logout</a>
 
-        {% if security.changeabal and not request.path == url_for_security('change_password') %}
+        {% if security.changeable and not request.path == url_for_security('change_password') %}
             <a class="login-link" href="{{ url_for_security('change_password') }}">Change password</a>
         {% endif %}
     {% endif %}

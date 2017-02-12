@@ -3,8 +3,7 @@
 
 {% block head_css %}
 
-    <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}"
-          rel="stylesheet">
+    <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}" rel="stylesheet">
     <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css', v='1.1.1') }}" rel="stylesheet">
 
     {% if admin_view.extra_css %}
@@ -63,7 +62,9 @@
                     {{ layout.menu_links() }}
                 </ul>
             {% endblock %}
+
             {% block access_control %}
+                {% include "admin/_menu.html" %}
             {% endblock %}
         </div>
     </nav><!-- /navbar -->
