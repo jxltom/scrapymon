@@ -120,7 +120,7 @@ def _init_auth(app, cfg):
         app.config.update(_upper(cfg.auth))
 
         # Initialize datastore.
-        from flask_boilerplate.models.user import User, Role
+        from flask_boilerplate.models.users_roles import User, Role
 
         _datastore = SQLAlchemyUserDatastore(db, User, Role)
         _security_ctx = security.init_app(app, _datastore)
@@ -128,11 +128,16 @@ def _init_auth(app, cfg):
 
         # Create default admins.
         with app.app_context():
+            admin_role = Role(name='admin')
+            db.session.add(admin_role)
+            db.session.commit()
+
             for email, pwd in cfg.auth['security_admins'].items():
                 if not security.datastore.get_user(email):
                     security.datastore.create_user(
                         email=email, password=encrypt_password(pwd),
                         confirmed_at=arrow.utcnow().datetime,
+                        roles=[admin_role, ]
                     )
             security.datastore.commit()
 
@@ -172,9 +177,10 @@ def _init_admin(app, cfg):
         admin.init_app(app, index_view=CustomIndexView())
 
         # Add database views
-        from flask_boilerplate.models.user import User
-        from flask_boilerplate.views.admin import CustomModelView
-        admin.add_view(CustomModelView(User, db.session))
+        from flask_boilerplate.models.users_roles import User, Role
+        from flask_boilerplate.views.admin import UserModelView, RoleModelView
+        admin.add_view(UserModelView(User, db.session))
+        admin.add_view(RoleModelView(Role, db.session))
 
 
 def _init_index(app, cfg):

@@ -1,1 +1,1 @@
-from .views import CustomIndexView, CustomModelView
+from .views import CustomIndexView, UserModelView, RoleModelView
