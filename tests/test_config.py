@@ -1,5 +1,6 @@
 import unittest
-from config import Config, DBConfig, WechatBlueprintConfig, CeleryConfig
+from config import (Config, DBConfig, AdminConfig, WechatBlueprintConfig,
+                    CeleryConfig)
 from flask_boilerplate import create_app
 from flask import render_template
 
@@ -352,6 +353,14 @@ class TestAdminConfig(unittest.TestCase):
             app.config['admin_template_mode']
             app.config['admin_name']
             app.config['admin_base_template']
+
+    def test_admin_instance(self):
+        """Test admin instance."""
+        create_app(Config(admin=True))
+        from flask_boilerplate import admin
+        self.assertEqual(admin.template_mode, AdminConfig.admin_template_mode)
+        self.assertEqual(admin.name, AdminConfig.admin_name)
+        self.assertEqual(admin.base_template, AdminConfig.admin_base_template)
 
 
 class TestIndexBlueprintConfig(unittest.TestCase):

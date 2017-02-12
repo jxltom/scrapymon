@@ -5,6 +5,7 @@ from flask_basicauth import BasicAuth
 from flask_mail import Mail
 from easy_scheduler import Scheduler
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_security.utils import encrypt_password
 from flask_admin import Admin
 from werobot import WeRoBot
 from celery import Celery
@@ -130,7 +131,7 @@ def _init_auth(app, cfg):
             for email, pwd in cfg.auth['security_admins'].items():
                 if not security.datastore.get_user(email):
                     security.datastore.create_user(
-                        email=email, password=pwd,
+                        email=email, password=encrypt_password(pwd),
                         confirmed_at=arrow.utcnow().datetime,
                     )
             security.datastore.commit()
