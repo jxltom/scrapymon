@@ -1,0 +1,38 @@
+{% extends "index/_base.html" %}
+
+{% block content %}
+
+    {{ super() }}
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Projects</a></li>
+        <li><a href="/jobs">Jobs</a></li>
+    </ul>
+
+    <div class="panel-group" id="projects">
+
+        {% for project in projects %}
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project.name }}">
+                    <a class="panel-title collapsed">{{ project.name }}</a>
+                </div>
+
+                <div id="{{ project.name }}" class="panel-collapse collapse in">
+
+                    <div class="panel-body">
+
+                        <div class="list-group">
+
+                            {% for spider in project.spiders %}
+                                <div class="list-group-item">{{ spider.name }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

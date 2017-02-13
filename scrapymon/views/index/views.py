@@ -21,9 +21,15 @@ def server_connection_error(e):
 
 
 @index.route('/')
-def dashboard():
-    """Dashboard view."""
-    return list_projects()
+def projects():
+    """Projects view."""
+    return render_template('index/projects.html')
+
+
+@index.route('/jobs')
+def jobs():
+    """Jobs view."""
+    return render_template('index/jobs.html')
 
 
 @index.route('/listprojects')

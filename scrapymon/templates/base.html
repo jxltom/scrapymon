@@ -23,20 +23,25 @@
 
     {% endblock %}
 
-    {% block content %}
+    {% block body %}
+
+        {% block navbar %}{% endblock navbar %}
 
         <div class="container-fluid">
-            {{ utils.flashed_messages(container=False, dismissible=True) }}
+
+            {% block content %}
+                {{ utils.flashed_messages(container=False, dismissible=True) }}
+            {% endblock %}
         </div>
-    {% endblock %}
 
-    {% block scripts %}
+        {% block scripts %}
 
-        <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+            <script src="{{ bootstrap_find_resource('jquery.js', cdn='jquery') }}"></script>
 
-        {# Add Flat-UI support and removed original bootstrap JS. #}
-        <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
-        <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
+            {# Add Flat-UI support and removed original bootstrap JS. #}
+            <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
+            <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
+        {% endblock %}
     {% endblock %}
 {% endif %}
