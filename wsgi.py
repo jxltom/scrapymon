@@ -1,16 +1,16 @@
 from config import Config
-from flask_boilerplate import create_app, worker
+from scrapymon import create_app, worker
 
 app = create_app(Config(
     bootstrap=True,
     db=True,
     httpauth=True,
-    mail=True,
-    scheduler=True,
-    auth=True,
-    admin=True,
+    mail=False,
+    scheduler=False,
+    auth=False,
+    admin=False,
     index=True,
-    wechat=True,
+    wechat=False,
 ))
 
 if __name__ == '__main__':

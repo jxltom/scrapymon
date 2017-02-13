@@ -1,4 +1,4 @@
-from flask_boilerplate import wechat
+from scrapymon import wechat
 
 
 @wechat.filter('_')

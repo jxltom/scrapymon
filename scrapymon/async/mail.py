@@ -1,7 +1,7 @@
 from flask_mail import Message
 
-from flask_boilerplate import mail
-from flask_boilerplate import worker
+from scrapymon import mail
+from scrapymon import worker
 
 
 @worker.task

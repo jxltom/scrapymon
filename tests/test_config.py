@@ -1,7 +1,7 @@
 import unittest
 from config import (Config, DBConfig, AdminConfig, WechatBlueprintConfig,
                     CeleryConfig)
-from flask_boilerplate import create_app
+from scrapymon import create_app
 from flask import render_template
 
 
@@ -192,14 +192,14 @@ class TestMailConfig(unittest.TestCase):
     def test_mail(self):
         """Test mail."""
         create_app(Config(mail=True))
-        from flask_boilerplate.async.mail import send_mail
+        from scrapymon.async.mail import send_mail
         self.assertEqual(send_mail(subject='success', body='success',
                                    recipients=['jxltom@gmail.com']), 0)
 
     def test_async_mail(self):
         """Test async mail."""
         create_app(Config(mail=True))
-        from flask_boilerplate.async.mail import send_mail
+        from scrapymon.async.mail import send_mail
         send_mail.delay(subject='success', body='success',
                         recipients=['jxltom@gmail.com'])
 
@@ -221,11 +221,11 @@ class TestSchedulerConfig(unittest.TestCase):
     def test_scheduler(self):
         """Test scheduler in flask app."""
         create_app(Config())
-        from flask_boilerplate import scheduler
+        from scrapymon import scheduler
         self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
-        from flask_boilerplate import scheduler
+        from scrapymon import scheduler
         self.assertTrue(scheduler._scheduler.running)
 
 
@@ -408,7 +408,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_robot_instance(self):
         """Test robot instance."""
         create_app(Config(wechat=True))
-        from flask_boilerplate import wechat
+        from scrapymon import wechat
         self.assertTrue(wechat.config['TOKEN'])
         self.assertTrue(wechat.config['SESSION_STORAGE'] is
                         WechatBlueprintConfig.wechat_session_storage)
@@ -425,7 +425,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_wechat_blueprint_route(self):
         """Test wechat blueprint route."""
         create_app(Config(wechat=True))
-        from flask_boilerplate import wechat
+        from scrapymon import wechat
         self.assertTrue(wechat._handlers['text'])
 
     def test_wechat(self):
@@ -447,7 +447,7 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery_config(self):
         """Test CeleryConfig class."""
         app = create_app(Config())
-        from flask_boilerplate import worker
+        from scrapymon import worker
         self.assertEqual(worker.conf['timezone'],
                          CeleryConfig.timezone)
         self.assertEqual(worker.conf['enable_utc'],
@@ -466,5 +466,5 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery(self):
         """Test celery."""
         create_app(Config())
-        from flask_boilerplate.async.mail import async_test
+        from scrapymon.async.mail import async_test
         self.assertTrue(async_test.delay(1, 2))

@@ -1,6 +1,6 @@
 from flask_security import UserMixin, RoleMixin
 
-from flask_boilerplate import db
+from scrapymon import db
 
 roles_users = db.Table(
     'roles_users',

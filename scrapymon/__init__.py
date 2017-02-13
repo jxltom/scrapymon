@@ -87,7 +87,7 @@ def _init_db(app, cfg):
         app.config.update(_upper(cfg.db))
         db.init_app(app)
 
-        import flask_boilerplate.models  # register tables
+        import scrapymon.models  # register tables
 
         # Initalize tables.
         with app.app_context():
@@ -120,7 +120,7 @@ def _init_auth(app, cfg):
         app.config.update(_upper(cfg.auth))
 
         # Initialize datastore.
-        from flask_boilerplate.models.users_roles import User, Role
+        from scrapymon.models.users_roles import User, Role
 
         _datastore = SQLAlchemyUserDatastore(db, User, Role)
         _security_ctx = security.init_app(app, _datastore)
@@ -144,7 +144,7 @@ def _init_auth(app, cfg):
 
         # Set Sending mail asynchronously via Celery.
         if cfg.auth['security_async_mail']:
-            from flask_boilerplate.async.mail import send_mail
+            from scrapymon.async.mail import send_mail
 
             _security_ctx.send_mail_task(lambda msg: send_mail.delay(
                 subject=msg.subject, sender=msg.sender,
@@ -173,12 +173,12 @@ def _init_admin(app, cfg):
         admin.base_template = cfg.admin['admin_base_template']
 
         # Add index view with authentication.
-        from flask_boilerplate.views.admin import CustomIndexView
+        from scrapymon.views.admin import CustomIndexView
         admin.init_app(app, index_view=CustomIndexView())
 
         # Add database views
-        from flask_boilerplate.models.users_roles import User, Role
-        from flask_boilerplate.views.admin import UserModelView, RoleModelView
+        from scrapymon.models.users_roles import User, Role
+        from scrapymon.views.admin import UserModelView, RoleModelView
         admin.add_view(UserModelView(User, db.session))
         admin.add_view(RoleModelView(Role, db.session))
 
@@ -186,7 +186,7 @@ def _init_admin(app, cfg):
 def _init_index(app, cfg):
     """Initialize index blueprint."""
     if cfg.has_attr('index'):
-        from flask_boilerplate.views.index import index as index_blueprint
+        from scrapymon.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
 
@@ -197,7 +197,7 @@ def _init_wechat(app, cfg):
         wechat.config['TOKEN'] = cfg.wechat['wechat_token']
         wechat.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
 
-        import flask_boilerplate.views.wechat.views  # load robot handlers
+        import scrapymon.views.wechat.views  # load robot handlers
         from werobot.contrib.flask import make_view
         app.add_url_rule(rule=cfg.wechat['wechat_view_route'],
                          endpoint='werobot',
@@ -221,7 +221,7 @@ def _init_worker(app, cfg):
     worker.Task = ContextTask
 
     # Register Celery tasks.
-    import flask_boilerplate.async
+    import scrapymon.async
 
 
 def _upper(d):
