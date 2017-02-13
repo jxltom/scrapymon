@@ -16,12 +16,12 @@
     {% endif %}
 
     {# Add Flat-UI support. #}
-    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.min.css') }}" rel="stylesheet">
+     <link href="{{ url_for('static', filename='admin/_flatui_compatible.css') }}" rel="stylesheet">
 
     {# Add custom CSS. #}
     <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='admin/_base.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='admin/_flatui_compatible.css') }}" rel="stylesheet">
 
     {# Compatable with Flask-Bootstrap. #}
     {% block styles %}{% endblock %}
