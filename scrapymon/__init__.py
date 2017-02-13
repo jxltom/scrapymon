@@ -186,6 +186,8 @@ def _init_admin(app, cfg):
 def _init_index(app, cfg):
     """Initialize index blueprint."""
     if cfg.has_attr('index'):
+        app.config.update(_upper(cfg.index))
+
         from scrapymon.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])

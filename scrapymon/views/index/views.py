@@ -1,7 +1,34 @@
-from flask import render_template
+from flask import render_template, flash, current_app, g
 from flask_security import login_required
+from werkzeug.local import LocalProxy
+import requests
 
 from . import index
+
+
+# Convenient reference to scrapyd server.
+server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
+
+# Endpoints of scrapyd API.
+listprojects = '/listprojects.json'
+
+
+@index.errorhandler(requests.ConnectionError)
+def server_connection_error(e):
+    """Flash messages if server can not be connected."""
+    flash(e.args, 'danger')
+    return render_template('index/error.html')
+
+
+@index.route('/')
+def dashboard():
+    """Dashboard view."""
+    return list_projects()
+
+
+@index.route('/listprojects')
+def list_projects():
+    return requests.get(server + listprojects).text
 
 
 @index.route('/_')
