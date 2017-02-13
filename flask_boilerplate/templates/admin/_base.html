@@ -1,9 +1,12 @@
+{# The bootstrap-theme is removed when default bootstrap theme is used for Flat-UI compatibility. #}
+
 {% extends "admin/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head_css %}
 
-    <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}" rel="stylesheet">
+    <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}"
+          rel="stylesheet">
     <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css', v='1.1.1') }}" rel="stylesheet">
 
     {% if admin_view.extra_css %}
@@ -18,6 +21,7 @@
     {# Add custom CSS. #}
     <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='admin/_base.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='admin/_flatui_compatible.css') }}" rel="stylesheet">
 
     {# Compatable with Flask-Bootstrap. #}
     {% block styles %}{% endblock %}
@@ -33,6 +37,7 @@
 
 {% block page_body %}
 
+    {# Using inversed navbar. #}
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,35 +49,23 @@
                 <span class="icon-bar"></span>
             </button>
 
-            {% block brand %}
-                <a class="navbar-brand" href="#">{{ admin_view.admin.name }}</a>
-            {% endblock %}
+            {% block brand %}{{ super() }}{% endblock %}
         </div><!-- /.navbar-header -->
 
         <!-- navbar content -->
         <div class="collapse navbar-collapse" id="admin-navbar-collapse">
-            {% block main_menu %}
-                <ul class="nav navbar-nav">
-                    {{ layout.menu() }}
-                </ul>
-            {% endblock %}
+            {% block main_menu %}{{ super() }}{% endblock %}
 
-            {% block menu_links %}
-                <ul class="nav navbar-nav navbar-right">
-                    {{ layout.menu_links() }}
-                </ul>
-            {% endblock %}
+            {% block menu_links %}{{ super() }}{% endblock %}
 
-            {% block access_control %}
-                {% include "admin/_menu.html" %}
-            {% endblock %}
+            {# Add authentication menu. #}
+            {% block access_control %}{% include "admin/_menu.html" %}{% endblock %}
         </div>
     </nav><!-- /navbar -->
 
+    {# Using fluid container instead default container. #}
     <div class="container-fluid">
-        {% block messages %}
-            {{ layout.messages() }}
-        {% endblock %}
+        {% block messages %}{{ super() }}{% endblock %}
 
         {# store the jinja2 context for form_rules rendering logic #}
         {% set render_ctx = h.resolve_ctx() %}
@@ -84,9 +77,9 @@
 
 {% block tail_js %}
 
+    {# Remove default select2.js and original bootstrap JS for Flat-UI compatiblity. #}
     <script src="{{ admin_static.url(filename='vendor/jquery.min.js', v='2.1.4') }}" type="text/javascript"></script>
     <script src="{{ admin_static.url(filename='vendor/moment.min.js', v='2.9.0') }}" type="text/javascript"></script>
-    <script src="{{ admin_static.url(filename='vendor/select2/select2.min.js', v='3.5.2') }}" type="text/javascript"></script>
 
     {% if admin_view.extra_js %}
         {% for js_url in admin_view.extra_js %}
@@ -94,7 +87,6 @@
         {% endfor %}
     {% endif %}
 
-    {# Add Flat-UI support and remove original bootstrap JS. #}
     <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>

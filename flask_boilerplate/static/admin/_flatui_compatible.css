@@ -1,0 +1,12 @@
+/* Add bgcolor for default select2-search-choice since multiselect-default class is missing in Flask-Admin. */
+.select2-container-multi {
+  border-color: #bdc3c7;
+}
+
+.select2-container-multi .select2-search-choice {
+  background-color: #bdc3c7;
+}
+
+.select2-container-multi .select2-search-choice:hover {
+  background-color: #cacfd2;
+}

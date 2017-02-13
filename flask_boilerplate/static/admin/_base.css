@@ -5,8 +5,3 @@ body {
 .container-fluid .admin-form {
     margin-top: 35px;
 }
-
-/* Fix Flat-UI incompatible CSS */
-.select2-arrow {
-    border-style: none;
-}
