@@ -12,12 +12,11 @@
 
                 <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
                     <a class="panel-title collapsed">{{ project }}
+                        <span class="label label-success">{{ attrs['spiders']|length }} spiders</span>
 
                         {% for version in attrs['versions'] %}
-                            <span class="label label-default" title="version {{ version }}", data-toggle="tooltip">{{ version }}</span>
+                            <span class="label label-primary" title="version {{ version }}" , data-toggle="tooltip">{{ version }}</span>
                         {% endfor %}
-
-                        <span class="badge pull-right">{{ spiders|length }} spiders</span>
                     </a>
                 </div>
 
