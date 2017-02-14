@@ -14,7 +14,7 @@
                     <a class="panel-title collapsed">{{ project }}
 
                         {% for version in attrs['versions'] %}
-                            <span class="label label-default">{{ version }}</span>
+                            <span class="label label-default" title="version {{ version }}", data-toggle="tooltip">{{ version }}</span>
                         {% endfor %}
 
                         <span class="badge pull-right">{{ spiders|length }} spiders</span>

@@ -90,4 +90,12 @@
     <script src="{{ url_for('static', filename='flat-ui/js/flat-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
+
+    {# Initialize tooltip and hide tooltip for compatibility with application.js. #}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle=tooltip]').tooltip('hide');
+                });
+            </script>
 {% endblock %}
