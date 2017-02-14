@@ -3,3 +3,9 @@
 ## Version 0.0.1 (2017-02-13)
 
 - Features
+
+    - Show all projects from a Scrapyd server
+    - Show all spiders in each project
+    - Show all pending, running and finished jobs from a Scrapyd server
+    - Schedule spiders in a project to run
+    - Cancel a pending or running job
