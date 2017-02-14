@@ -14,6 +14,7 @@
 
         <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle{% if not attrs['versions']|length %} disabled{% endif %}" type="button">
             <span class="caret"></span></button>
+
         <ul role="menu" class="dropdown-menu">
             {% for version in attrs['versions'] %}
                 <li>

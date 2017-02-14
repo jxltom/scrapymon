@@ -8,7 +8,7 @@ Simple management UI for scrapyd.
 - Show all versions of each project
 - Show all spiders in each project
 - Show all pending, running and finished jobs from a Scrapyd server
-- Http basic access authentication provided
+- Http basic access authentication supported
 
 ## TODO
 
