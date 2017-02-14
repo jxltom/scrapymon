@@ -8,6 +8,4 @@
     - Show all versions of each project
     - Show all spiders in each project
     - Show all pending, running and finished jobs from a Scrapyd server
-    - Schedule spiders to run
-    - Cancel pending or running jobs
     - Http basic access authentication provided
