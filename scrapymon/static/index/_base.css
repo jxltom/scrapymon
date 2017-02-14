@@ -1,3 +1,4 @@
+/* Remvoe body top padding since header exists. */
 body {
     padding-top: 0px;
 }
@@ -17,7 +18,7 @@ body {
     background-color: #1abc9c;
 }
 
-/* Fixed different height of button and dropdown-toggle button in xs size. */
-.btn-xs {
-    padding: 10px 12px;
+/* Add left padding of table. */
+.table > tbody > tr > td:nth-of-type(1) {
+    padding-left:20px;
 }

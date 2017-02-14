@@ -1,9 +1,18 @@
-<div class="list-group">
+<table class="table table-responsive">
+    <tbody>
+    <tr class="default">
+        {% for spider in attrs['spiders'] %}
+            <td>{{ spider }}</td>
+            <td></td>
+        {% endfor %}
 
-    {% for spider in attrs['spiders'] %}
-        <div class="list-group-item">{{ spider }}</div>
-    {% endfor %}
-</div>
+        {% if not attrs['spiders']|length %}
+            <td></td>
+            <td></td>
+        {% endif %}
+    </tr>
+    </tbody>
+</table>
 
 <div class="panel-footer clearfix">
 
