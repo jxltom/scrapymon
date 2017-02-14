@@ -57,33 +57,11 @@ def _list_projects():
         flash(
             'Can not get projects in node {}. '
             'The raw message returned by Scrapyd server is {}'.format(
-                node_name, raw), 'danger'
+                node_name, raw), 'warning'
         )
 
     # Return projects list.
     return projects
-
-
-def _list_spiders(project):
-    """Get spiders list of a project"""
-    # Get response from server
-    raw = requests.get(server + listspiders, params=dict(project=project)).text
-    r = json.loads(raw)
-
-    # Parse response.
-    status, node_name = r.get('status', ''), r.get('node_name', '')
-    spiders = r.get('spiders', [])
-
-    # Flash error messages.
-    if status != 'ok':
-        flash(
-            'Can not get spiders of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
-                project, node_name, raw), 'danger'
-        )
-
-    # Return projects list.
-    return spiders
 
 
 def _list_versions(project):
@@ -101,11 +79,33 @@ def _list_versions(project):
         flash(
             'Can not get versions of project {} in node {}. '
             'The raw message returned by Scrapyd server is {}'.format(
-                project, node_name, raw), 'danger'
+                project, node_name, raw), 'warning'
         )
 
     # Return projects list.
     return versions
+
+
+def _list_spiders(project):
+    """Get spiders list of a project"""
+    # Get response from server
+    raw = requests.get(server + listspiders, params=dict(project=project)).text
+    r = json.loads(raw)
+
+    # Parse response.
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    spiders = r.get('spiders', [])
+
+    # Flash error messages.
+    if status != 'ok':
+        flash(
+            'Can not get spiders of project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                project, node_name, raw), 'warning'
+        )
+
+    # Return projects list.
+    return spiders
 
 
 @index.route('/jobs')
