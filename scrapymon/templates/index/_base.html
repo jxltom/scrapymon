@@ -15,13 +15,13 @@
 
         {% if request.path == url_for('index.projects_dash') %}
 
-            <li class="active"><a href="#">Projects</a></li>
-            <li class="active"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>
+            <li role="presentation" class="active"><a href="#">Projects</a></li>
+            <li role="presentation"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>
 
         {% elif request.path == url_for('index.jobs_dash') %}
 
-            <li><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
-            <li class="active"><a href="#">Jobs</a></li>
+            <li role="presentation"><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
+            <li role="presentation" class="active"><a href="#">Jobs</a></li>
 
         {% endif %}
     </ul>
