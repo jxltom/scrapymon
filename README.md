@@ -5,6 +5,7 @@ Simple management UI for scrapyd.
 ## Features
 
 - Show all projects from a Scrapyd server
+- Show all version in each project
 - Show all spiders in each project
 - Show all pending, running and finished jobs from a Scrapyd server
 - Schedule spiders in a project to run
@@ -12,7 +13,6 @@ Simple management UI for scrapyd.
 
 ## TODO
 
-- Support ```listversions.json``` in projects page.
 - Support deleting version or project via ```delversion.json``` and ```delproject.json```.
 - Support logs
 - Support create project via ```addversion.json```.
