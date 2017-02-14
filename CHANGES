@@ -5,8 +5,8 @@
 - Features
 
     - Show all projects from a Scrapyd server
-    - Show all version in each project
+    - Show all versions of each project
     - Show all spiders in each project
     - Show all pending, running and finished jobs from a Scrapyd server
-    - Schedule spiders in a project to run
-    - Cancel a pending or running job
+    - Schedule spiders to run
+    - Cancel pending or running jobs
