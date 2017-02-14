@@ -2,14 +2,22 @@ body {
     padding-top: 0px;
 }
 
+/* Remvoe top margin of page header. */
 .page-header {
     margin-top: 0px;
 }
 
+/* Add bottom margin of nav-tabs. */
 .nav-tabs {
     margin-bottom: 30px;
 }
 
+/* Update badge color to green. */
 .panel-default > .panel-heading .badge {
     background-color: #1abc9c;
+}
+
+/* Fixed different height of button and dropdown-toggle button in xs size. */
+.btn-xs {
+    padding: 10px 12px;
 }
