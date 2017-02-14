@@ -14,6 +14,7 @@ Simple management UI for scrapyd.
 
 - Support ```listversions.json``` in projects page.
 - Support deleting version or project via ```delversion.json``` and ```delproject.json```.
+- Support logs
 - Support create project via ```addversion.json```.
 
 ## Contributing

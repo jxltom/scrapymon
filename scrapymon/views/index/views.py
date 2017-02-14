@@ -15,6 +15,7 @@ debug = LocalProxy(lambda: current_app.config['DEBUG'])
 # Endpoints of scrapyd API.
 listprojects = '/listprojects.json'
 listspiders = '/listspiders.json'
+listversions = '/listversions.json'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -32,9 +33,11 @@ def projects_dash():
     """Projects view."""
     projects = {}
 
-    # Get projects as well as project's spiders
+    # Get projects as well as their versions, spiders
     for project in _list_projects():
-        projects[project] = _list_spiders(project)
+        spiders = _list_spiders(project)
+        versions = _list_versions(project)
+        projects[project] = dict(versions=versions, spiders=spiders)
 
     return render_template('index/projects.html', projects=projects)
 
@@ -81,6 +84,28 @@ def _list_spiders(project):
 
     # Return projects list.
     return spiders
+
+
+def _list_versions(project):
+    """Get versions list of a project"""
+    # Get response from server
+    raw = requests.get(server + listversions, params=dict(project=project)).text
+    r = json.loads(raw)
+
+    # Parse response.
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    versions = r.get('versions', [])
+
+    # Flash error messages.
+    if status != 'ok':
+        flash(
+            'Can not get versions of project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                project, node_name, raw), 'danger'
+        )
+
+    # Return projects list.
+    return versions
 
 
 @index.route('/jobs')

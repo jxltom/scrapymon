@@ -6,22 +6,29 @@
 
     <div class="panel-group" id="projects">
 
-        {% for project, spiders in projects.items() %}
+        {% for project, attrs in projects.items() %}
 
             <div class="panel panel-default">
 
                 <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
-                    <a class="panel-title collapsed"><span class="badge pull-right">{{ spiders|length }} spiders</span>{{ project }}</a>
+                    <a class="panel-title collapsed">{{ project }}
+
+                        {% for version in attrs['versions'] %}
+                            <span class="label label-default">{{ version }}</span>
+                        {% endfor %}
+
+                        <span class="badge pull-right">{{ spiders|length }} spiders</span>
+                    </a>
                 </div>
 
                 <div id="{{ project }}" class="panel-collapse collapse in">
 
-                        <div class="list-group">
+                    <div class="list-group">
 
-                            {% for spider in spiders %}
-                                <div class="list-group-item">{{ spider }}</div>
-                            {% endfor %}
-                        </div>
+                        {% for spider in attrs['spiders'] %}
+                            <div class="list-group-item">{{ spider }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
