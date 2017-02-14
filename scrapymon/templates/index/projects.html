@@ -10,13 +10,9 @@
 
             <div class="panel panel-default">
 
-                <div class="panel-heading clearfix" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
-                    {% include "index/projects_panel_head.html" %}
-                </div>
+                {% include "index/projects_panel_head.html" %}
 
-                <div id="{{ project }}" class="panel-collapse collapse in">
-                    {% include "index/projects_panel_body.html" %}
-                </div>
+                {% include "index/projects_panel_body.html" %}
             </div>
         {% endfor %}
     </div>

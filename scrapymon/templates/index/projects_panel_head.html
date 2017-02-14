@@ -1,22 +1,25 @@
-<a class="panel-title collapsed">{{ project }}
+<div class="panel-heading clearfix" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
 
-    <span class="badge" title="{{ attrs['spiders']|length }} spiders" , data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
+    <a class="panel-title collapsed">{{ project }}
 
-    {% for version in attrs['versions'] %}
-        <span class="label label-primary" title="version {{ version }}" , data-toggle="tooltip">{{ version }}</span>
-    {% endfor %}
-</a>
+        <span class="badge" title="{{ attrs['spiders']|length }} spiders" , data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
 
-<div class="btn-group pull-right">
-    <button class="btn btn-danger btn-xs" type="button">Delete Project</button>
-
-    <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle{% if not attrs['versions']|length %} disabled{% endif %}" type="button">
-        <span class="caret"></span></button>
-    <ul role="menu" class="dropdown-menu">
         {% for version in attrs['versions'] %}
-            <li>
-                <button class="btn btn-danger btn-xs">Delete version {{ version }}</button>
-            </li>
+            <span class="label label-primary" title="version {{ version }}" , data-toggle="tooltip">{{ version }}</span>
         {% endfor %}
-    </ul>
+    </a>
+
+    <div class="btn-group pull-right">
+        <button class="btn btn-danger btn-xs" type="button">Delete Project</button>
+
+        <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle{% if not attrs['versions']|length %} disabled{% endif %}" type="button">
+            <span class="caret"></span></button>
+        <ul role="menu" class="dropdown-menu">
+            {% for version in attrs['versions'] %}
+                <li>
+                    <button class="btn btn-danger btn-xs">Delete version {{ version }}</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>

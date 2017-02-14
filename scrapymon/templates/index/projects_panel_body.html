@@ -1,15 +1,18 @@
-<table class="table table-responsive">
-    <tbody>
-    <tr class="default">
-        {% for spider in attrs['spiders'] %}
-            <td>{{ spider }}</td>
-            <td></td>
-        {% endfor %}
+<div id="{{ project }}" class="panel-collapse collapse in">
 
-        {% if not attrs['spiders']|length %}
-            <td></td>
-            <td></td>
-        {% endif %}
-    </tr>
-    </tbody>
-</table>
+    <table class="table table-responsive">
+        <tbody>
+        <tr class="default">
+            {% for spider in attrs['spiders'] %}
+                <td>{{ spider }}</td>
+                <td></td>
+            {% endfor %}
+
+            {% if not attrs['spiders']|length %}
+                <td></td>
+                <td></td>
+            {% endif %}
+        </tr>
+        </tbody>
+    </table>
+</div>
