@@ -1,7 +1,8 @@
 import unittest
 from config import Config
 from scrapymon import create_app
-from scrapymon.views.index.views import _list_projects, _list_spiders
+from scrapymon.views.index.views import (_list_projects, _list_versions,
+                                         _list_spiders)
 
 
 class TestIndex(unittest.TestCase):
@@ -22,6 +23,10 @@ class TestIndex(unittest.TestCase):
         projects = _list_projects()
         self.assertEqual(type(projects), list)
         self.assertTrue(len(projects) > 0)
+
+        versions = _list_versions(projects[0])
+        self.assertEqual(type(versions), list)
+        self.assertTrue(len(versions) > 0)
 
         spiders = _list_spiders(projects[0])
         self.assertEqual(type(spiders), list)
