@@ -51,7 +51,7 @@ def jobs_dash():
     # Get jobs and sort them as pending, running and finished.
     for project in _list_projects():
         pending_jobs, running_jobs, finished_jobs = _list_jobs(project)
-
+        print(pending_jobs, running_jobs, finished_jobs)
         for job in pending_jobs:
             job['project'] = project
             jobs['pending'].append(job)

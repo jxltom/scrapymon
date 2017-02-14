@@ -18,6 +18,7 @@ Simple management UI for scrapyd.
 - Support logs
 - Support schedule a spider run with arguments.
 - Support create project via ```addversion.json```.
+- Localize time
 - Add Dockerfile
 
 ## Contributing
