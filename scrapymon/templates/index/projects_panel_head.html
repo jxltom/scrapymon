@@ -11,8 +11,10 @@
     <button class="btn btn-danger btn-xs" type="button">Delete Project</button>
     <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle" type="button"><span class="caret"></span></button>
     <ul role="menu" class="dropdown-menu">
-        <li>
-            <button class="btn btn-danger btn-xs">Delete version</button>
-        </li>
+        {% for version in attrs['versions'] %}
+            <li>
+                <button class="btn btn-danger btn-xs">Delete version {{ version }}</button>
+            </li>
+        {% endfor %}
     </ul>
 </div>

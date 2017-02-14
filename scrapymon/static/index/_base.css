@@ -23,6 +23,11 @@ body {
     padding-left:20px;
 }
 
+/* Change dropdown menu minimal width in Flat-UI. */
+.dropdown-menu {
+    min-width: 128px
+}
+
 /* Fill dropdown menu botton to li element and align left. */
 li > button.btn {
     width: 100%;
