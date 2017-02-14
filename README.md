@@ -10,6 +10,7 @@ Simple management UI for scrapyd.
 - Show all pending, running and finished jobs from a Scrapyd server
 - Schedule spiders to run
 - Cancel pending or running jobs
+- Http basic access authentication provided
 
 ## TODO
 
