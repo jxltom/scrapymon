@@ -6,13 +6,14 @@
 
     <div class="panel-group" id="jobs">
 
+        {% for type, list in jobs.items() %}
 
+            <div class="panel panel-default">
 
+                {% include "index/_jobs_panel_head.html" %}
 
-            {% include "index/projects_panel_head.html" %}
-
-            {% include "index/projects_panel_body.html" %}
-     <div class="panel panel-default">
-        </div>
+                {% include "index/_jobs_panel_body.html" %}
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

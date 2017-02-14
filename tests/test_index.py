@@ -2,7 +2,7 @@ import unittest
 from config import Config
 from scrapymon import create_app
 from scrapymon.views.index.views import (_list_projects, _list_versions,
-                                         _list_spiders)
+                                         _list_spiders, _list_jobs)
 
 
 class TestIndex(unittest.TestCase):
@@ -18,8 +18,8 @@ class TestIndex(unittest.TestCase):
         ))
         app.app_context().push()
 
-    def test_list_projects_spiders(self):
-        """Test _list_projects and _list_spiders function"""
+    def test_list_projects_versions_spiders_jobs(self):
+        """Test _list_projects, _list_versions,  _list_spiders, _list_jobs."""
         projects = _list_projects()
         self.assertEqual(type(projects), list)
         self.assertTrue(len(projects) > 0)
@@ -32,3 +32,7 @@ class TestIndex(unittest.TestCase):
         self.assertEqual(type(spiders), list)
         self.assertTrue(len(spiders) > 0)
 
+        pending_jobs, running_jobs, finished_jobs = _list_jobs(projects[0])
+        self.assertEqual(type(pending_jobs), list)
+        self.assertEqual(type(running_jobs), list)
+        self.assertEqual(type(finished_jobs), list)

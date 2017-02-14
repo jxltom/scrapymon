@@ -16,6 +16,7 @@ debug = LocalProxy(lambda: current_app.config['DEBUG'])
 listprojects = '/listprojects.json'
 listspiders = '/listspiders.json'
 listversions = '/listversions.json'
+listjobs = '/listjobs.json'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -24,7 +25,7 @@ def server_connection_error(e):
     if debug:
         flash(e.args, 'danger')
     flash('The connection to Scrapyd server can not be established.'
-          'Please check Scrapyd status in local host.', 'danger')
+          'Please check Scrapyd status in local host.')
     return render_template('index/error.html')
 
 
@@ -40,6 +41,30 @@ def projects_dash():
         projects[project] = dict(versions=versions, spiders=spiders)
 
     return render_template('index/projects.html', projects=projects)
+
+
+@index.route('/jobs')
+def jobs_dash():
+    """Jobs view."""
+    jobs = dict(pending=[], running=[], finished=[])
+
+    # Get jobs and sort them as pending, running and finished.
+    for project in _list_projects():
+        pending_jobs, running_jobs, finished_jobs = _list_jobs(project)
+
+        for job in pending_jobs:
+            job['project'] = project
+            jobs['pending'].append(job)
+
+        for job in running_jobs:
+            job['project'] = project
+            jobs['running'].append(job)
+
+        for job in finished_jobs:
+            job['project'] = project
+            jobs['finished'].append(job)
+
+    return render_template('index/jobs.html', jobs=jobs)
 
 
 def _list_projects():
@@ -82,7 +107,7 @@ def _list_versions(project):
                 project, node_name, raw), 'warning'
         )
 
-    # Return projects list.
+    # Return versions list.
     return versions
 
 
@@ -104,14 +129,31 @@ def _list_spiders(project):
                 project, node_name, raw), 'warning'
         )
 
-    # Return projects list.
+    # Return spiders list.
     return spiders
 
 
-@index.route('/jobs')
-def jobs_dash():
-    """Jobs view."""
-    return render_template('index/jobs.html')
+def _list_jobs(project):
+    """Get jobs list of a project."""
+    # Get response from server.
+    raw = requests.get(server + listjobs, params=dict(project=project)).text
+    r = json.loads(raw)
+
+    # Parse response.
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    pending_jobs = r.get('pending', [])
+    running_jobs = r.get('running', [])
+    finished_jobs = r.get('finished', [])
+
+    # Flash error messages.
+    if status != 'ok':
+        flash(
+            'Can not get jobs of project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                project, node_name, raw), 'warning'
+        )
+
+    return pending_jobs, running_jobs, finished_jobs
 
 
 @index.route('/_')

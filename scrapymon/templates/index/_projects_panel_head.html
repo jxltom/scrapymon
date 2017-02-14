@@ -2,10 +2,10 @@
 
     <a class="panel-title collapsed">{{ project }}
 
-        <span class="badge" title="{{ attrs['spiders']|length }} spiders" , data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
+        <span class="badge" title="{{ attrs['spiders']|length }} spiders" data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
 
         {% for version in attrs['versions'] %}
-            <span class="label label-primary" title="version {{ version }}" , data-toggle="tooltip">{{ version }}</span>
+            <span class="label label-primary" title="version {{ version }}" data-toggle="tooltip">{{ version }}</span>
         {% endfor %}
     </a>
 

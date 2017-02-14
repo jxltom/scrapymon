@@ -1,0 +1,32 @@
+<div id="{{ type }}" class="panel-collapse collapse">
+
+    <table class="table table-responsive">
+
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Project</td>
+            <td>Spider</td>
+            <td>Start Time</td>
+            <td>End Time</td>
+            <td>Manage</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr class="default">
+            {% for job in list %}
+                <td>{{ job['id'] }}</td>
+                <td>{{ job['project'] }}</td>
+                <td>{{ job['spider'] }}</td>
+                <td>{{ job['start_time'] }}</td>
+                <td>{{ job['end_time'] }}</td>
+                <td>
+                    <button class="btn btn-primary btn-xs" type="button">View Logs</button>
+                    <button class="btn btn-danger btn-xs" type="button">Cancel Job</button>
+                </td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+</div>
