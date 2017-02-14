@@ -6,22 +6,22 @@
 
     <div class="panel-group" id="projects">
 
-        {% for project in projects %}
+        {% for project, spiders in projects.items() %}
 
             <div class="panel panel-default">
 
-                <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project.name }}">
-                    <a class="panel-title collapsed">{{ project.name }}</a>
+                <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
+                    <a class="panel-title collapsed">{{ project }}</a>
                 </div>
 
-                <div id="{{ project.name }}" class="panel-collapse collapse in">
+                <div id="{{ project }}" class="panel-collapse collapse in">
 
                     <div class="panel-body">
 
                         <div class="list-group">
 
-                            {% for spider in project.spiders %}
-                                <div class="list-group-item">{{ spider.name }}</div>
+                            {% for spider in spiders %}
+                                <div class="list-group-item">{{ spider }}</div>
                             {% endfor %}
                         </div>
                     </div>

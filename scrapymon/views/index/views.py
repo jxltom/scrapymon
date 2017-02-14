@@ -1,10 +1,11 @@
-from flask import render_template, flash, current_app, g
+import json
+
+from flask import render_template, flash, current_app
 from flask_security import login_required
 from werkzeug.local import LocalProxy
 import requests
 
 from . import index
-
 
 # Convenient reference to scrapyd server.
 server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
@@ -13,6 +14,7 @@ debug = LocalProxy(lambda: current_app.config['DEBUG'])
 
 # Endpoints of scrapyd API.
 listprojects = '/listprojects.json'
+listspiders = '/listspiders.json'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -26,20 +28,65 @@ def server_connection_error(e):
 
 
 @index.route('/')
-def projects():
+def projects_dash():
     """Projects view."""
-    return render_template('index/projects.html')
+    projects = {}
+
+    # Get projects as well as project's spiders
+    for project in _list_projects():
+        projects[project] = _list_spiders(project)
+
+    return render_template('index/projects.html', projects=projects)
+
+
+def _list_projects():
+    """Get projects list."""
+    # Get response from server.
+    raw = requests.get(server + listprojects).text
+    r = json.loads(raw)
+
+    # Parse response.
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    projects = r.get('projects', [])
+
+    # Flash error messages.
+    if status != 'ok':
+        flash(
+            'Can not get projects in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                node_name, raw), 'danger'
+        )
+
+    # Return projects list.
+    return projects
+
+
+def _list_spiders(project):
+    """Get spiders list of a project"""
+    # Get response from server
+    raw = requests.get(server + listspiders, params=dict(project=project)).text
+    r = json.loads(raw)
+
+    # Parse response.
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    spiders = r.get('spiders', [])
+
+    # Flash error messages.
+    if status != 'ok':
+        flash(
+            'Can not get spiders of project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                project, node_name, raw), 'danger'
+        )
+
+    # Return projects list.
+    return spiders
 
 
 @index.route('/jobs')
-def jobs():
+def jobs_dash():
     """Jobs view."""
     return render_template('index/jobs.html')
-
-
-@index.route('/listprojects')
-def list_projects():
-    return requests.get(server + listprojects).text
 
 
 @index.route('/_')

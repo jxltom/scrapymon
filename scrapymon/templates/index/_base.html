@@ -13,14 +13,14 @@
 
     <ul class="nav nav-tabs">
 
-        {% if request.path == url_for('index.projects') %}
+        {% if request.path == url_for('index.projects_dash') %}
 
             <li class="active"><a href="#">Projects</a></li>
-            <li class="active"><a href="{{ url_for('index.jobs') }}">Jobs</a></li>
+            <li class="active"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>
 
-        {% elif request.path == url_for('index.jobs') %}
+        {% elif request.path == url_for('index.jobs_dash') %}
 
-            <li><a href="{{ url_for('index.projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
             <li class="active"><a href="#">Jobs</a></li>
 
         {% endif %}
