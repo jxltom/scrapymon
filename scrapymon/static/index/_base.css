@@ -1,3 +1,7 @@
 .nav-tabs {
     margin-bottom: 30px;
 }
+
+.panel-default > .panel-heading .badge {
+    background-color: #1abc9c;
+}

@@ -11,7 +11,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
-                    <a class="panel-title collapsed">{{ project }}</a>
+                    <a class="panel-title collapsed"><span class="badge pull-right">{{ spiders|length }} spiders</span>{{ project }}</a>
                 </div>
 
                 <div id="{{ project }}" class="panel-collapse collapse in">
