@@ -10,7 +10,7 @@
 
             <div class="panel panel-default">
 
-                <div class="panel-heading clearfix" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
 
                     <a class="panel-title collapsed">{{ project }}
                         <span class="badge" title="{{ attrs['spiders']|length }} spiders" , data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
@@ -19,17 +19,6 @@
                             <span class="label label-primary" title="version {{ version }}" , data-toggle="tooltip">{{ version }}</span>
                         {% endfor %}
                     </a>
-
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-default btn-xs" type="button">Delete Project</button>
-                        <button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle" type="button"><span class="caret"></span></button>
-                        <ul role="menu" class="dropdown-menu">
-                            <li>
-                                <a href="#">Delete version</a>
-                            </li>
-                        </ul>
-                    </div>
-                <div class="clearfix"></div>
                 </div>
 
                 <div id="{{ project }}" class="panel-collapse collapse in">
@@ -39,6 +28,19 @@
                         {% for spider in attrs['spiders'] %}
                             <div class="list-group-item">{{ spider }}</div>
                         {% endfor %}
+                    </div>
+
+                    <div class="panel-footer clearfix">
+
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-danger btn-xs" type="button">Delete Project</button>
+                            <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle" type="button"><span class="caret"></span></button>
+                            <ul role="menu" class="dropdown-menu">
+                                <li>
+                                    <a href="#">Delete version</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
