@@ -24,7 +24,7 @@ def server_connection_error(e):
     if debug:
         flash(e.args, 'danger')
     flash('The connection to Scrapyd server can not be established.'
-          'Please check Scrapyd status in local host.')
+          'Please check Scrapyd status in local host.', 'danger')
     return render_template('index/error.html')
 
 
