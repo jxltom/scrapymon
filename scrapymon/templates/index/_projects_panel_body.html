@@ -1,19 +1,25 @@
 <div id="{{ project }}" class="panel-collapse collapse">
 
     <table class="table table-responsive">
+        <thead>
+        <tr>
+            <td>Spider Name</td>
+            <td class="text-right">Manage</td>
+        </tr>
+        </thead>
         <tbody>
         <tr class="default">
             {% for spider in attrs['spiders'] %}
                 <td>{{ spider }}</td>
-                <td>
-                    <div class="btn-group pull-right">
+                <td class="text-right">
+                    <div class="btn-group">
                         <button class="btn btn-primary btn-xs" type="button">Run Spider</button>
                     </div>
                 </td>
             {% endfor %}
 
             {% if not attrs['spiders']|length %}
-                <td></td>
+                <td>No available spiders</td>
                 <td></td>
             {% endif %}
         </tr>
