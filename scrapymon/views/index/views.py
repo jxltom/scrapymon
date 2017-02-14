@@ -8,6 +8,8 @@ from . import index
 
 # Convenient reference to scrapyd server.
 server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
+# Convenient reference to debug setting.
+debug = LocalProxy(lambda: current_app.config['DEBUG'])
 
 # Endpoints of scrapyd API.
 listprojects = '/listprojects.json'
@@ -16,7 +18,10 @@ listprojects = '/listprojects.json'
 @index.errorhandler(requests.ConnectionError)
 def server_connection_error(e):
     """Flash messages if server can not be connected."""
-    flash(e.args, 'danger')
+    if debug:
+        flash(e.args, 'danger')
+    flash('The connection to Scrapyd server can not be established.'
+          'Please check Scrapyd status in local host.')
     return render_template('index/error.html')
 
 
