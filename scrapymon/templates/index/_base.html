@@ -6,3 +6,23 @@
     <link href="{{ url_for('static', filename='index/_base.css') }}" rel="stylesheet">
 
 {% endblock %}
+
+{% block content %}
+
+    {{ super() }}
+
+    <ul class="nav nav-tabs">
+
+        {% if request.path == url_for('index.projects') %}
+
+            <li class="active"><a href="#">Projects</a></li>
+            <li class="active"><a href="{{ url_for('index.jobs') }}">Jobs</a></li>
+
+        {% elif request.path == url_for('index.jobs') %}
+
+            <li><a href="{{ url_for('index.projects') }}">Projects</a></li>
+            <li class="active"><a href="#">Jobs</a></li>
+
+        {% endif %}
+    </ul>
+{% endblock %}
