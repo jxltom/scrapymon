@@ -1,4 +1,4 @@
-from flask_boilerplate import wechat
+from flask_boilerplate.app import wechat
 
 
 @wechat.filter('_')

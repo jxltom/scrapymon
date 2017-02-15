@@ -1,5 +1,5 @@
-from config import Config
-from flask_boilerplate import create_app, worker
+from flask_boilerplate.config import Config
+from flask_boilerplate.app import create_app
 
 app = create_app(Config(
     bootstrap=True,
@@ -13,6 +13,12 @@ app = create_app(Config(
     wechat=True,
 ))
 
+
+def main():
+    """Entrypoint for running application."""
+    app.run()
+
+
 if __name__ == '__main__':
     app.config.update(DEBUG=True)
-    app.run()
+    main()
