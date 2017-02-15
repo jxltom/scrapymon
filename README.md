@@ -13,4 +13,5 @@ A boilerplate for Flask applications.
 - Administrative interface with authentication supported by [Flask-Admin](https://github.com/flask-admin/flask-admin) and [Flask-Security](https://github.com/mattupstate/flask-security/)
 - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
+- Served by [Gevent](https://github.com/gevent/gevent) for production use
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported

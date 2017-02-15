@@ -1,3 +1,5 @@
+import logging
+
 from gevent.pywsgi import WSGIServer
 
 from flask_boilerplate.config import Config
@@ -16,10 +18,21 @@ app = create_app(Config(
 ))
 
 
-def serve_app():
+def main():
     """Package entrypoint for running as server."""
-    WSGIServer(('', 5000), app).serve_forever()
+    # Creat server.
+    server = WSGIServer(('127.0.0.1', 5000), app)
+
+    # Logging.
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logging.info('Running on http://{}:{}/'.format(
+        server.server_host, server.server_port)
+    )
+
+    # Serve forever.
+    server.serve_forever()
 
 
 if __name__ == '__main__':
-    serve_app()
+    main()
