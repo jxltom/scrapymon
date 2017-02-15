@@ -2,18 +2,18 @@
 
 from setuptools import setup, find_packages
 
-from flask_boilerplate import __name__, __version__, __author__, \
-    __author_email__
+from flask_boilerplate import __version__, __author__
 
 setup(
-    name=__name__,
+    name='flask-boilerplate',
     version=__version__,
-    description='sd',
+    description='A boilerplate for Flask applications',
     long_description=open('README.md').read(),
-    keywords='login requests cookies forum discuz',
+    keywords='bootstrap authentication http-basic-auth sqlalchemy celery '
+             'smtp-mail heroku wechat-official-account scheduling',
     author=__author__,
-    author_email=__author_email__,
-    url='https://github.com/jxltom/requests-login/',
+    author_email='jxltom@gmail.com',
+    url='https://github.com/jxltom/flask-boilerplate/',
     license='MIT',
 
     packages=find_packages(),
