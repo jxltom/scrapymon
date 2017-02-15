@@ -9,6 +9,7 @@ Simple management UI for scrapyd.
 - Show all spiders in each project
 - Show all pending, running and finished jobs from a Scrapyd server
 - Http basic access authentication supported
+- Served by [Gunicorn](https://github.com/benoitc/gunicorn)
 
 ## TODO
 
