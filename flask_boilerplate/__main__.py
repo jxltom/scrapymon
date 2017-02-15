@@ -1,5 +1,5 @@
 from flask_boilerplate.config import Config
-from flask_boilerplate.app import create_app
+from flask_boilerplate.app import create_app, worker
 
 app = create_app(Config(
     bootstrap=True,
