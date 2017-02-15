@@ -1,3 +1,4 @@
+import os
 import logging
 
 from gevent.pywsgi import WSGIServer
@@ -18,10 +19,12 @@ app = create_app(Config(
 ))
 
 
-def main():
+def main(**kwargs):
     """Package entrypoint for running as server."""
     # Creat server.
-    server = WSGIServer(('0.0.0.0', 5000), app)
+    host = kwargs.get('host') or '0.0.0.0'
+    port = kwargs.get('port') or 5000
+    server = WSGIServer((host, port), app)
 
     # Logging.
     logger = logging.getLogger()
@@ -35,4 +38,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(port=(os.environ.get('PORT') or 5000))
