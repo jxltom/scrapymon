@@ -9,15 +9,28 @@ setup(
     version=__version__,
     description='A boilerplate for Flask applications',
     long_description=open('README.md').read(),
-    keywords='bootstrap authentication http-basic-auth sqlalchemy celery '
-             'smtp-mail heroku wechat-official-account scheduling',
     author=__author__,
     author_email='jxltom@gmail.com',
     url='https://github.com/jxltom/flask-boilerplate/',
     license='MIT',
 
     packages=find_packages(),
-    install_requires=['requests>=2.11.0'],
+    install_requires=[
+        'flask==0.12',
+        'Flask-Bootstrap==3.3.7.0',
+        'Flask-SQLAlchemy==2.1',
+        'mysql-connector==2.1.4',
+        'Flask-BasicAuth==0.2.0',
+        'Flask-Mail==0.9.1',
+        'git+https://github.com/jxltom/easy-scheduler.git@0.1.0',
+        'arrow==0.10.0',
+        'git+https://github.com/jxltom/flask-security.git@edf3e89',
+        'git+https://github.com/flask-admin/flask-admin.git@0795a3f',
+        'git+https://github.com/whtsky/WeRoBot.git@7269d6b',
+        'celery==4.0.2',
+        'redis==2.10.5',
+        'gunicorn==19.6.0',
+    ],
 
     entry_points={
         'console_scripts': [
