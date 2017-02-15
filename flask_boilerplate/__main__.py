@@ -22,7 +22,7 @@ app = create_app(Config(
 def main(**kwargs):
     """Package entrypoint for running as server."""
     # Creat server.
-    host = kwargs.get('host') or '127.0.0.1'
+    host = kwargs.get('host') or ''
     port = int(kwargs.get('port')) or 5000
     server = WSGIServer((host, port), app)
 
@@ -38,4 +38,4 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main(port=(int(os.environ.get('PORT')) or 5000))
+    main(port=(os.environ.get('PORT') or 5000))
