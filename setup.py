@@ -23,7 +23,7 @@ setup(
         'Flask-BasicAuth==0.2.0',
         'Flask-Mail==0.9.1',
         'arrow==0.10.0',
-        'flask-security',
+        'easy-scheduler',
         'celery==4.0.2',
         'redis==2.10.5',
         'gevent==1.2.1',

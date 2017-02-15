@@ -21,7 +21,7 @@ app = create_app(Config(
 def main():
     """Package entrypoint for running as server."""
     # Creat server.
-    server = WSGIServer(('127.0.0.1', 5000), app)
+    server = WSGIServer(('0.0.0.0', 5000), app)
 
     # Logging.
     logger = logging.getLogger()
