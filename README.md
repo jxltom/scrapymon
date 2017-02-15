@@ -12,10 +12,12 @@ Simple management UI for scrapyd.
 
 ## TODO
 
-- Schedule spiders to run
+- Schedule spiders run
 - Cancel pending or running jobs
 - Support deleting version or project via ```delversion.json``` and ```delproject.json```.
 - Support logs
+- Highlighted and formated logs
+- Log catagory and searcharable logs
 - Support schedule a spider run with arguments.
 - Support create project via ```addversion.json```.
 - Localize time
