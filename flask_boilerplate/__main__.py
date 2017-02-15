@@ -23,7 +23,7 @@ def main(**kwargs):
     """Package entrypoint for running as server."""
     # Creat server.
     host = kwargs.get('host') or '0.0.0.0'
-    port = kwargs.get('port') or 5000
+    port = int(kwargs.get('port')) or 5000
     server = WSGIServer((host, port), app)
 
     # Logging.
