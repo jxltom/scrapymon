@@ -1,3 +1,5 @@
+from gevent.pywsgi import WSGIServer
+
 from flask_boilerplate.config import Config
 from flask_boilerplate.app import create_app, worker
 
@@ -14,11 +16,10 @@ app = create_app(Config(
 ))
 
 
-def main():
-    """Entrypoint for running application."""
-    app.run()
+def serve_app():
+    """Package entrypoint for running as server."""
+    WSGIServer(('', 5000), app).serve_forever()
 
 
 if __name__ == '__main__':
-    app.config.update(DEBUG=True)
-    main()
+    serve_app()

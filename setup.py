@@ -22,14 +22,16 @@ setup(
         'mysql-connector==2.1.4',
         'Flask-BasicAuth==0.2.0',
         'Flask-Mail==0.9.1',
-        'git+https://github.com/jxltom/easy-scheduler.git@0.1.0',
         'arrow==0.10.0',
-        'git+https://github.com/jxltom/flask-security.git@edf3e89',
-        'git+https://github.com/flask-admin/flask-admin.git@0795a3f',
-        'git+https://github.com/whtsky/WeRoBot.git@7269d6b',
         'celery==4.0.2',
         'redis==2.10.5',
         'gunicorn==19.6.0',
+    ],
+    dependency_links=[
+        'git+https://github.com/jxltom/easy-scheduler.git@0.1.0',
+        'git+https://github.com/jxltom/flask-security.git@edf3e89',
+        'git+https://github.com/flask-admin/flask-admin.git@0795a3f',
+        'git+https://github.com/whtsky/WeRoBot.git@7269d6b',
     ],
 
     entry_points={
