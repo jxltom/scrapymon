@@ -19,15 +19,15 @@ app = create_app(Config(
 ))
 
 
-def main(**kwargs):
-    """Package entrypoint for running as server."""
+def main(*args, **kwargs):
+    """Package entrypoint."""
     # Creat server.
-    host = kwargs.get('host') or '0.0.0.0'
-    port = int(kwargs.get('port')) or 5000
+    host = kwargs.get('host', '0.0.0.0')
+    port = int(kwargs.get('port', 5000))
     server = WSGIServer((host, port), app)
 
     # Logging.
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     logging.info('Running on http://{}:{}/'.format(
         server.server_host, server.server_port)
@@ -38,4 +38,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main(port=(os.environ.get('PORT') or 5000))
+    # Using $PORT in Heroku, otherwise using 5000 as default.
+    main(port=(os.environ.get('PORT', 5000)))
