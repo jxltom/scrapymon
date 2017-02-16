@@ -22,12 +22,12 @@ app = create_app(Config(
 def main(**kwargs):
     """Package entrypoint for running as server."""
     # Creat server.
-    host = kwargs.get('host') or 'localhost'
+    host = kwargs.get('host') or '0.0.0.0'
     port = int(kwargs.get('port')) or 5000
     server = WSGIServer((host, port), app)
 
     # Logging.
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
     logging.info('Running on http://{}:{}/'.format(
         server.server_host, server.server_port)
