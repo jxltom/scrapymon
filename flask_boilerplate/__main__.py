@@ -21,6 +21,7 @@ app = create_app(Config(
 
 def main(*args, **kwargs):
     """Package entrypoint."""
+    print(args, kwargs)
     # Creat server.
     host = kwargs.get('host', '0.0.0.0')
     port = int(kwargs.get('port', 5000))

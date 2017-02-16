@@ -15,3 +15,7 @@ A boilerplate for Flask applications.
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
 - Served by [Gevent](https://github.com/gevent/gevent) for production use
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
+
+# TODO
+
+- Install dependencies from Github in setup
