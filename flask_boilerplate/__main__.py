@@ -78,5 +78,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # Entrypoint for Heroku.
+    # Entrypoint for Heroku/Dokku/Flynn.
     main()

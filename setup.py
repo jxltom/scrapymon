@@ -14,6 +14,8 @@ setup(
     url='https://github.com/jxltom/flask-boilerplate/',
     license='MIT',
 
+    include_package_data=True,
+
     packages=find_packages(),
     install_requires=[
         'flask==0.12',
