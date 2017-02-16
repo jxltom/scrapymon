@@ -14,7 +14,7 @@ A boilerplate for Flask applications.
 - [Wechat Official Account](https://mp.weixin.qq.com/) supported by [WeRoBot](https://github.com/whtsky/WeRoBot)
 - Asynchronous queue supported by [Celery](https://github.com/celery/celery)
 - Served by [Gevent](https://github.com/gevent/gevent) for production use
-- Wrappers as scripts in non-Windows and exe in Windows for running as services conveniently
+- Wrappers as scripts in non-Windows and exe in Windows with command line arguments support for running as services conveniently
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
 
 # TODO
