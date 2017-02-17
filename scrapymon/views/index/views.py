@@ -19,6 +19,9 @@ listspiders_url = '/listspiders.json'
 listversions_url = '/listversions.json'
 listjobs_url = '/listjobs.json'
 schedule_url = '/schedule.json'
+cancel_url = '/cancel.json'
+delproject_url = '/delproject.json'
+delversion_url = '/delversion.json'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -89,15 +92,44 @@ def schedule(project, spider):
     # Flash messages.
     if status != 'ok':
         flash(
-            'Can not run spider {} in project {} in node {}. '
+            'Can not run spider {} of project {} in node {}. '
             'The raw message returned by Scrapyd server is {}'.format(
                 spider, project, node_name, raw), 'warning'
         )
     else:
         flash(
-            'Run spider {} in project {} in node {} successfully. '
+            'Run spider {} of project {} in node {} successfully. '
             'The job ID is {}'.format(
                 spider, project, node_name, jobid), 'success'
+        )
+
+    return 'success'
+
+
+@index.route('/cancel/<project>/<job>')
+def cancel(project, job):
+    """Cancel job run."""
+    # Cancel job and get response from server.
+    url = scrapyd_server + cancel_url
+    raw = requests.post(url, params=dict(project=project, job=job)).text
+    r = json.loads(raw)
+
+    # Parse response
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    prevstate = r.get('prevstate', '')
+
+    # Flash messages.
+    if status != 'ok':
+        flash(
+            'Can not cancle job {} of project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                job, project, node_name, raw), 'warning'
+        )
+    else:
+        flash(
+            'Cancel job {} of project {} in node {} successfully. '
+            'The previous status is {}'.format(
+                job, project, node_name, prevstate), 'success'
         )
 
     return 'success'
