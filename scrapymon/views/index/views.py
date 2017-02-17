@@ -135,6 +135,40 @@ def cancel(project, job):
     return 'success'
 
 
+@index.route('/delete/<project>/<version>')
+def delproject(project, version):
+    """Delete project or a version."""
+    # Delete project or a specific version and get response from server.
+    if version:
+        url = scrapyd_server + delversion_url
+        raw = requests.post(url, params=dict(project=project)).text
+    else:
+        url = scrapyd_server + delproject_url
+        raw = requests.post(
+            url, params=dict(project=project, version=version)).text
+    r = json.loads(raw)
+
+    # Parse response
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+
+    # Flash messages.
+    version_ = 'version {}'.format(version) if version else 'all versions'
+
+    if status != 'ok':
+        flash(
+            'Can not delete project {} with {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                project, version_, node_name, raw), 'warning'
+        )
+    else:
+        flash(
+            'Delete project {} with {} in node {} successfully. '.format(
+                project, version_, node_name), 'success'
+        )
+
+    return 'success'
+
+
 def _list_projects():
     """Get projects list."""
     # Get response from server.
