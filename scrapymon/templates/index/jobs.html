@@ -6,6 +6,8 @@
 
     <div class="panel-group" id="jobs">
 
+        {# The type can be 'pending', 'running' and 'finished'. #}
+        {# The list is a list of jobs with certain type. #}
         {% for type, list in jobs.items() %}
 
             <div class="panel panel-default">

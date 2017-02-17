@@ -39,6 +39,10 @@
         $('[role="schedule"]').click(function () {
             $.get('/schedule/' + this.id, location.reload(true));
         });
+        // Cancel job.
+        $('[role="cancel"]').click(function () {
+            $.get('/cancel/' + this.id, location.reload(true));
+        });
     })
 
     </script>
