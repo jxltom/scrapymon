@@ -93,13 +93,13 @@ def schedule(project, spider):
     if status != 'ok':
         flash(
             'Can not run spider {} of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 spider, project, node_name, raw), 'warning'
         )
     else:
         flash(
             'Run spider {} of project {} in node {} successfully. '
-            'The job ID is {}'.format(
+            'The job ID is {}.'.format(
                 spider, project, node_name, jobid), 'success'
         )
 
@@ -122,13 +122,13 @@ def cancel(project, job):
     if status != 'ok':
         flash(
             'Can not cancle job {} of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 job, project, node_name, raw), 'warning'
         )
     else:
         flash(
             'Cancel job {} of project {} in node {} successfully. '
-            'The previous status is {}'.format(
+            'The previous status is {}.'.format(
                 job, project, node_name, prevstate), 'success'
         )
 
@@ -158,12 +158,12 @@ def delproject(project, version=None):
     if status != 'ok':
         flash(
             'Can not delete project {} with {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 project, version_, node_name, raw), 'warning'
         )
     else:
         flash(
-            'Delete project {} with {} in node {} successfully. '.format(
+            'Delete project {} with {} in node {} successfully.'.format(
                 project, version_, node_name), 'success'
         )
 
@@ -184,7 +184,7 @@ def _list_projects():
     if status != 'ok':
         flash(
             'Can not get projects in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 node_name, raw), 'warning'
         )
 
@@ -207,7 +207,7 @@ def _list_versions(project):
     if status != 'ok':
         flash(
             'Can not get versions of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 project, node_name, raw), 'warning'
         )
 
@@ -230,7 +230,7 @@ def _list_spiders(project):
     if status != 'ok':
         flash(
             'Can not get spiders of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 project, node_name, raw), 'warning'
         )
 
@@ -255,7 +255,7 @@ def _list_jobs(project):
     if status != 'ok':
         flash(
             'Can not get jobs of project {} in node {}. '
-            'The raw message returned by Scrapyd server is {}'.format(
+            'The raw message returned by Scrapyd server is {}.'.format(
                 project, node_name, raw), 'warning'
         )
 
