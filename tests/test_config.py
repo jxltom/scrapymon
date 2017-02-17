@@ -2,8 +2,7 @@ import unittest
 
 from flask import render_template
 
-from flask_boilerplate.config import (Config, DBConfig,
-                                      WechatBlueprintConfig,
+from flask_boilerplate.config import (Config, DBConfig, WechatBlueprintConfig,
                                       CeleryConfig)
 from flask_boilerplate.app import create_app
 
@@ -147,12 +146,12 @@ class TestHttpAuthConfig(unittest.TestCase):
         """Test http auth."""
         app = create_app(Config(index=True))
         app = app.test_client()
-        rv = app.get('_')
+        rv = app.get('/_')
         self.assertEqual(rv.status_code, 200)
 
         app = create_app(Config(index=True, httpauth=True))
         app = app.test_client()
-        rv = app.get('_')
+        rv = app.get('/_')
         self.assertEqual(rv.status_code, 401)
 
 

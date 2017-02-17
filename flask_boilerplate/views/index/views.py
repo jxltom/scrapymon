@@ -6,7 +6,7 @@ from . import index
 
 @index.route('/_')
 def index_test():
-    return None
+    return render_template('base.html')
 
 
 @index.route('/_auth')
