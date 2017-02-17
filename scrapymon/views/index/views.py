@@ -142,11 +142,12 @@ def delproject(project, version=None):
     # Delete project or a specific version and get response from server.
     if version:
         url = scrapyd_server + delversion_url
-        raw = requests.post(url, params=dict(project=project)).text
+        raw = requests.post(
+            url, params=dict(project=project, version=version)).text
     else:
         url = scrapyd_server + delproject_url
         raw = requests.post(
-            url, params=dict(project=project, version=version)).text
+            url, params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response
