@@ -43,6 +43,10 @@
         $('[role="cancel"]').click(function () {
             $.get('/cancel/' + this.id, location.reload(true));
         });
+        // Delete project or a specific version.
+        $('[role="delete"]').click(function () {
+            $.get('/delete/' + this.id, location.reload(true));
+        });
     })
 
     </script>
