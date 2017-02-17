@@ -1,3 +1,4 @@
 .project/
 tests/werobot_session.sqlite3
 werobot_session.sqlite3
+flask-boilerplate.zip

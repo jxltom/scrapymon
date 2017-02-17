@@ -1,6 +1,7 @@
 import unittest
-from config import Config
-from scrapymon import create_app
+
+from scrapymon.config import Config
+from scrapymon.app import create_app
 from scrapymon.views.index.views import (_list_projects, _list_versions,
                                          _list_spiders, _list_jobs)
 

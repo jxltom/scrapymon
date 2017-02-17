@@ -1,4 +1,4 @@
-from scrapymon import wechat
+from scrapymon.app import wechat
 
 
 @wechat.filter('_')

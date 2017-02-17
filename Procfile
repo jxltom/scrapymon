@@ -1,3 +1,3 @@
-web: gunicorn wsgi:app
-worker: celery worker -A wsgi.worker --loglevel=info
+web: python scrapymon/__main__.py
+worker: celery worker -A scrapymon.__main__.worker --loglevel=info
 service: scrapyd

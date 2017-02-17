@@ -10,9 +10,6 @@
 
             <ul class="dropdown-menu" role="menu">
 
-                <li><a href="{{ url_for('security.logout') }}">Log out</a></li>
-
-                <li class="divider"></li>
 
                 {% if security.changeable %}
                     <li><a href="{{ url_for('security.change_password') }}">Change password</a></li>
@@ -21,6 +18,12 @@
                 {% if security.confirmable %}
                     <li><a href="{{ url_for('security.send_confirmation') }}">Resend confirmation email</a></li>
                 {% endif %}
+
+                {% if security.changeable or security.confirmable %}
+                    <li class="divider"></li>
+                {% endif %}
+
+                <li><a href="{{ url_for('security.logout') }}">Log out</a></li>
             </ul>
         </li>
     {% else %}

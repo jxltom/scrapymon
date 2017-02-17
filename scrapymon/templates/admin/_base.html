@@ -17,7 +17,7 @@
 
     {# Add Flat-UI support. #}
     <link href="{{ url_for('static', filename='flat-ui/css/flat-ui.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='admin/_flatui_compatible.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='admin/flatui_compatible.css') }}" rel="stylesheet">
 
     {# Add custom CSS. #}
     <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
@@ -37,33 +37,35 @@
 
 {% block page_body %}
 
-    {# Using inversed navbar. #}
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    {# Compatible with Flask-Bootstrap. #}
+    {% block navbar %}
 
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header navbar-left">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        {# Using inversed navbar. #}
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
-            {% block brand %}{{ super() }}{% endblock %}
-        </div><!-- /.navbar-header -->
+            <div class="navbar-header navbar-left">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-        <!-- navbar content -->
-        <div class="collapse navbar-collapse" id="admin-navbar-collapse">
-            {% block main_menu %}{{ super() }}{% endblock %}
+                {% block brand %}{{ super() }}{% endblock %}
+            </div>
 
-            {% block menu_links %}{{ super() }}{% endblock %}
+            <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+                {% block main_menu %}{{ super() }}{% endblock %}
 
-            {# Add authentication menu. #}
-            {% block access_control %}{% include "admin/_menu.html" %}{% endblock %}
-        </div>
-    </nav><!-- /navbar -->
+                {% block menu_links %}{{ super() }}{% endblock %}
 
-    {# Using fluid container instead default container. #}
+                {# Add authentication menu. #}
+                {% block access_control %}{% include "admin/_menu.html" %}{% endblock %}
+            </div>
+        </nav>
+    {% endblock navbar %}
+
+    {# Using fluid container instead of default container. #}
     <div class="container-fluid">
         {% block messages %}{{ super() }}{% endblock %}
 
@@ -91,11 +93,9 @@
     <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
     <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
 
-    {# Initialize tooltip and hide tooltip for compatibility with application.js. #}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('[data-toggle=tooltip]').tooltip('hide');
-        });
-    </script>
+    {# Add custom JS. #}
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
+
+    {# Compatible with Flask-Bootstrap. #}
+    {% block scripts %}{% endblock %}
 {% endblock %}

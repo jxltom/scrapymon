@@ -1,8 +1,10 @@
 import unittest
-from config import (Config, DBConfig, AdminConfig, WechatBlueprintConfig,
-                    CeleryConfig)
-from scrapymon import create_app
+
 from flask import render_template
+
+from scrapymon.app import create_app
+from scrapymon.config import (Config, DBConfig, WechatBlueprintConfig,
+                              CeleryConfig)
 
 
 class TestBasicConfig(unittest.TestCase):
@@ -193,8 +195,9 @@ class TestMailConfig(unittest.TestCase):
         """Test mail."""
         create_app(Config(mail=True))
         from scrapymon.async.mail import send_mail
-        self.assertEqual(send_mail(subject='success', body='success',
-                                   recipients=['jxltom@gmail.com']), 0)
+        send_mail(subject='success', body='success',
+                  recipients=['jxltom@gmail.com'])
+
 
     def test_async_mail(self):
         """Test async mail."""
@@ -221,11 +224,11 @@ class TestSchedulerConfig(unittest.TestCase):
     def test_scheduler(self):
         """Test scheduler in flask app."""
         create_app(Config())
-        from scrapymon import scheduler
+        from scrapymon.app import scheduler
         self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
-        from scrapymon import scheduler
+        from scrapymon.app import scheduler
         self.assertTrue(scheduler._scheduler.running)
 
 
@@ -285,7 +288,8 @@ class TestAuthConfig(unittest.TestCase):
 
         self.assertTrue(app.config['SECURITY_PASSWORD_HASH'])
         self.assertTrue(app.config['SECURITY_PASSWORD_SALT'])
-        self.assertTrue(type(app.config['SECURITY_PASSWORD_SALT']) in (str, bytes))
+        self.assertTrue(
+            type(app.config['SECURITY_PASSWORD_SALT']) in (str, bytes))
 
         app.config['SECURITY_URL_PREFIX']
         app.config['SECURITY_LOGIN_URL']
@@ -408,7 +412,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_robot_instance(self):
         """Test robot instance."""
         create_app(Config(wechat=True))
-        from scrapymon import wechat
+        from scrapymon.app import wechat
         self.assertTrue(wechat.config['TOKEN'])
         self.assertTrue(wechat.config['SESSION_STORAGE'] is
                         WechatBlueprintConfig.wechat_session_storage)
@@ -425,7 +429,7 @@ class TestWechatBlueprintConfig(unittest.TestCase):
     def test_wechat_blueprint_route(self):
         """Test wechat blueprint route."""
         create_app(Config(wechat=True))
-        from scrapymon import wechat
+        from scrapymon.app import wechat
         self.assertTrue(wechat._handlers['text'])
 
     def test_wechat(self):
@@ -447,7 +451,7 @@ class TestCeleryConfig(unittest.TestCase):
     def test_celery_config(self):
         """Test CeleryConfig class."""
         app = create_app(Config())
-        from scrapymon import worker
+        from scrapymon.app import worker
         self.assertEqual(worker.conf['timezone'],
                          CeleryConfig.timezone)
         self.assertEqual(worker.conf['enable_utc'],
