@@ -196,8 +196,8 @@ class TestMailConfig(unittest.TestCase):
         """Test mail."""
         create_app(Config(mail=True))
         from flask_boilerplate.async.mail import send_mail
-        self.assertEqual(send_mail(subject='success', body='success',
-                                   recipients=['jxltom@gmail.com']), 0)
+        send_mail(subject='success', body='success',
+                  recipients=['jxltom@gmail.com'])
 
     def test_async_mail(self):
         """Test async mail."""
@@ -288,7 +288,8 @@ class TestAuthConfig(unittest.TestCase):
 
         self.assertTrue(app.config['SECURITY_PASSWORD_HASH'])
         self.assertTrue(app.config['SECURITY_PASSWORD_SALT'])
-        self.assertTrue(type(app.config['SECURITY_PASSWORD_SALT']) in (str, bytes))
+        self.assertTrue(
+            type(app.config['SECURITY_PASSWORD_SALT']) in (str, bytes))
 
         app.config['SECURITY_URL_PREFIX']
         app.config['SECURITY_LOGIN_URL']

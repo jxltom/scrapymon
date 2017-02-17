@@ -17,6 +17,6 @@ A boilerplate for Flask applications.
 - Wrapper as script or exe with command line arguments support for running as services conveniently
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
 
-# TODO
+## TODO
 
 - Install dependencies from Github in setup
