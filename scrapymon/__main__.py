@@ -14,7 +14,7 @@ app = create_app(Config(
     mail=True,
     scheduler=True,
     auth=True,
-    admin=False,
+    admin=True,
     index=True,
     wechat=True,
 ))

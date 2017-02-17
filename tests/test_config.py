@@ -146,12 +146,12 @@ class TestHttpAuthConfig(unittest.TestCase):
         """Test http auth."""
         app = create_app(Config(index=True))
         app = app.test_client()
-        rv = app.get('_')
+        rv = app.get('/_')
         self.assertEqual(rv.status_code, 200)
 
         app = create_app(Config(index=True, httpauth=True))
         app = app.test_client()
-        rv = app.get('_')
+        rv = app.get('/_')
         self.assertEqual(rv.status_code, 401)
 
 
