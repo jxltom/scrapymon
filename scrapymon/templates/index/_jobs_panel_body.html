@@ -13,8 +13,8 @@
         </thead>
 
         <tbody>
-        <tr class="default">
-            {% for job in list %}
+        {% for job in list %}
+            <tr class="default">
                 <td>{{ job['id'] }}</td>
                 <td>{{ job['project'] }}</td>
                 <td>{{ job['spider'] }}</td>
@@ -24,8 +24,8 @@
                     <button class="btn btn-primary btn-xs" type="button">View Logs</button>
                     <button class="btn btn-danger btn-xs" type="button">Cancel Job</button>
                 </td>
-            {% endfor %}
-        </tr>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
