@@ -135,8 +135,9 @@ def cancel(project, job):
     return 'success'
 
 
+@index.route('/delete/<project>')
 @index.route('/delete/<project>/<version>')
-def delproject(project, version):
+def delproject(project, version=None):
     """Delete project or a version."""
     # Delete project or a specific version and get response from server.
     if version:
