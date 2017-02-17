@@ -111,6 +111,7 @@ def _init_mail(app, cfg):
 def _init_scheduler(app, cfg):
     """Initialize APScheduler."""
     if cfg.has_attr('scheduler'):
+        app.config.update(_upper(cfg.scheduler))
         scheduler.start()
 
 
@@ -186,6 +187,8 @@ def _init_admin(app, cfg):
 def _init_index(app, cfg):
     """Initialize index blueprint."""
     if cfg.has_attr('index'):
+        app.config.update(_upper(cfg.index))
+
         from flask_boilerplate.views.index import index as index_blueprint
         app.register_blueprint(
             index_blueprint, url_prefix=cfg.index['index_blueprint_prefix'])
@@ -194,6 +197,8 @@ def _init_index(app, cfg):
 def _init_wechat(app, cfg):
     """Initialize wechat blueprint."""
     if cfg.has_attr('wechat'):
+        app.config.update(_upper(cfg.wechat))
+
         wechat.config['TOKEN'] = cfg.wechat['wechat_token']
         wechat.config['SESSION_STORAGE'] = cfg.wechat['wechat_session_storage']
 
