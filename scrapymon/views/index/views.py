@@ -18,6 +18,7 @@ listprojects = '/listprojects.json'
 listspiders = '/listspiders.json'
 listversions = '/listversions.json'
 listjobs = '/listjobs.json'
+schedule = '/schedule.json'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -73,6 +74,35 @@ def jobs_dash():
     return render_template('index/jobs.html', jobs=jobs)
 
 
+@index.route('/schedule/<project>/<spider>')
+def schedule(project, spider):
+    """Schedule spider run."""
+    # Run spider and get response from server.
+    url = scrapyd_server + schedule
+    raw = requests.post(url, params=dict(project=project, spider=spider)).text
+    r = json.loads(raw)
+
+    # Parse response
+    status, node_name = r.get('status', ''), r.get('node_name', '')
+    jobid = r.get('jobid', '')
+
+    # Flash messages.
+    if status != 'ok':
+        flash(
+            'Can not run spider {} in project {} in node {}. '
+            'The raw message returned by Scrapyd server is {}'.format(
+                spider, project, node_name, raw), 'warning'
+        )
+    else:
+        flash(
+            'Run spider {} in project {} in node {} successfully. '
+            'The job ID is {}'.format(
+                spider, project, node_name, jobid), 'success'
+        )
+
+    return 'success'
+
+
 def _list_projects():
     """Get projects list."""
     # Get response from server.
@@ -98,7 +128,8 @@ def _list_projects():
 def _list_versions(project):
     """Get versions list of a project"""
     # Get response from server
-    raw = requests.get(scrapyd_server + listversions, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listversions,
+                       params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.
@@ -120,7 +151,8 @@ def _list_versions(project):
 def _list_spiders(project):
     """Get spiders list of a project"""
     # Get response from server
-    raw = requests.get(scrapyd_server + listspiders, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listspiders,
+                       params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.
@@ -142,7 +174,8 @@ def _list_spiders(project):
 def _list_jobs(project):
     """Get jobs list of a project."""
     # Get response from server.
-    raw = requests.get(scrapyd_server + listjobs, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listjobs,
+                       params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.

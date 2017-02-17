@@ -52,7 +52,7 @@ def main():
     argparse_.add_argument('--help', action='store_true', default=False)
     argparse_.add_argument('--host', default='0.0.0.0')
     argparse_.add_argument('--port', type=int, default=5000)
-    argparse_.add_argument('--server', default='http://127.0.0.1:6800')
+    argparse_.add_argument('--server', default='http://jxltom.me:6800')
     argparse_.add_argument('--auth', default='admin:admin')
 
     # Parse options.
@@ -84,8 +84,9 @@ def main():
     # Logging.
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logging.info('{} is running on http://{}:{}/ with Scrapyd server {}'.format(
-        app_name, server.server_host, server.server_port, scrapyd_server)
+    logging.info(
+        '{} is running on http://{}:{}/ with Scrapyd server in {}'.format(
+            app_name, server.server_host, server.server_port, scrapyd_server)
     )
 
     # Serve forever.
