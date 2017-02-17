@@ -22,7 +22,9 @@
                 <td>{{ job['end_time'] }}</td>
                 <td>
                     <button class="btn btn-primary btn-xs" type="button">View Logs</button>
-                    <button class="btn btn-danger btn-xs" type="button">Cancel Job</button>
+                    {% if not type == 'finished' %}
+                        <button class="btn btn-danger btn-xs" type="button">Cancel Job</button>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
