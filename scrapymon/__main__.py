@@ -35,8 +35,12 @@ def main():
         'Usage: {} [--host=<host>] [--port=<port>]'.format(app_name),
         '',
         'Options:',
-        '  --host    Default is 0.0.0.0',
-        '  --port    Default is 5000',
+        '  --host      Default is 0.0.0.0',
+        '  --port      Default is 5000',
+        '  --server    Scrapyd server address with port. '
+        'Default is http://127.0.0.1:6800',
+        '  --auth      Username and passoword for http basic auth. '
+        'Default is admin:admin',
     ])
 
     # Initialzie argparse.
@@ -48,10 +52,14 @@ def main():
     argparse_.add_argument('--help', action='store_true', default=False)
     argparse_.add_argument('--host', default='0.0.0.0')
     argparse_.add_argument('--port', type=int, default=5000)
+    argparse_.add_argument('--server', default='http://127.0.0.1:6800')
+    argparse_.add_argument('--auth', default='admin:admin')
 
     # Parse options.
     opts = argparse_.parse_args()
     host, port, help_ = opts.host, opts.port, opts.help
+    scrapyd_server = opts.server
+    basic_auth_username, basic_auth_password = opts.auth.split(':')
 
     # Overide port by $PORT environment variable in Heroku.
     # This may cause problems if one has defined PORT when running as script.
@@ -62,6 +70,13 @@ def main():
     if help_:
         print(usage_)
         return
+
+    # Update Scrapyd server address.
+    app.config.update('SCRAPYD_SERVER', scrapyd_server)
+
+    # Update http basic auth credential.
+    app.config.update('BASIC_AUTH_USERNAME', basic_auth_username)
+    app.config.update('BASIC_AUTH_PASSWORD', basic_auth_password)
 
     # Creat server.
     server = WSGIServer((host, port), app)
