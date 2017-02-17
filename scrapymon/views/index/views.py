@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import json
 
-from flask import render_template, flash, current_app
+from flask import render_template, flash, current_app, Markup
 from flask_security import login_required
 from werkzeug.local import LocalProxy
 import requests
@@ -48,6 +48,12 @@ def projects_dash():
         spiders = _list_spiders(project)
         versions = _list_versions(project)
         projects[project] = dict(versions=versions, spiders=spiders)
+
+    # Flash hint message when there are no projects.
+    if not projects:
+        flash('No available projects currently. '
+              'Using scrapyd-client for uploading projects to Scrapyd server.',
+              'info')
 
     return render_template('index/projects.html', projects=projects)
 
