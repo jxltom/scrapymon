@@ -51,9 +51,11 @@ def projects_dash():
 
     # Flash hint message when there are no projects.
     if not projects:
-        flash('No available projects currently. '
-              'Using scrapyd-client for uploading projects to Scrapyd server.',
-              'info')
+        flash(Markup(
+            'No available projects currently. '
+            'Using <a href="https://github.com/scrapy/scrapyd-client">'
+            'scrapyd-client</a> for uploading projects to Scrapyd server.'),
+            'info')
 
     return render_template('index/projects.html', projects=projects)
 
