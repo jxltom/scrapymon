@@ -8,14 +8,14 @@ Simple management UI for scrapyd.
 - Show all versions of each project
 - Show all spiders in each project
 - Show all pending, running and finished jobs from a Scrapyd server
+- Schedule spiders run
+- Cancel pending or running jobs
+- Delete project or a specific version
 - Http basic access authentication supported
 - Served by [Gevent](https://github.com/gevent/gevent) for production use
 
 ## TODO
 
-- Schedule spiders run
-- Cancel pending or running jobs
-- Support deleting version or project via ```delversion.json``` and ```delproject.json```.
 - Support logs
 - Highlighted and formated logs
 - Log catagory and searcharable logs
