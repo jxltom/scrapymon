@@ -75,7 +75,7 @@ def jobs_dash():
 
 
 @index.route('/schedule/<project>/<spider>')
-def schedule(project, spider):
+def schedule_spider(project, spider):
     """Schedule spider run."""
     # Run spider and get response from server.
     url = scrapyd_server + schedule

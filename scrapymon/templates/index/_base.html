@@ -33,5 +33,14 @@
 
     {{ super() }}
     <script src="{{ url_for('static', filename='index/_base.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        // Schedule spider run.
+        $('[role="schedule"]').click(function () {
+            $.get('/schedule/' + this.id, location.reload(true));
+        });
+    })
+
+    </script>
 
 {% endblock %}
