@@ -9,21 +9,21 @@ from scrapymon.config import Config
 
 app = create_app(Config(
     bootstrap=True,
-    db=True,
+    db=False,
     httpauth=True,
-    mail=True,
-    scheduler=True,
-    auth=True,
-    admin=True,
+    mail=False,
+    scheduler=False,
+    auth=False,
+    admin=False,
     index=True,
-    wechat=True,
+    wechat=False,
 ))
 
 
 def main():
     """Convinent entrypoint for wrapper as script or exe."""
     # Convenient reference
-    app_name = 'flask_boilerpalte'
+    app_name = 'scrapymon'
 
     # Customized HelpFomatter without prefix.
     class CustomHelpFormatter(argparse.HelpFormatter):
