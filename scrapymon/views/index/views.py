@@ -9,7 +9,7 @@ import requests
 from . import index
 
 # Convenient reference to scrapyd server.
-server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
+scrapyd_server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
 # Convenient reference to debug setting.
 debug = LocalProxy(lambda: current_app.config['DEBUG'])
 
@@ -28,7 +28,7 @@ def server_connection_error(e):
 
     flash(
         'The connection to Scrapyd server can not be established. '
-        'Please check Scrapyd status in local host.',
+        'Please check status of Scrapyd server in {}.'.format(scrapyd_server),
         'danger'
     )
     return render_template('index/error.html')
@@ -76,7 +76,7 @@ def jobs_dash():
 def _list_projects():
     """Get projects list."""
     # Get response from server.
-    raw = requests.get(server + listprojects).text
+    raw = requests.get(scrapyd_server + listprojects).text
     r = json.loads(raw)
 
     # Parse response.
@@ -98,7 +98,7 @@ def _list_projects():
 def _list_versions(project):
     """Get versions list of a project"""
     # Get response from server
-    raw = requests.get(server + listversions, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listversions, params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.
@@ -120,7 +120,7 @@ def _list_versions(project):
 def _list_spiders(project):
     """Get spiders list of a project"""
     # Get response from server
-    raw = requests.get(server + listspiders, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listspiders, params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.
@@ -142,7 +142,7 @@ def _list_spiders(project):
 def _list_jobs(project):
     """Get jobs list of a project."""
     # Get response from server.
-    raw = requests.get(server + listjobs, params=dict(project=project)).text
+    raw = requests.get(scrapyd_server + listjobs, params=dict(project=project)).text
     r = json.loads(raw)
 
     # Parse response.

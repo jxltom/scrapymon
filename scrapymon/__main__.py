@@ -72,11 +72,11 @@ def main():
         return
 
     # Update Scrapyd server address.
-    app.config.update('SCRAPYD_SERVER', scrapyd_server)
+    app.config.update(SCRAPYD_SERVER=scrapyd_server)
 
     # Update http basic auth credential.
-    app.config.update('BASIC_AUTH_USERNAME', basic_auth_username)
-    app.config.update('BASIC_AUTH_PASSWORD', basic_auth_password)
+    app.config.update(BASIC_AUTH_USERNAME=basic_auth_username)
+    app.config.update(BASIC_AUTH_PASSWORD=basic_auth_password)
 
     # Creat server.
     server = WSGIServer((host, port), app)
@@ -84,8 +84,8 @@ def main():
     # Logging.
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logging.info('{} is running on http://{}:{}/'.format(
-        app_name, server.server_host, server.server_port)
+    logging.info('{} is running on http://{}:{}/ with Scrapyd server {}'.format(
+        app_name, server.server_host, server.server_port, scrapyd_server)
     )
 
     # Serve forever.
