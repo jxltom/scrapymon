@@ -14,7 +14,7 @@ app = create_app(Config(
     mail=True,
     scheduler=True,
     auth=True,
-    admin=True,
+    admin=False,
     index=True,
     wechat=True,
 ))
@@ -69,8 +69,8 @@ def main():
     # Logging.
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logging.info('Running on http://{}:{}/'.format(
-        server.server_host, server.server_port)
+    logging.info('{} is running on http://{}:{}/'.format(
+        app_name, server.server_host, server.server_port)
     )
 
     # Serve forever.

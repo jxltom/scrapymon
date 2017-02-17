@@ -43,12 +43,8 @@
             <script src="{{ url_for('static', filename='flat-ui/js/prettify.js') }}"></script>
             <script src="{{ url_for('static', filename='flat-ui/js/application.js') }}"></script>
 
-            {# Initialize tooltip and hide tooltip for compatibility with application.js. #}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('[data-toggle=tooltip]').tooltip('hide');
-                });
-            </script>
+            {# Add custom JS. #}
+            <script src="{{ url_for('static', filename='base.js') }}"></script>
         {% endblock %}
     {% endblock %}
 {% endif %}
