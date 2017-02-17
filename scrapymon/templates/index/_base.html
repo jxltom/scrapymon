@@ -37,15 +37,21 @@
     $(document).ready(function () {
         // Schedule spider run.
         $('[role="schedule"]').click(function () {
-            $.get('/schedule/' + this.id, location.reload(true));
+            $.get(this.id, function () {
+                window.location = location.href;
+            });
         });
         // Cancel job.
         $('[role="cancel"]').click(function () {
-            $.get('/cancel/' + this.id, location.reload(true));
+            $.get(this.id, function () {
+                window.location = location.href;
+            });
         });
         // Delete project or a specific version.
         $('[role="delete"]').click(function () {
-            $.get('/delete/' + this.id, location.reload(true));
+            $.get(this.id, function () {
+                window.location = location.href;
+            });
         });
     })
 

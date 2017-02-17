@@ -23,7 +23,7 @@
                 <td>
                     <button class="btn btn-primary btn-xs" type="button">View Logs</button>
                     {% if not type == 'finished' %}
-                        <button class="btn btn-danger btn-xs" type="button" role="cancle" id="{{ job['project'] }}/{{ job['id'] }}">Cancel Job</button>
+                        <button class="btn btn-danger btn-xs" type="button" role="cancel" id="/cancel/{{ job['project'] }}/{{ job['id'] }}">Cancel Job</button>
                     {% endif %}
                 </td>
             </tr>
