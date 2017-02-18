@@ -9,22 +9,23 @@
         </thead>
 
         <tbody>
-        <tr class="default">
-
-            {% for spider in attrs['spiders'] %}
+        {% for spider in attrs['spiders'] %}
+            <tr class="default">
                 <td>{{ spider }}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button class="btn btn-primary btn-xs" type="button" role="schedule" id="/schedule/{{ project }}/{{ spider }}">Run Spider</button>
                     </div>
                 </td>
-            {% endfor %}
+            </tr>
+        {% endfor %}
 
-            {% if not attrs['spiders']|length %}
+        {% if not attrs['spiders']|length %}
+            <tr class="default">
                 <td>No available spiders</td>
                 <td></td>
-            {% endif %}
-        </tr>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 </div>
