@@ -2,7 +2,6 @@ from collections import OrderedDict
 import json
 
 from flask import render_template, flash, current_app, Markup
-from flask_security import login_required
 from werkzeug.local import LocalProxy
 import requests
 
@@ -299,6 +298,5 @@ def index_test():
 
 
 @index.route('/_auth')
-@login_required
 def login_required_test():
     return 'success'

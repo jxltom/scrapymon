@@ -5,18 +5,12 @@ import logging
 from gevent.pywsgi import WSGIServer
 
 from scrapymon.config import Config
-from scrapymon.app import create_app, worker
+from scrapymon.app import create_app
 
 app = create_app(Config(
     bootstrap=True,
-    db=False,
     httpauth=True,
-    mail=False,
-    scheduler=False,
-    auth=False,
-    admin=False,
     index=True,
-    wechat=False,
 ))
 
 
