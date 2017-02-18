@@ -23,8 +23,8 @@ A boilerplate for Flask applications.
 
     - MAIL_SERVER
     - MAIL_PORT
-    - MAIL_USE_TLS
-    - MAIL_USE_SSL
+    - MAIL_USE_TLS. Note this is a string which has value True or False.
+    - MAIL_USE_SSL. Note this is a string which has value True or False.
     - MAIL_USERNAME
     - MAIL_PASSWORD
     - MAIL_DEFAULT_SENDER

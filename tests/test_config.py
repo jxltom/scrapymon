@@ -196,14 +196,14 @@ class TestMailConfig(unittest.TestCase):
         create_app(Config(mail=True))
         from flask_boilerplate.async.mail import send_mail
         send_mail(subject='success', body='success',
-                  recipients=['jxltom@gmail.com'])
+                  recipients=['admin@example.tld'])
 
     def test_async_mail(self):
         """Test async mail."""
         create_app(Config(mail=True))
         from flask_boilerplate.async.mail import send_mail
         send_mail.delay(subject='success', body='success',
-                        recipients=['jxltom@gmail.com'])
+                        recipients=['admin@example.tld'])
 
 
 class TestSchedulerConfig(unittest.TestCase):
