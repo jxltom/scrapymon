@@ -1,2 +1,4 @@
 .project/
 scrapymon.zip
+scrapymon.egg-info/
+dist/
