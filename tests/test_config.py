@@ -224,11 +224,11 @@ class TestSchedulerConfig(unittest.TestCase):
     def test_scheduler(self):
         """Test scheduler in flask app."""
         create_app(Config())
-        from flask_boilerplate.app import scheduler
+        from scrapymon.app import scheduler
         self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
-        from flask_boilerplate.app import scheduler
+        from scrapymon.app import scheduler
         self.assertTrue(scheduler._scheduler.running)
 
 
