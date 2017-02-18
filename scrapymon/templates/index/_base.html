@@ -25,7 +25,7 @@
             <li role="presentation"><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
             <li role="presentation" class="active"><a href="#">Jobs</a></li>
 
-        {% elif request.path == url_for('index.logs_dash') %}
+        {% else %}
 
             <li role="presentation"><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
             <li role="presentation"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>
@@ -58,6 +58,10 @@
             $.get(this.id, function () {
                 window.location = location.href;
             });
+        });
+        // Get job jog .
+        $('[role="logs"]').click(function () {
+            window.location = this.id;
         });
     })
 

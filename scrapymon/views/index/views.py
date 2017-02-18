@@ -111,7 +111,8 @@ def logs_dash(project, spider, job):
     else:
         logs = raw.split('\n')
 
-    return render_template('index/logs.html', logs=logs)
+    return render_template('index/logs.html', logs=logs,
+                           info=dict(project=project, spider=spider, job=job))
 
 
 @index.route('/schedule/<project>/<spider>')

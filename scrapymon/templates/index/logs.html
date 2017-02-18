@@ -5,15 +5,14 @@
     {{ super() }}
 
     <div class="panel-group" id="logs">
-
         <div class="panel panel-default">
 
             <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#log">
-                <a class="panel-title collapsed in">Log</a>
+                <a class="panel-title collapsed in">Log of job {{ info['job'] }} from spider {{ info['spider'] }} in project {{ info['project'] }}</a>
             </div>
 
-            <div id="log" class="panel-collapse collapse">
-                <table class="table table-responsive">
+            <div id="log" class="panel-collapse collapse in">
+                <table class="table table-condensed table-hover table-responsive">
                     <tbody>
                     {% for log in logs %}
                         <tr class="default">

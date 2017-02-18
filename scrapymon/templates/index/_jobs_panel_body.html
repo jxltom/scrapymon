@@ -21,7 +21,7 @@
                 <td>{{ job['start_time'] }}</td>
                 <td>{{ job['end_time'] }}</td>
                 <td>
-                    <button class="btn btn-primary btn-xs" type="button">View Logs</button>
+                    <button class="btn btn-primary btn-xs" type="button" role="logs" id="/logs/{{ job['project'] }}/{{ job['spider'] }}/{{ job['id'] }}">View Logs</button>
                     {% if not type == 'finished' %}
                         <button class="btn btn-danger btn-xs" type="button" role="cancel" id="/cancel/{{ job['project'] }}/{{ job['id'] }}">Cancel Job</button>
                     {% endif %}
