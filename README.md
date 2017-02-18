@@ -17,6 +17,18 @@ A boilerplate for Flask applications.
 - Wrapper as script or exe with command line arguments support for running as services conveniently
 - [Heroku](https://heroku.com/)/[Dokku](https://github.com/dokku/dokku)/[Flynn](https://github.com/flynn/flynn) supported
 
+## Getting Started
+
+- Following environment variables have to be set for using Flask-Mail
+
+    - MAIL_SERVER
+    - MAIL_PORT
+    - MAIL_USE_TLS
+    - MAIL_USE_SSL
+    - MAIL_USERNAME
+    - MAIL_PASSWORD
+    - MAIL_DEFAULT_SENDER
+
 ## TODO
 
 - Install dependencies from Github in setup
