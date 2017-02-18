@@ -19,24 +19,26 @@ A boilerplate for Flask applications.
 
 ## Getting Started
 
-- Following environment variables have to be set for using Flask-Mail
+### Environment Variables
 
-    - MAIL_SERVER
-    - MAIL_PORT
-    - MAIL_USE_TLS. Note this is a string which has value True or False.
-    - MAIL_USE_SSL. Note this is a string which has value True or False.
-    - MAIL_USERNAME
-    - MAIL_PASSWORD
-    - MAIL_DEFAULT_SENDER
-    
-- Following environment variables have to be set for using Celery
+Following environment variables have to be set for using Flask-Mail
 
-    - BROKER_URL
-    - RESULT_BACKEND
+- MAIL_SERVER
+- MAIL_PORT
+- MAIL_USE_TLS. Note this is a string which has value True or False.
+- MAIL_USE_SSL. Note this is a string which has value True or False.
+- MAIL_USERNAME
+- MAIL_PASSWORD
+- MAIL_DEFAULT_SENDER
     
-- Following environment variable can be set for using different database with ```sqlite:///:memory:```
+Following environment variables have to be set for using Celery
+
+- BROKER_URL
+- RESULT_BACKEND
     
-    - SQLALCHEMY_DATABASE_URI
+Following environment variable can be set for using database other than ```sqlite:///:memory:```
+    
+- SQLALCHEMY_DATABASE_URI
 
 ## TODO
 
