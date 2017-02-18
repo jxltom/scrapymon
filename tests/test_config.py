@@ -2,9 +2,9 @@ import unittest
 
 from flask import render_template
 
-from scrapymon.app import create_app
 from scrapymon.config import (Config, DBConfig, WechatBlueprintConfig,
                               CeleryConfig)
+from scrapymon.app import create_app
 
 
 class TestBasicConfig(unittest.TestCase):
@@ -196,7 +196,7 @@ class TestMailConfig(unittest.TestCase):
         create_app(Config(mail=True))
         from scrapymon.async.mail import send_mail
         send_mail(subject='success', body='success',
-                  recipients=['jxltom@gmail.com'])
+                  recipients=['admin@example.tld'])
 
 
     def test_async_mail(self):
@@ -204,7 +204,7 @@ class TestMailConfig(unittest.TestCase):
         create_app(Config(mail=True))
         from scrapymon.async.mail import send_mail
         send_mail.delay(subject='success', body='success',
-                        recipients=['jxltom@gmail.com'])
+                        recipients=['admin@example.tld'])
 
 
 class TestSchedulerConfig(unittest.TestCase):
@@ -224,11 +224,11 @@ class TestSchedulerConfig(unittest.TestCase):
     def test_scheduler(self):
         """Test scheduler in flask app."""
         create_app(Config())
-        from scrapymon.app import scheduler
+        from flask_boilerplate.app import scheduler
         self.assertFalse(scheduler._scheduler.running)
 
         create_app(Config(scheduler=True))
-        from scrapymon.app import scheduler
+        from flask_boilerplate.app import scheduler
         self.assertTrue(scheduler._scheduler.running)
 
 

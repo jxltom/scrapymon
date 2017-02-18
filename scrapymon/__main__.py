@@ -1,11 +1,11 @@
+import os
 import argparse
 import logging
-import os
 
 from gevent.pywsgi import WSGIServer
 
-from scrapymon.app import create_app
 from scrapymon.config import Config
+from scrapymon.app import create_app, worker
 
 app = create_app(Config(
     bootstrap=True,
@@ -50,10 +50,18 @@ def main():
         formatter_class=CustomHelpFormatter)
 
     # Add arguments.
+    # Default values are relavant environment variables or pre-defined values
+    # This may cause problems if one has defined undesired environment variables
+    # when running by default.
     argparse_.add_argument('--help', action='store_true', default=False)
-    argparse_.add_argument('--host', default='0.0.0.0')
-    argparse_.add_argument('--port', type=int, default=5000)
-    argparse_.add_argument('--server', default='http://jxltom.me:6800')
+    argparse_.add_argument('--host', default=os.environ.get('HOST', '0.0.0.0'))
+    # Note that $PORT environment variable has to be used in Heroku.
+    # Consider using $DYNO but it is subject to change or removal in Heroku.
+    argparse_.add_argument(
+        '--port', type=int, default=int(os.environ.get('PORT', 5000)))
+    argparse_.add_argument(
+        '--server', default=os.environ.get(
+            'SCRAPYD_SERVER', 'Http://127.0.0.1:6800'))
     argparse_.add_argument('--auth', default='admin:admin')
 
     # Parse options.
@@ -61,11 +69,6 @@ def main():
     host, port, help_ = opts.host, opts.port, opts.help
     scrapyd_server = opts.server
     basic_auth_username, basic_auth_password = opts.auth.split(':')
-
-    # Overide port by $PORT environment variable in Heroku.
-    # This may cause problems if one has defined PORT when running as script.
-    # Consider using $DYNO but it is subject to change or removal in Heroku.
-    port = int(os.environ.get('PORT', port))
 
     # Print help information
     if help_:
@@ -85,9 +88,8 @@ def main():
     # Logging.
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logging.info(
-        '{} is running on http://{}:{}/ with Scrapyd server in {}'.format(
-            app_name, server.server_host, server.server_port, scrapyd_server)
+    logging.info('{} is running on http://{}:{}/'.format(
+        app_name, server.server_host, server.server_port)
     )
 
     # Serve forever.

@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-from flask_boilerplate import __version__, __author__
+from scrapymon import __version__, __author__
 
 setup(
     name='scrapymon',
