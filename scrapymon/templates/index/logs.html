@@ -1,0 +1,19 @@
+{% extends "index/_base.html" %}
+
+{% block content %}
+
+    {{ super() }}
+
+    <div class="panel-group" id="projects">
+
+        {% for project, attrs in projects.items() %}
+
+            <div class="panel panel-default">
+
+                {% include "index/_projects_panel_head.html" %}
+
+                {% include "index/_projects_panel_body.html" %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
