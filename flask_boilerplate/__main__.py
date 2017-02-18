@@ -35,8 +35,8 @@ def main():
         'Usage: {} [--host=<host>] [--port=<port>]'.format(app_name),
         '',
         'Options:',
-        '  --host    Default is 0.0.0.0',
-        '  --port    Default is 5000',
+        '  --host    Default is $HOST or 0.0.0.0 if $HOST is not defined',
+        '  --port    Default is $PORT or 5000 if $PORT is not defined',
     ])
 
     # Initialzie argparse.
@@ -45,18 +45,19 @@ def main():
         formatter_class=CustomHelpFormatter)
 
     # Add arguments.
+    # Default values are relavant environment variables or pre-defined values
+    # This may cause problems if one has defined undesired environment variables
+    # when running by default.
     argparse_.add_argument('--help', action='store_true', default=False)
-    argparse_.add_argument('--host', default='0.0.0.0')
-    argparse_.add_argument('--port', type=int, default=5000)
+    argparse_.add_argument('--host', default=os.environ.get('HOST', '0.0.0.0'))
+    # Note that $PORT environment variable has to be used in Heroku.
+    # Consider using $DYNO but it is subject to change or removal in Heroku.
+    argparse_.add_argument(
+        '--port', type=int, default=int(os.environ.get('PORT', 5000)))
 
     # Parse options.
     opts = argparse_.parse_args()
     host, port, help_ = opts.host, opts.port, opts.help
-
-    # Overide port by $PORT environment variable in Heroku.
-    # This may cause problems if one has defined PORT when running as script.
-    # Consider using $DYNO but it is subject to change or removal in Heroku.
-    port = int(os.environ.get('PORT', port))
 
     # Print help information
     if help_:
