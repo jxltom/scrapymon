@@ -36,12 +36,13 @@ def main():
         '[--server=<address>] [--auth=<username:password>'.format(app_name),
         '',
         'Options:',
-        '  --host      Default is 0.0.0.0',
-        '  --port      Default is 5000',
+        '  --host      Default is $HOST or 0.0.0.0 if $HOST is not defined',
+        '  --port      Default is $PORT or 5000 if $PORT is not defined',
         '  --server    Scrapyd server address with port. '
-        'Default is http://127.0.0.1:6800',
+        'Default is $SCRAPYD_SERVER  '
+        'or http://127.0.0.1:6800 if $SCRAPYD_SERVER is not defined',
         '  --auth      Username and passoword for http basic auth. '
-        'Default is admin:admin',
+        'Default is $BASIC_AUTH or admin:admin if $BASIC_AUTH is not defined.',
     ])
 
     # Initialzie argparse.
@@ -61,8 +62,9 @@ def main():
         '--port', type=int, default=int(os.environ.get('PORT', 5000)))
     argparse_.add_argument(
         '--server', default=os.environ.get(
-            'SCRAPYD_SERVER', 'Http://127.0.0.1:6800'))
-    argparse_.add_argument('--auth', default='admin:admin')
+            'SCRAPYD_SERVER', 'http://127.0.0.1:6800'))
+    argparse_.add_argument('--auth', default=os.environ.get(
+            'BASIC_AUTH', 'admin:admin'))
 
     # Parse options.
     opts = argparse_.parse_args()
