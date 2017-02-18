@@ -39,4 +39,4 @@ Simple management UI for scrapyd.
 
 ## Contributing
 
-Contributions are welcomed! Pull Requests with relavant tests are recommended.
+Contributions are welcomed!
