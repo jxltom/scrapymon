@@ -33,7 +33,8 @@ def main():
     # Application usage.
     usage_ = '\n'.join([
         'Usage: {} [--host=<host>] [--port=<port>] '
-        '[--server=<address>] [--auth=<username:password>'.format(app_name),
+        '[--server=<address_with_port>] '
+        '[--auth=<username:password>'.format(app_name),
         '',
         'Options:',
         '  --host      Default is $HOST or 0.0.0.0 if $HOST is not defined',
