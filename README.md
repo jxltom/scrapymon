@@ -28,6 +28,15 @@ A boilerplate for Flask applications.
     - MAIL_USERNAME
     - MAIL_PASSWORD
     - MAIL_DEFAULT_SENDER
+    
+- Following environment variables have to be set for using Celery
+
+    - BROKER_URL
+    - RESULT_BACKEND
+    
+- Following environment variable can be set for using different database with ```sqlite:///:memory:```
+    
+    - SQLALCHEMY_DATABASE_URI
 
 ## TODO
 
