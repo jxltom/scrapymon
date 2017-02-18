@@ -22,6 +22,7 @@ schedule_url = '/schedule.json'
 cancel_url = '/cancel.json'
 delproject_url = '/delproject.json'
 delversion_url = '/delversion.json'
+logs_url = '/logs'
 
 
 @index.errorhandler(requests.ConnectionError)
@@ -178,6 +179,26 @@ def delproject(project, version=None):
         )
 
     return 'success'
+
+
+@index.route('logs')
+def logs(project, spider, job):
+    """Get job log."""
+    # Get log from server.
+    url = '{}/{}/{}/{}.log'.format(
+        scrapyd_server + logs_url, project, spider, job)
+    raw = requests.get(url).text
+
+    # Parse response and return.
+    if 'file not found' in raw.lower():
+        return ''
+    elif 'not such resource' in raw.lower():
+        flash(
+            'Can not get log of job {} from spider {} in project {}.'.format(
+                job, spider, project), 'warning'
+        )
+    else:
+        return raw
 
 
 def _list_projects():
