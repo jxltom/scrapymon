@@ -40,3 +40,4 @@ Simple management UI for scrapyd.
 ## Contributing
 
 Contributions are welcomed!
+
