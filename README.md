@@ -20,10 +20,10 @@ Simple management UI for scrapyd.
 
 - Run by ```scrapymon [--host=<host>] [--port=<port>] [--server=<address_with_port>] [--auth=<username:password>]```.
     
-    - Default ```host``` is ```0.0.0.0```
-    - Default ```port``` is ```5000```
-    - Default ```server``` is ```http://127.0.0.1:6800```
-    - Default ```auth``` is ```admin:admin```
+    - Default ```--host``` is ```0.0.0.0```
+    - Default ```--port``` is ```5000```
+    - Default ```--server``` is ```http://127.0.0.1:6800```
+    - Default ```--auth``` is ```admin:admin```
     
 - Or you can run by ```scrapymon``` with valid environment variables ```$HOST```, ```$PORT```, ```$SCRAPYD_SERVER``` and ```$BASIC_AUTH```.
 
