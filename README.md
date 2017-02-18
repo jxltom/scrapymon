@@ -15,6 +15,12 @@ Simple management UI for scrapyd.
 - Http basic access authentication supported
 - Served by [Gevent](https://github.com/gevent/gevent) for production use
 
+## Screenshots
+
+![projects_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/projects_dash.png)
+![jobs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/jobs_dash.png)
+![logs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/logs_dash.png)
+
 ## Getting Started
 
 - Install by ```pip install scrapymon```.
