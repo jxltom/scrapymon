@@ -86,6 +86,34 @@ def jobs_dash():
     return render_template('index/jobs.html', jobs=jobs)
 
 
+@index.route('/logs/<project>/<spider>/<job>')
+def logs_dash(project, spider, job):
+    """Logs view."""
+    logs = []
+
+    # Get log from server.
+    url = '{}/{}/{}/{}.log'.format(
+        scrapyd_server + logs_url, project, spider, job)
+    raw = requests.get(url).text
+
+    # Parse response and flash messages.
+    if 'file not found' in raw.lower():
+        flash(
+            'The job {} from spider {} in project {} '
+            'has no available logs currently.'.format(job, spider, project),
+            'warning'
+        )
+    elif 'not such resource' in raw.lower():
+        flash(
+            'Can not get log of job {} from spider {} in project {}.'.format(
+                job, spider, project), 'warning'
+        )
+    else:
+        logs = raw.split('\n')
+
+    return render_template('index/logs.html', logs=logs)
+
+
 @index.route('/schedule/<project>/<spider>')
 def schedule(project, spider):
     """Schedule spider run."""
@@ -178,26 +206,6 @@ def delproject(project, version=None):
         )
 
     return 'success'
-
-
-@index.route('/logs')
-def logs(project, spider, job):
-    """Get job log."""
-    # Get log from server.
-    url = '{}/{}/{}/{}.log'.format(
-        scrapyd_server + logs_url, project, spider, job)
-    raw = requests.get(url).text
-
-    # Parse response and return.
-    if 'file not found' in raw.lower():
-        return ''
-    elif 'not such resource' in raw.lower():
-        flash(
-            'Can not get log of job {} from spider {} in project {}.'.format(
-                job, spider, project), 'warning'
-        )
-    else:
-        return raw
 
 
 def _list_projects():

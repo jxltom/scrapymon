@@ -13,18 +13,16 @@
             </div>
 
             <div id="log" class="panel-collapse collapse">
-
                 <table class="table table-responsive">
                     <tbody>
-                    {% for job in list %}
+                    {% for log in logs %}
                         <tr class="default">
-                            <td>{{ job['id'] }}</td>
+                            <td>{{ log }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
 {% endblock %}
