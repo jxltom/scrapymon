@@ -8,6 +8,7 @@ Simple management UI for scrapyd.
 - Show all versions of each project
 - Show all spiders in each project
 - Show all pending, running and finished jobs from a Scrapyd server
+- Show logs of each job
 - Schedule spiders run
 - Cancel pending or running jobs
 - Delete project or a specific version
@@ -29,12 +30,11 @@ Simple management UI for scrapyd.
 
 ## TODO
 
-- Support logs
 - Support schedule a spider run with arguments.
-- Highlighted and formated logs
-- Log catagory and searcharable logs
-- Support create project via ```addversion.json```.
-- Localize time
+- Highlighted and searcharable logs with catagories
+- Logs auto refresh and pagination
+- Create project via ```addversion.json```.
+- Time Localization
 - Add Dockerfile
 
 ## Contributing

@@ -1,12 +1,13 @@
 # Changelog
 
-## Version 0.0.2 (2017-02-17)
+## Version 0.1.0 (2017-02-18)
 
 - Features
 
     - Schedule spiders run
     - Cancel pending or running jobs
     - Delete project or a specific version
+    - Show logs of each job
 
 ## Version 0.0.1 (2017-02-14)
 
