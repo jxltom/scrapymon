@@ -8,7 +8,8 @@ setup(
     name='scrapymon',
     version=__version__,
     description='Simple management UI for scrapyd',
-    long_description=open('README.rst').read(),
+    long_description=
+    'Go to https://github.com/jxltom/scrapymon/ for more infomation.',
     author=__author__,
     author_email='jxltom@gmail.com',
     url='https://github.com/jxltom/scrapymon/',
