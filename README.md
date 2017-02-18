@@ -17,9 +17,7 @@ Simple management UI for scrapyd.
 ## Getting Started
 
 - Install by ```pip install scrapymon```.
-
 - Run by ```scrapymon --host=<host> --port=<port> --server=<address_with_port> --auth=<username:password>```.
-
 - Or you can run by ```scrapymon``` with valid environment variables ```$HOST```, ```$PORT```, ```$SCRAPYD_SERVER``` and ```$BASIC_AUTH```.
 
 ## TODO
