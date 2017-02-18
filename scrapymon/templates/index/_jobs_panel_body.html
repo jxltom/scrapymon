@@ -1,33 +1,36 @@
 <div id="{{ type }}" class="panel-collapse collapse">
 
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <td>ID</td>
-            <td>Project</td>
-            <td>Spider</td>
-            <td>Start Time</td>
-            <td>End Time</td>
-            <td>Manage</td>
-        </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table">
 
-        <tbody>
-        {% for job in list %}
-            <tr class="default">
-                <td>{{ job['id'] }}</td>
-                <td>{{ job['project'] }}</td>
-                <td>{{ job['spider'] }}</td>
-                <td>{{ job['start_time'] }}</td>
-                <td>{{ job['end_time'] }}</td>
-                <td>
-                    <button class="btn btn-primary btn-xs" type="button" role="logs" id="/logs/{{ job['project'] }}/{{ job['spider'] }}/{{ job['id'] }}">View Logs</button>
-                    {% if not type == 'finished' %}
-                        <button class="btn btn-danger btn-xs" type="button" role="cancel" id="/cancel/{{ job['project'] }}/{{ job['id'] }}">Cancel Job</button>
-                    {% endif %}
-                </td>
+            <thead>
+            <tr>
+                <td>ID</td>
+                <td>Project</td>
+                <td>Spider</td>
+                <td>Start Time</td>
+                <td>End Time</td>
+                <td>Manage</td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% for job in list %}
+                <tr class="default">
+                    <td>{{ job['id'] }}</td>
+                    <td>{{ job['project'] }}</td>
+                    <td>{{ job['spider'] }}</td>
+                    <td>{{ job['start_time'] }}</td>
+                    <td>{{ job['end_time'] }}</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" type="button" role="logs" id="/logs/{{ job['project'] }}/{{ job['spider'] }}/{{ job['id'] }}">View Logs</button>
+                        {% if not type == 'finished' %}
+                            <button class="btn btn-danger btn-xs" type="button" role="cancel" id="/cancel/{{ job['project'] }}/{{ job['id'] }}">Cancel Job</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -9,21 +9,23 @@
 
             <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#log">
                 <a class="panel-title collapsed in">Log of job {{ info['job'] }}
-                <span class="label label-primary" title="spider {{ info['spider'] }}" data-toggle="tooltip">{{ info['spider'] }}</span>
-                <span class="label label-primary" title="project {{ info['project'] }}" data-toggle="tooltip">{{ info['project'] }}</span>
+                    <span class="label label-primary" title="spider {{ info['spider'] }}" data-toggle="tooltip">{{ info['spider'] }}</span>
+                    <span class="label label-primary" title="project {{ info['project'] }}" data-toggle="tooltip">{{ info['project'] }}</span>
                 </a>
             </div>
 
             <div id="log" class="panel-collapse collapse in">
-                <table class="table table-condensed table-hover table-responsive">
-                    <tbody>
-                    {% for log in logs %}
-                        <tr class="default">
-                            <td>{{ log }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <tbody>
+                        {% for log in logs %}
+                            <tr class="default">
+                                <td>{{ log }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

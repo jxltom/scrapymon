@@ -1,31 +1,34 @@
 <div id="{{ project }}" class="panel-collapse collapse">
 
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <td>Spider</td>
-            <td class="text-right">Manage</td>
-        </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table">
 
-        <tbody>
-        {% for spider in attrs['spiders'] %}
-            <tr class="default">
-                <td>{{ spider }}</td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-xs" type="button" role="schedule" id="/schedule/{{ project }}/{{ spider }}">Run Spider</button>
-                    </div>
-                </td>
+            <thead>
+            <tr>
+                <td>Spider</td>
+                <td class="text-right">Manage</td>
             </tr>
-        {% endfor %}
+            </thead>
 
-        {% if not attrs['spiders']|length %}
-            <tr class="default">
-                <td>No available spiders</td>
-                <td></td>
-            </tr>
-        {% endif %}
-        </tbody>
-    </table>
+            <tbody>
+            {% for spider in attrs['spiders'] %}
+                <tr class="default">
+                    <td>{{ spider }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-xs" type="button" role="schedule" id="/schedule/{{ project }}/{{ spider }}">Run Spider</button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% if not attrs['spiders']|length %}
+                <tr class="default">
+                    <td>No available spiders</td>
+                    <td></td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
 </div>
