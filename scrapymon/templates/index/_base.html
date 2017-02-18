@@ -19,15 +19,13 @@
 
             <li role="presentation" class="active"><a href="#">Projects</a></li>
             <li role="presentation"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>
-            <li role="presentation" class="disabled"><a href="#">Logs</a></li>
 
         {% elif request.path == url_for('index.jobs_dash') %}
 
             <li role="presentation"><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
             <li role="presentation" class="active"><a href="#">Jobs</a></li>
-            <li role="presentation" class="disabled"><a href="#">Logs</a></li>
 
-        {% else request.path == url_for('index.logs_dash')%}
+        {% elif request.path == url_for('index.logs_dash') %}
 
             <li role="presentation"><a href="{{ url_for('index.projects_dash') }}">Projects</a></li>
             <li role="presentation"><a href="{{ url_for('index.jobs_dash') }}">Jobs</a></li>

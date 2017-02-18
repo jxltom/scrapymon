@@ -180,7 +180,7 @@ def delproject(project, version=None):
     return 'success'
 
 
-@index.route('logs')
+@index.route('/logs')
 def logs(project, spider, job):
     """Get job log."""
     # Get log from server.

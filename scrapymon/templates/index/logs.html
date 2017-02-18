@@ -4,16 +4,27 @@
 
     {{ super() }}
 
-    <div class="panel-group" id="projects">
+    <div class="panel-group" id="logs">
 
-        {% for project, attrs in projects.items() %}
+        <div class="panel panel-default">
 
-            <div class="panel panel-default">
-
-                {% include "index/_projects_panel_head.html" %}
-
-                {% include "index/_projects_panel_body.html" %}
+            <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#log">
+                <a class="panel-title collapsed in">Log</a>
             </div>
-        {% endfor %}
+
+            <div id="log" class="panel-collapse collapse">
+
+                <table class="table table-responsive">
+                    <tbody>
+                    {% for job in list %}
+                        <tr class="default">
+                            <td>{{ job['id'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
