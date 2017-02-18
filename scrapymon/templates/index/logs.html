@@ -8,7 +8,10 @@
         <div class="panel panel-default">
 
             <div class="panel-heading" data-toggle="collapse" data-parent="#projects" href="#log">
-                <a class="panel-title collapsed in">Log of job {{ info['job'] }} from spider {{ info['spider'] }} in project {{ info['project'] }}</a>
+                <a class="panel-title collapsed in">Log of job {{ info['job'] }}
+                <span class="label label-primary" title="spider {{ info['spider'] }}" data-toggle="tooltip">{{ info['spider'] }}</span>
+                <span class="label label-primary" title="project {{ info['project'] }}" data-toggle="tooltip">{{ info['project'] }}</span>
+                </a>
             </div>
 
             <div id="log" class="panel-collapse collapse in">
