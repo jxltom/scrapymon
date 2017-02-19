@@ -29,9 +29,10 @@ body {
     padding-right:20px;
 }
 
-/* Make table font smaller. */
+/* Make table font smaller and remove bottom margin. */
 table {
     font-size: 15px;
+    margin-bottom: 0px;
 }
 
 /* Change dropdown menu minimal width in Flat-UI. */
