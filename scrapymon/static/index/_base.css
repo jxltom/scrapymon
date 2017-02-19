@@ -30,7 +30,7 @@ body {
 }
 
 /* Make table font smaller and remove bottom margin. */
-table {
+.table {
     font-size: 15px;
     margin-bottom: 0px;
 }
