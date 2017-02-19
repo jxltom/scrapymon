@@ -39,32 +39,5 @@
 
     {{ super() }}
     <script src="{{ url_for('static', filename='index/_base.js') }}"></script>
-    <script>
-    $(document).ready(function () {
-        // Schedule spider run.
-        $('[role="schedule"]').click(function () {
-            $.get(this.id, function () {
-                window.location = location.href;
-            });
-        });
-        // Cancel job.
-        $('[role="cancel"]').click(function () {
-            $.get(this.id, function () {
-                window.location = location.href;
-            });
-        });
-        // Delete project or a specific version.
-        $('[role="delete"]').click(function () {
-            $.get(this.id, function () {
-                window.location = location.href;
-            });
-        });
-        // Get job jog .
-        $('[role="logs"]').click(function () {
-            window.location = this.id;
-        });
-    })
-
-    </script>
 
 {% endblock %}
