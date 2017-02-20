@@ -1,6 +1,6 @@
 # scrapymon
 
-Simple management UI for scrapyd.
+Simple management UI for scrapyd. The demo is available at [http://scrapymon.demo.jxltom.me/](http://scrapymon.demo.jxltom.me/) with ```admin``` for both username and password. Note that the demo will reset and it may take some time to spin up if no one has accessed it for a while. 
 
 ## Features
 

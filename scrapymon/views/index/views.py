@@ -54,8 +54,8 @@ def projects_dash():
         flash(Markup(
             'No available projects currently. Using '
             '<a href="https://github.com/scrapy/scrapyd-client" '
-            'target="_blank">scrapyd-client</a> '
-            'for uploading projects to Scrapyd server.'),
+            'target="_blank">scrapyd-client</a> for uploading projects '
+            'to Scrapyd server {}.'.format(scrapyd_server)),
             'info')
 
     return render_template('index/projects.html', projects=projects)

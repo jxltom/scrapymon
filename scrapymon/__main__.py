@@ -15,7 +15,7 @@ app = create_app(Config(
 
 
 def main():
-    """Convinent entrypoint for wrapper as script or exe."""
+    """Entrypoint for script or exe."""
     # Convenient reference
     app_name = 'scrapymon'
 
