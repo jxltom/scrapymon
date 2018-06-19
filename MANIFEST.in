@@ -1,9 +1,17 @@
 include requirements.txt
+include requirements-dev.txt
+include Pipfile
+include Pipfile.lock
 include README.md
 include CHANGES
 include LICENSE
 include Procfile
 include DOKKU_SCALE
+include CHECKS
 include runtime.txt
+include app.json
+inlcude nginx.conf.sigil
+include .env.example
+recursive-include docs
 recursive-include scrapymon/static *
 recursive-include scrapymon/templates *

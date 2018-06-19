@@ -4,3 +4,7 @@ scrapymon.egg-info/
 dist/
 build/
 .pypirc
+
+\.idea/
+
+\.env
