@@ -2,14 +2,11 @@ import os
 from os.path import dirname, abspath
 import re
 
-from apscheduler.jobstores.memory import MemoryJobStore
-from kombu import Queue, Exchange
-
-import flask_boilerplate as project
+import scrapymon as project
 
 
 def _env(env):
-    """If ENV exit but with empty value, return empty string."""
+    """If ENV exist but with empty value, return empty string."""
     return env if os.getenv(env) else ''
 
 
@@ -19,8 +16,6 @@ def _getenv(env, default=None):
     return os.getenv(_env(env), default)
 
 
-# TODO: Self-check for config
-# TODO: Add support for py.test -s option in CLI
 class Config:
     # Settings for Flask
     SECRET_KEY = b'I\x98\xefQ\xd1\xba\xc6\x99\xc1\xa0\x16L'  # used for session
