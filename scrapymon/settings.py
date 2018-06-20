@@ -2,6 +2,8 @@ import os
 from os.path import dirname, abspath
 import re
 
+from kombu import Queue, Exchange
+
 import scrapymon as project
 
 
@@ -20,6 +22,10 @@ class Config:
     # Settings for Flask
     SECRET_KEY = _getenv('SECRET_KEY')  # used for session
     TESTING = False
+
+    # Settings for Flask-Basicauth
+    BASIC_AUTH_USERNAME = _getenv('BASIC_AUTH_USERNAME', 'admin')
+    BASIC_AUTH_PASSWORD = _getenv('BASIC_AUTH_PASSWORD', 'admin')
 
     # Settings for Debug by Flask-DebugToolbar
     DEBUG_TB_PROFILER_ENABLED = True
@@ -63,6 +69,9 @@ class Config:
     # Setup automatically routes for Celery
     CELERY_ROUTES = CELERY_TASK_ROUTES = (CustomCeleryRouter(),)
 
+    # Applicaiton custom settings
+    SCRAPYD_SERVER = _getenv('SCRAPYD_SERVER', 'http://127.0.0.1:6800')
+
     def __init__(self):
         if self._mail:
             mail_regex = r'(ssl|tls)://(\S+):(\S+)@(\S+):(\d+)'
@@ -90,6 +99,9 @@ class Config:
 class DevConfig(Config):
     DEBUG = True
 
+    # Settings for Flask-BasicAuth
+    BASIC_AUTH_FORCE = False
+
     # Settings for Email by Flask-Mail
     _mail = _getenv('MAIL_DEV')
 
@@ -112,6 +124,9 @@ class DevConfig(Config):
 class TestConfig(Config):
     DEBUG = False
 
+    # Settings for Flask-BasicAuth
+    BASIC_AUTH_FORCE = True
+
     # Settings for Email by Flask-Mail
     _mail = _getenv('MAIL_TEST')
 
@@ -128,6 +143,9 @@ class TestConfig(Config):
 
 class ProdConfig(Config):
     DEBUG = False
+
+    # Settings for Flask-BasicAuth
+    BASIC_AUTH_FORCE = True
 
     # Settings for Email by Flask-Mail
     _mail = _getenv('MAIL_PROD')

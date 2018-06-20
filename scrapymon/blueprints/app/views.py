@@ -5,7 +5,7 @@ from flask import render_template, flash, current_app, Markup
 from werkzeug.local import LocalProxy
 import requests
 
-from . import index
+from . import app
 
 # Convenient reference to scrapyd server.
 scrapyd_server = LocalProxy(lambda: current_app.config['SCRAPYD_SERVER'])
@@ -24,11 +24,11 @@ delversion_url = '/delversion.json'
 logs_url = '/logs'
 
 
-@index.errorhandler(requests.ConnectionError)
+@app.errorhandler(requests.ConnectionError)
 def server_connection_error(e):
     """Flash messages if server can not be connected."""
     if debug:
-        flash(e.args, 'danger')
+        flash(str(e), 'danger')
 
     flash(
         'The connection to Scrapyd server can not be established. '
@@ -38,7 +38,7 @@ def server_connection_error(e):
     return render_template('index/error.html')
 
 
-@index.route('/')
+@app.route('/')
 def projects_dash():
     """Projects view."""
     projects = OrderedDict()
@@ -61,7 +61,7 @@ def projects_dash():
     return render_template('index/projects.html', projects=projects)
 
 
-@index.route('/jobs')
+@app.route('/jobs')
 def jobs_dash():
     """Jobs view."""
     jobs = OrderedDict()
@@ -86,7 +86,7 @@ def jobs_dash():
     return render_template('index/jobs.html', jobs=jobs)
 
 
-@index.route('/logs/<project>/<spider>/<job>')
+@app.route('/logs/<project>/<spider>/<job>')
 def logs_dash(project, spider, job):
     """Logs view."""
     logs = []
@@ -115,7 +115,7 @@ def logs_dash(project, spider, job):
                            info=dict(project=project, spider=spider, job=job))
 
 
-@index.route('/schedule/<project>/<spider>')
+@app.route('/schedule/<project>/<spider>')
 def schedule(project, spider):
     """Schedule spider run."""
     # Run spider and get response from server.
@@ -144,7 +144,7 @@ def schedule(project, spider):
     return 'success'
 
 
-@index.route('/cancel/<project>/<job>')
+@app.route('/cancel/<project>/<job>')
 def cancel(project, job):
     """Cancel job run."""
     # Cancel job and get response from server.
@@ -173,8 +173,8 @@ def cancel(project, job):
     return 'success'
 
 
-@index.route('/delete/<project>')
-@index.route('/delete/<project>/<version>')
+@app.route('/delete/<project>')
+@app.route('/delete/<project>/<version>')
 def delproject(project, version=None):
     """Delete project or a version."""
     # Delete project or a specific version and get response from server.
@@ -301,11 +301,11 @@ def _list_jobs(project):
     return pending_jobs, running_jobs, finished_jobs
 
 
-@index.route('/_')
+@app.route('/_')
 def index_test():
     return render_template('base.html')
 
 
-@index.route('/_auth')
+@app.route('/_auth')
 def login_required_test():
     return 'success'

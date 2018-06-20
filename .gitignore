@@ -8,3 +8,5 @@ build/
 \.idea/
 
 \.env
+
+*.pyc

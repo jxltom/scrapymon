@@ -8,7 +8,6 @@ from flask.cli import main
 import scrapymon as project
 
 
-# TODO: Why can not find flask command when as_module is False
 if __name__ == '__main__':
     app = '{}/app:application'.format(os.path.dirname(project.__file__))
     os.environ.setdefault('FLASK_APP', app)
