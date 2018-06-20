@@ -17,9 +17,9 @@ Simple management UI for scrapyd. The demo is available at [http://scrapymon.dem
 
 ## Screenshots
 
-![projects_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/projects_dash.png)
-![jobs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/jobs_dash.png)
-![logs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/_static/logs_dash.png)
+![projects_dash](https://github.com/jxltom/scrapymon/blob/master/docs/screenshots/projects_dash.png)
+![jobs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/screenshots/jobs_dash.png)
+![logs_dash](https://github.com/jxltom/scrapymon/blob/master/docs/screenshots/logs_dash.png)
 
 ## Getting Started
 
