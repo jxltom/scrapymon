@@ -18,7 +18,7 @@ def _getenv(env, default=None):
 
 class Config:
     # Settings for Flask
-    SECRET_KEY = b'I\x98\xefQ\xd1\xba\xc6\x99\xc1\xa0\x16L'  # used for session
+    SECRET_KEY = _getenv('SECRET_KEY')  # used for session
     TESTING = False
 
     # Settings for Debug by Flask-DebugToolbar
@@ -30,39 +30,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
-    # Settings for Authentication by Flask-Login as well as Flask-User
-    SESSION_PROTECTION = 'strong'
-
-    # Settings for Authentication by Flask-User
-    USER_LOGIN_TEMPLATE = 'user/login.html'
-    USER_REGISTER_TEMPLATE = 'user/register.html'
-
-    # TODO: Flask messages are stashed too much
-    USER_CHANGE_PASSWORD_URL = '/user/change-password'
-    USER_CHANGE_USERNAME_URL = '/user/change-username'
-    USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>'
-    USER_EMAIL_ACTION_URL = '/user/email/<id>/<action>'
-    USER_FORGOT_PASSWORD_URL = '/user/forgot-password'
-    USER_INVITE_URL = '/user/invite'
-    USER_LOGIN_URL = '/user/login'
-    USER_LOGOUT_URL = '/user/logout'
-    USER_MANAGE_EMAILS_URL = '/user/manage-emails'
-    USER_REGISTER_URL = '/user/register'
-    USER_RESEND_CONFIRM_EMAIL_URL = '/user/resend-confirm-email'
-    USER_RESET_PASSWORD_URL = '/user/reset-password/<token>'
-
     # Settings for Administration by Flask-Admin
     FLASK_ADMIN_SWATCH = 'simplex'
-
-    # Settings for scheduler by APScheduler
-    APSCHEDULER_TIMEZONE = 'UTC'
-    APSCHEDULER_JOBSTORES = dict(default=MemoryJobStore())  # default
-    APSCHEDULER_EXECUTORS = dict(
-        default=dict(type='threadpool', max_workers=10)
-    )  # default
-    APSCHEDULER_JOB_DEFAULTS = dict(
-        coalesce=True, max_instances=1, misfire_grace_time=1
-    )  # default
 
     # Settings for Celery
     CELERY_TASK_SERIALIZER = 'json'

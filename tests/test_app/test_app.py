@@ -2,8 +2,8 @@ import unittest
 
 from scrapymon.config import Config
 from scrapymon.app import create_app
-from scrapymon.blueprints.index import (_list_projects, _list_versions,
-                                        _list_spiders, _list_jobs)
+from scrapymon.blueprints.app import (_list_projects, _list_versions,
+                                      _list_spiders, _list_jobs)
 
 
 class TestIndex(unittest.TestCase):
