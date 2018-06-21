@@ -10,3 +10,7 @@ build/
 \.env
 
 *.pyc
+
+\node_modules/
+
+scrapymon/static/assets/
