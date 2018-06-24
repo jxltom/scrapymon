@@ -2,13 +2,13 @@
 {
   "buildpacks": [
     {
-      "url": "https://github.com/dmathieu/heroku-buildpack-submodules.git"
+      "url": "https://github.com/dmathieu/heroku-buildpack-submodules"
     },
     {
-      "url": "https://github.com/jxltom/heroku-buildpack-nodejs.git"
+      "url": "https://github.com/jxltom/heroku-buildpack-nodejs"
     },
     {
-      "url": "https://github.com/jxltom/heroku-buildpack-python.git"
+      "url": "https://github.com/jxltom/heroku-buildpack-python"
     }
   ],
   "scripts": {
