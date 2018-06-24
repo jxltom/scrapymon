@@ -1,23 +1,26 @@
+
 const path = require("path");
+const webpack = require("webpack")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./scrapymon/static/js/index.js",
+  entry: "./app/scripts/index.js",
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "scrapymon/static/assets")
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].[hash].js",
+    chunkFilename: "[name].[hash].js"
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.(scss)$/,
         use: [
-          {
-            loader: "style-loader" // inject CSS to page
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader" // translates CSS into CommonJS modules
           },
@@ -36,9 +39,26 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: "url-loader?limit=100000"
+        test: /\.(eot|otf|png|svg|jpg|ttf|woff|woff2)(\?v=[0-9.]+)?$/,
+        loader: "file-loader?name=[name].[hash].[ext]"
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.$": "jquery",
+      "window.jQuery": "jquery"
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].[hash].css",
+      chunkFilename: "[id].[hash].css"
+    }),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: "./app/index.html",
+      inject: true
+    })
+  ]
 };
