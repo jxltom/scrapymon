@@ -32,7 +32,8 @@
   },
   "scripts": {
     "webpack": "webpack-serve --no-clipboard",
-    "webpack-build": "webpack -p --progress"
+    "webpack-build": "webpack -p --progress",
+    "heroku-postbuild": "npm run webpack-build"
   },
   "author": "",
   "license": "MIT"
