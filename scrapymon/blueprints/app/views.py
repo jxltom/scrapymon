@@ -35,7 +35,7 @@ def server_connection_error(e):
         'Please check status of Scrapyd server in {}.'.format(scrapyd_server),
         'danger'
     )
-    return render_template('index/error.html')
+    return render_template('app/error.html')
 
 
 @app.route('/')
@@ -58,7 +58,7 @@ def projects_dash():
             'to Scrapyd server {}.'.format(scrapyd_server)),
             'info')
 
-    return render_template('index/projects.html', projects=projects)
+    return render_template('app/projects.html', projects=projects)
 
 
 @app.route('/jobs')
@@ -83,7 +83,7 @@ def jobs_dash():
             job['project'] = project
             jobs['finished'].append(job)
 
-    return render_template('index/jobs.html', jobs=jobs)
+    return render_template('app/jobs.html', jobs=jobs)
 
 
 @app.route('/logs/<project>/<spider>/<job>')
@@ -111,7 +111,7 @@ def logs_dash(project, spider, job):
     else:
         logs = raw.split('\n')
 
-    return render_template('index/logs.html', logs=logs,
+    return render_template('app/logs.html', logs=logs,
                            info=dict(project=project, spider=spider, job=job))
 
 

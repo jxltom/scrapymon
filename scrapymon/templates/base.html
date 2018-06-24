@@ -1,3 +1,5 @@
+{% import "utils.html" as utils %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,17 +22,7 @@
     <div class="container-fluid">
 
         {% block content %}
-            {% with messages = messages or get_flashed_messages(with_categories=True) -%}
-                {% if messages -%}
-                    {% for cat, msg in messages %}
-                        <div class="alert alert-{{ transform.get(cat.lower(), default_category or cat) }} alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            {{ msg }}
-                        </div>
-                    {%- endfor -%}
-                {% endif -%}
-            {% endwith -%}
-
+            {{ utils.flashed_messages(container=False, dismissible=True) }}
         {% endblock %}
     </div>
 
