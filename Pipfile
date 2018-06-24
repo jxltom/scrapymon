@@ -1,7 +1,7 @@
 [[source]]
-url = "https://pypi.python.org/simple"
+url = "https://mirrors.aliyun.com/pypi/simple/"
 verify_ssl = true
-name = "pypi"
+name = "aliyun"
 
 [requires]
 python_version = "3.6"
@@ -9,8 +9,7 @@ python_full_version = "3.6.5"
 
 [packages]
 flask = "*"
-flask-bootstrap = "*"
-flask-basicauth = "*"
+flask-webpack = "*"
 flask-wtf = "*"
 flask-mail = "*"
 flask-sqlalchemy = "*"

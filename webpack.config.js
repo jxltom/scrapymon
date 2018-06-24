@@ -1,15 +1,16 @@
-
 const path = require("path");
-const webpack = require("webpack")
+const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ManifestRevisionPlugin = require("manifest-revision-webpack-plugin");
+const BundleTracker = require("webpack-bundle-tracker");
 
 module.exports = {
-  entry: "./app/scripts/index.js",
+  entry: "./scrapymon/static/scripts/index.js",
   output: {
     path: path.resolve(__dirname, "scrapymon/static/assets"),
     filename: "[name].[hash].js",
-    chunkFilename: "[name].[hash].js"
+    chunkFilename: "[name].[hash].js",
+    publicPath: "/static/assets/"
   },
   module: {
     rules: [
@@ -55,10 +56,13 @@ module.exports = {
       filename: "[name].[hash].css",
       chunkFilename: "[id].[hash].css"
     }),
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: "./app/index.html",
-      inject: true
+    new ManifestRevisionPlugin("./webpack-manifest.json", {
+      rootAssetPath: "./scrapymon/static",
+      ignorePaths: ["scrapymon/static/libs", "scrapymon/static/assets"]
+    }),
+    new BundleTracker({
+      path: __dirname,
+      filename: "./webpack-stats.json"
     })
   ]
 };

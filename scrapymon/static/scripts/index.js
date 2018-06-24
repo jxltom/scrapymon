@@ -11,3 +11,8 @@ import "../libs/flatui/app/styles/flat-ui.scss";
 
 // Importing custom js
 import "./app"
+
+// Initialize tooltip and hide tooltip for compatibility with application.js.
+$(document).ready(function () {
+    $('[data-toggle=tooltip]').tooltip('hide');
+});

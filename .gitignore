@@ -14,3 +14,5 @@ build/
 \node_modules/
 
 scrapymon/static/assets/
+/webpack-manifest.json
+/webpack-stats.json

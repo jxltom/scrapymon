@@ -9,10 +9,7 @@
 
     <title>scrapymon</title>
 
-    {% block styles %}
-
-    {% endblock %}
-
+    {{ stylesheet_tag("main")|safe }}
 </head>
 
 <body>
@@ -26,9 +23,8 @@
         {% endblock %}
     </div>
 
-    {% block scripts %}
 
-    {% endblock %}
+    {{ javascript_tag("main")|safe }}
 
 {% endblock %}
 </body>

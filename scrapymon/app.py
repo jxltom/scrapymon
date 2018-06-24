@@ -5,6 +5,7 @@ import uuid
 
 from flask import Flask
 from flask.json import JSONEncoder
+from flask_webpack import Webpack
 from flask_compress import Compress
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -24,6 +25,7 @@ ENV_CONFIG = os.getenv('{}_CONFIG'.format(PROJECT_NAME.upper()), 'dev')
 
 
 sentry = Sentry()
+webpack = Webpack()
 compress = Compress()
 mail = Mail()
 db = SQLAlchemy()
@@ -54,11 +56,8 @@ def create_app():
     app.json_encoder = CustomJSONEncoder
     compress.init_app(app)
 
-    # Initialize DebugToolbar
-    if app.config['DEBUG']:
-        from flask_debugtoolbar import DebugToolbarExtension
-        toolbar = DebugToolbarExtension()
-        toolbar.init_app(app)
+    # Inintialize webpack support
+    webpack.init_app(app)
 
     # Initialize Mail by Flask-Mail
     mail.init_app(app)
@@ -69,6 +68,12 @@ def create_app():
         app, db,
         directory=join(abspath(dirname(project.__file__)), 'migrations')
     )  # set directory for compatible with Heroku
+
+    # Initialize DebugToolbar
+    if app.config['DEBUG']:
+        from flask_debugtoolbar import DebugToolbarExtension
+        toolbar = DebugToolbarExtension()
+        toolbar.init_app(app)
 
     # Initialize app blueprint
     from .blueprints.app import app as app_blueprint

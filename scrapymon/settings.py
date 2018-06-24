@@ -1,5 +1,5 @@
 import os
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 import re
 
 from kombu import Queue, Exchange
@@ -22,6 +22,13 @@ class Config:
     # Settings for Flask
     SECRET_KEY = _getenv('SECRET_KEY')  # used for session
     TESTING = False
+
+    # Settings for Flask-Webpack
+    WEBPACK_MANIFEST_PATH = join(abspath(
+        dirname(dirname(project.__file__))),
+        'webpack-manifest.json'
+    )
+    print(WEBPACK_MANIFEST_PATH)
 
     # Settings for Flask-Basicauth
     BASIC_AUTH_USERNAME = _getenv('BASIC_AUTH_USERNAME', 'admin')
