@@ -28,7 +28,6 @@ class Config:
         dirname(dirname(project.__file__))),
         'webpack-manifest.json'
     )
-    print(WEBPACK_MANIFEST_PATH)
 
     # Settings for Flask-Basicauth
     BASIC_AUTH_USERNAME = _getenv('BASIC_AUTH_USERNAME', 'admin')
