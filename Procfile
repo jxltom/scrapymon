@@ -1,1 +1,1 @@
-web: python scrapymon/__main__.py
+web: uwsgi scrapymon/helpers/uwsgi.ini
