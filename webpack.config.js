@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: "./app/scripts/index.js",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "scrapymon/static/assets"),
     filename: "[name].[hash].js",
     chunkFilename: "[name].[hash].js"
   },

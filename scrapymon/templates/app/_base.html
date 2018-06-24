@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="page-header"><h3>Scrapymon</h3></div>
+
+    {{ super() }}
+
+    <ul class="nav nav-tabs">
+
+        {% if request.path == url_for('app.projects_dash') %}
+
+            <li role="presentation" class="active"><a href="#">Projects</a></li>
+            <li role="presentation"><a href="{{ url_for('app.jobs_dash') }}">Jobs</a></li>
+
+        {% elif request.path == url_for('app.jobs_dash') %}
+
+            <li role="presentation"><a href="{{ url_for('app.projects_dash') }}">Projects</a></li>
+            <li role="presentation" class="active"><a href="#">Jobs</a></li>
+
+        {% else %}
+
+            <li role="presentation"><a href="{{ url_for('app.projects_dash') }}">Projects</a></li>
+            <li role="presentation"><a href="{{ url_for('app.jobs_dash') }}">Jobs</a></li>
+            <li role="presentation" class="active"><a href="#">Logs</a></li>
+
+        {% endif %}
+    </ul>
+{% endblock %}

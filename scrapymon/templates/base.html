@@ -5,45 +5,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {# Add Flat-UI support. #}
-    <!-- Loading Flat UI Pro -->
-    <link href="http://rawgit.com/designmodo/Flat-UI/master/dist/css/flat-ui.min.css" rel="stylesheet">
+    <title>scrapymon</title>
 
-    {# Add custom CSS. #}
-    <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
+    {% block styles %}
 
-    {# Add IE fixes. #}
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-    <!--[if lt IE 9]>
-    <script src="{{ url_for('static', filename='flat-ui/js/html5shiv.js') }}"></script>
-    <script src="{{ url_for('static', filename='flat-ui/js/respond.min.js') }}"></script>
-    <![endif]-->
+    {% endblock %}
 
-    <title>Bootstrap4-boilerplate</title>
 </head>
 
 <body>
-<h1>Hello, world!</h1>
-<button class="btn btn-hg btn-primary">Boss Button</button>
-<button class="btn">Button</button>
-<button class="btn btn-default">Default</button>
-<button class="btn btn-primary">Primary</button>
-<button class="btn btn-info">Info</button>
-<button class="btn btn-danger">Danger</button>
-<button class="btn btn-success">Success</button>
-<button class="btn btn-warning">Warning</button>
-<button class="btn btn-inverse">Inverse</button>
-<button class="btn btn-link">Link</button>
+{% block body %}
+    {% block navbar %}{% endblock navbar %}
 
+    <div class="container-fluid">
 
-{# Add Flat-UI support and removed original bootstrap JS. #}
-<script type="text/javascript" src="{{ url_for('static', filename='assets/bundle.js') }}" src="bundle.js"></script>
-<script type="text/javascript" src="http://vjs.zencdn.net/6.6.3/video.js"></script>
-<script type="text/javascript" src="http://rawgit.com/designmodo/Flat-UI/master/dist/scripts/flat-ui.js"></script>
-<script type="text/javascript" src="http://rawgit.com/designmodo/Flat-UI/master/dist/scripts/application.js"></script>
+        {% block content %}
+            {% with messages = messages or get_flashed_messages(with_categories=True) -%}
+                {% if messages -%}
+                    {% for cat, msg in messages %}
+                        <div class="alert alert-{{ transform.get(cat.lower(), default_category or cat) }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{ msg }}
+                        </div>
+                    {%- endfor -%}
+                {% endif -%}
+            {% endwith -%}
 
-{# Add custom JS. #}
-<script src="{{ url_for('static', filename='base.js') }}"></script>
+        {% endblock %}
+    </div>
 
+    {% block scripts %}
+
+    {% endblock %}
+
+{% endblock %}
 </body>
 </html>

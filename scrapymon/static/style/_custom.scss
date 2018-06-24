@@ -1,0 +1,42 @@
+/* Add default top padding for body. */
+body {
+    padding-top: 20px;
+}
+
+/* Add padding for fluid container. */
+.container-fluid {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+/* Add padding for navbar when in fluid container. */
+@media (min-width: 768px) {
+
+    .navbar-fixed-top {
+        padding-left: 21px;
+        padding-right: 21px;
+    }
+}
+
+/* Add custom panel CSS for compatibility with Flat-UI. */
+.panel-title {
+    font-size: 18px;
+}
+
+.panel-heading {
+    padding: 15px 20px;
+}
+
+.panel-body {
+    padding: 10px 10px;
+}
+
+.panel-footer {
+    padding: 8px 20px;
+    font-size: 12px;
+}
+
+/* Change dropdown-toggle button height same as normal button height when in xs size. */
+.btn-group > .btn-xs.dropdown-toggle {
+    padding: 6px 9px;
+}

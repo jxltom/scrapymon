@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "private": true,
-  "main": "scrapymon/static/index.js",
+  "main": "scrapymon/static/scripts/index.js",
   "dependencies": {
     "bootstrap": "^4.1.1",
     "jquery": "^3.3.1",
