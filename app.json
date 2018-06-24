@@ -2,6 +2,9 @@
 {
   "buildpacks": [
     {
+      "url": "https://github.com/dmathieu/heroku-buildpack-submodules.git"
+    },
+    {
       "url": "https://github.com/jxltom/heroku-buildpack-nodejs.git"
     },
     {
