@@ -1,11 +1,11 @@
-/* Remvoe body top padding since header exists. */
+/* Remove body top padding since header exists. */
 body {
-    padding-top: 0px;
+    padding-top: 0;
 }
 
 /* Remvoe top margin of page header. */
 .page-header {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 /* Add bottom margin of nav-tabs. */
@@ -13,12 +13,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* Update badge color to green. */
-.card > .card-header .badge {
-    background-color: #1abc9c;
-}
-
-/* Add left and right padding of table. */
+/* Add left and right padding of table to along with card-title. */
 .table > tbody > tr > td:nth-of-type(1),
 .table > thead > tr > td:nth-of-type(1){
     padding-left:20px;
@@ -32,7 +27,7 @@ body {
 /* Make table font smaller and remove bottom margin. */
 .table {
     font-size: 15px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 /* Change dropdown menu minimal width in Flat-UI. */
