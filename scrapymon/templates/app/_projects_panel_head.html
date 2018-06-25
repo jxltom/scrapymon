@@ -1,6 +1,6 @@
 <div class="card-header clearfix" data-toggle="collapse" data-parent="#projects" href="#{{ project }}">
 
-    <a class="card-title collapsed">{{ project }}
+    <a class="card-title">{{ project }}
 
         <span class="badge" title="{{ attrs['spiders']|length }} spiders" data-toggle="tooltip">{{ attrs['spiders']|length }}</span>
 
@@ -9,7 +9,7 @@
         {% endfor %}
     </a>
 
-    <div class="btn-group pull-right">
+    <div class="btn-group float-right">
         <button class="btn btn-danger btn-xs" type="button" role="delete" id="/delete/{{ project }}">Delete Project</button>
 
         <button data-toggle="dropdown" class="btn btn-danger btn-xs dropdown-toggle{% if not attrs['versions']|length %} disabled{% endif %}" type="button">

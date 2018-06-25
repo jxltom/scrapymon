@@ -4,11 +4,11 @@
 
     {{ super() }}
 
-    <div class="card-group" id="projects">
+    <div id="projects">
 
         {% for project, attrs in projects.items() %}
 
-            <div class="card">
+            <div class="card mb-2">
 
                 {% include "app/_projects_panel_head.html" %}
 
