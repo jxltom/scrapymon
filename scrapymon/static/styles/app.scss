@@ -4,7 +4,7 @@ body {
 }
 
 /* Remvoe top margin of page header. */
-.page-header {
+body .page-header {
     margin-top: 0;
 }
 
@@ -30,13 +30,7 @@ body {
     margin-bottom: 0;
 }
 
-/* Change dropdown menu minimal width in Flat-UI. */
-.dropdown-menu {
-    min-width: 128px
-}
-
-/* Fill dropdown menu botton to li element and align left. */
-li > button.btn {
-    width: 100%;
-    text-align: left;
+/* Remove white space in dropdown menu */
+.btn-group > .dropdown-menu {
+    margin-top: 0;
 }

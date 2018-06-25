@@ -1,15 +1,12 @@
 $(document).ready(function () {
-    // Disable propagation of delete buttons in panel header so that they won't triggle toggle.
+    // Disable propagation of delete buttons in card header so that they won't triggle toggle.
     $('.card-header > .btn-group > button:nth-of-type(1)').click(function (e) {
         e.stopPropagation();
-        $('.card-header > .btn-group > ul button').dropdown('toggle');
+        //$('.card-header > .btn-group > ul button').dropdown('toggle');
     });
     $('.card-header > .btn-group > ul button').click(function (e) {
         e.stopPropagation();
-        $('.card-header > .btn-group > ul button').dropdown('toggle');
-    });
-    $('.card-header > .btn-group > button.disabled').click(function (e) {
-        e.stopPropagation();
+        //$('.card-header > .btn-group > ul button').dropdown('toggle');
     });
 
     // Schedule spider run.
