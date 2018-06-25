@@ -4,18 +4,17 @@
 
     {{ super() }}
 
-    <div class="panel-group" id="jobs">
 
         {# The type can be 'pending', 'running' and 'finished'. #}
         {# The list is a list of jobs with certain type. #}
         {% for type, list in jobs.items() %}
 
-            <div class="panel panel-default">
+            <div class="card mb-r">
 
                 {% include "app/_jobs_panel_head.html" %}
 
                 {% include "app/_jobs_panel_body.html" %}
             </div>
         {% endfor %}
-    </div>
+
 {% endblock %}
